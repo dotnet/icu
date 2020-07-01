@@ -1,0 +1,13 @@
+<Project>
+  <!-- Only building for wasm is supported -->
+  <Target Name="Build">
+    <Exec WorkingDirectory="$(BuildDir)"
+          Command="make -f icu.mk all"
+          IgnoreStandardErrorWarningFormat="true" />
+  </Target>
+  <Target Name="Restore" />
+  <Target Name="Test" />
+  <Target Name="Pack" DependsOnTargets="Build">
+    <MSBuild Projects="nuget/Microsoft.NETCore.Runtime.ICU.pkgproj" Targets="Build" />
+  </Target>
+</Project>
