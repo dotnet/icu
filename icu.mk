@@ -20,7 +20,7 @@ host: .stamp-host
 	touch $@
 
 .stamp-configure-host:
-	cd $(HOST_BUILDDIR) && $(TOP)/icu4c/source/configure --prefix=$(HOST_BINDIR)
+	cd $(HOST_BUILDDIR) && $(TOP)/icu/icu4c/source/configure --prefix=$(HOST_BINDIR)
 	touch $@
 
 $(WASM_BUILDDIR):
@@ -31,5 +31,5 @@ icu-wasm: $(WASM_BUILDDIR) .stamp-configure-wasm
 	cd $(WASM_BUILDDIR) && $(MAKE) all install
 
 .stamp-configure-wasm: .stamp-host | $(WASM_BUILDDIR) check-env
-	cd $(WASM_BUILDDIR) && source $(EMSDK_PATH)/emsdk_env.sh && emconfigure $(TOP)/icu4c/source/configure --prefix=$(WASM_BINDIR) --enable-static --disable-shared CXXFLAGS="-Wno-sign-compare" --with-cross-build=$(HOST_BUILDDIR) --with-data-packaging=archive --disable-extras --disable-renaming
+	cd $(WASM_BUILDDIR) && source $(EMSDK_PATH)/emsdk_env.sh && emconfigure $(TOP)/icu/icu4c/source/configure --prefix=$(WASM_BINDIR) --enable-static --disable-shared CXXFLAGS="-Wno-sign-compare" --with-cross-build=$(HOST_BUILDDIR) --with-data-packaging=archive --disable-extras --disable-renaming
 	touch $@
