@@ -109,10 +109,7 @@
             "categories": ["curr_tree"],
             "rules": [
                 "-/CurrencyPlurals",
-                "-/CurrencyUnitPatterns",
-                "+/Currencies%narrow",
-                "+/Currencies%variant",
-                "-/Currencies%formal"
+                "-/CurrencyUnitPatterns"
             ]
         },
         {
