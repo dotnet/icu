@@ -93,7 +93,7 @@
                 "supplementalData",
                 "keyTypeData"
             ]
-        },  
+        },
         "brkitr_rules": {
             "whitelist": ["char"]
         },
