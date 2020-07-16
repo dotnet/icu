@@ -84,6 +84,8 @@
         "rbnf_tree": "exclude",
         "rbnf_index": "exclude",
         "cnvalias": "exclude",
+        "lang_tree": "exclude",
+        "region_tree": "exclude",
         "misc": {
             "whitelist": [
                 "currencyNumericCodes",
@@ -99,15 +101,15 @@
         },
         "brkitr_tree": {
             "blacklist": ["en_US_POSIX"]
-        },
-        "region_tree": {
-            "whitelist": ["en"]
         }
     },
     "resourceFilters": [
         {
             "categories": ["curr_tree"],
             "rules": [
+                "-/Currencies%narrow",
+                "-/Currencies%formal",
+                "-/Currencies%variant",
                 "-/CurrencyPlurals",
                 "-/CurrencyUnitPatterns"
             ]
@@ -130,123 +132,14 @@
             ]
         },
         {
-            "categories": ["region_tree"],
-            "whitelist": ["en"],
+            "categories": ["coll_tree"],
+            "files": {
+                "whitelist": ["zh"]
+            },
             "rules": [
-                "-/*",
-                "+/Countries/US"
-            ]
-        },
-        {
-            "categories": ["locales_tree"],
-            "whitelist": ["th"],
-            "rules": [
-                "-/calendar/*",
-                "+/calendar/default",
-                "+/calendar/gregorian",
-                "+/calendar/generic",
-                "+/calendar/buddhist"
-            ]
-        },
-        {
-            "categories": ["locales_tree"],
-            "whitelist": ["zh"],
-            "rules": [
-                "-/calendar/*",
-                "+/calendar/default",
-                "+/calendar/gregorian",
-                "+/calendar/generic",
-                "+/calendar/chinese"
-            ]
-        },
-        {
-            "categories": ["locales_tree"],
-            "whitelist": ["ko"],
-            "rules": [
-                "-/calendar/*",
-                "+/calendar/default",
-                "+/calendar/gregorian",
-                "+/calendar/generic",
-                "+/calendar/dangi"
-            ]
-        },
-        {
-            "categories": ["locales_tree"],
-            "whitelist": ["am"],
-            "rules": [
-                "-/calendar/*",
-                "+/calendar/default",
-                "+/calendar/gregorian",
-                "+/calendar/generic",
-                "+/calendar/ethiopic",
-                "+/calendar/ethiopic-amete-alem"
-            ]
-        },
-        {
-            "categories": ["locales_tree"],
-            "whitelist": ["he"],
-            "rules": [
-                "-/calendar/*",
-                "+/calendar/default",
-                "+/calendar/gregorian",
-                "+/calendar/generic",
-                "+/calendar/hebrew"
-            ]
-        },
-        {
-            "categories": ["locales_tree"],
-            "whitelist": ["ar"],
-            "rules": [
-                "-/calendar/*",
-                "+/calendar/default",
-                "+/calendar/gregorian",
-                "+/calendar/generic",
-                "+/calendar/islamic"
-            ]
-        },
-        {
-            "categories": ["locales_tree"],
-            "whitelist": ["fa"],
-            "rules": [
-                "-/calendar/*",
-                "+/calendar/default",
-                "+/calendar/gregorian",
-                "+/calendar/generic",
-                "+/calendar/persian",
-                "+/calendar/islamic"
-            ]
-        },
-        {
-            "categories": ["locales_tree"],
-            "whitelist": ["ja"],
-            "rules": [
-                "-/calendar/*",
-                "+/calendar/default",
-                "+/calendar/gregorian",
-                "+/calendar/generic",
-                "+/calendar/japanese"
-            ]
-        },
-        {
-            "categories": ["locales_tree"],
-            "whitelist": ["hi"],
-            "rules": [
-                "-/calendar/*",
-                "+/calendar/default",
-                "+/calendar/gregorian",
-                "+/calendar/generic",
-                "+/calendar/indian"
-            ]
-        },
-        {
-            "categories": ["locales_tree"],
-            "whitelist": ["zh_Hant"],
-            "rules": [
-                "-/calendar/*",
-                "+/calendar/default",
-                "+/calendar/gregorian",
-                "+/calendar/generic",
-                "+/calendar/roc"
+                "-/*/unihan",
+                "-/*/big5han",
+                "-/*/gb2312han"
             ]
         },
         {
@@ -274,22 +167,22 @@
             ]
         },
         {
-            "categories": ["lang_tree"],
-            "rules": [
-                "-/*/*",
-                "+/localeDisplayPattern",
-                "+/Types"
-            ]
-        },
-        {
-            "categories": ["coll_tree"],
+            "categories": ["misc"],
             "files": {
-                "whitelist": ["zh"]
+                "whitelist": ["supplementalData"]
             },
             "rules": [
-                "-/*/unihan",
-                "-/*/big5han",
-                "-/*/gb2312han"
+                "-/*",
+                "+/calendarData",
+                "+/calendarPreferenceData",
+                "+/cldrVersion",
+                "+/codeMappings",
+                "+/idValidity",
+                "+/measurementData",
+                "+/territoryContainment",
+                "+/timeData",
+                "+/weekData",
+                "+/weekData%variant"
             ]
         }
     ]
