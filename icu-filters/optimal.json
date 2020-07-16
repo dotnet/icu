@@ -178,8 +178,6 @@
                 "+/cldrVersion",
                 "+/codeMappings",
                 "+/idValidity",
-                "+/measurementData",
-                "+/territoryContainment",
                 "+/timeData",
                 "+/weekData",
                 "+/weekData%variant"
