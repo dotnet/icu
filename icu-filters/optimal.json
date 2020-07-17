@@ -139,13 +139,24 @@
                 "-/listPattern",
                 "-/fields",
                 "-/delimiters",
+                "-/Ellipsis",
+                "-/NumberElements",
+                "-/NumberElements/*",
+                "+/NumberElements/default",
+                "+/NumberElements/latn",
+                "-/NumberElements/latn/miscPatterns",
+                "-/NumberElements/latn/patternsLong",
+                "-/NumberElements/latn/patternsShort",
                 "-/NumberElements/*/patternsLong",
                 "-/NumberElements/*/patternsShort",
                 "-/NumberElements/minimalPairs",
+                "-/parse",
                 "-/AuxExemplarCharacters",
                 "-/ExemplarCharacters",
+                "-/ExemplarCharactersIndex",
                 "-/ExemplarCharactersNumbers",
-                "-/ExemplarCharactersPunctuation"
+                "-/ExemplarCharactersPunctuation",
+                "-/MoreInformation"
             ]
         },
         {
