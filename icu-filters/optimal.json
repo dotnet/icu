@@ -161,7 +161,8 @@
                     "ja",
                     "ko",
                     "th",
-                    "zh"
+                    "zh",
+                    "zh_Hant"
                 ]
             },
             "rules": [
