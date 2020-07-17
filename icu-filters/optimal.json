@@ -174,9 +174,9 @@
         {
             "categories": ["coll_tree"],
             "rules": [
-                "-/*/unihan",
-                "-/*/big5han",
-                "-/*/gb2312han",
+                "-/*/*",
+                "+/collations/default",
+                "+/collations/standard",
                 "-/UCARules"
             ]
         },
