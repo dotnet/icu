@@ -198,6 +198,7 @@
                 "+/calendarData",
                 "+/calendarPreferenceData",
                 "+/cldrVersion",
+                "+/measurementData",
                 "+/codeMappings",
                 "+/idValidity",
                 "+/timeData",
