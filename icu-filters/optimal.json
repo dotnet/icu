@@ -185,6 +185,7 @@
                 "-/*/*",
                 "+/collations/default",
                 "+/collations/standard",
+                "+/collations/private-kana",
                 "-/UCARules"
             ]
         },
