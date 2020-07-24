@@ -33,10 +33,6 @@ while [[ $# > 0 ]]; do
       properties="$properties /p:IcuTracing=true"
       ;;
     *)
-      echo "Invalid argument: $1"
-      usage
-      exit 1
-      ;;
   esac
   shift
 done
