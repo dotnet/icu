@@ -22,7 +22,7 @@ $(HOST_BUILDDIR)/.stamp-host: $(HOST_BUILDDIR)/.stamp-configure-host
 
 $(HOST_BUILDDIR)/.stamp-configure-host: | $(HOST_BUILDDIR)
 	cd $(HOST_BUILDDIR) && $(TOP)/icu/icu4c/source/configure \
-	--prefix=$(HOST_BINDIR) --disable-icu-config --disable-tools --disable-extras --disable-tests --disable-samples
+	--prefix=$(HOST_BINDIR) --disable-icu-config --disable-icuio --disable-extras --disable-tests --disable-samples
 	touch $@
 
 $(WASM_BUILDDIR):
@@ -37,7 +37,6 @@ ICU_DEFINES= \
 	-DUCONFIG_NO_FILTERED_BREAK_ITERATION=1 \
 	-DUCONFIG_NO_REGULAR_EXPRESSIONS=1 \
 	-DUCONFIG_NO_TRANSLITERATION=1 \
-	-DUCONFIG_NO_CONVERSION=1 \
 	-DUCONFIG_NO_FILE_IO=1 \
 	-DU_CHARSET_IS_UTF8=1 \
 	-DU_CHECK_DYLOAD=0 \
@@ -55,10 +54,10 @@ $(WASM_BUILDDIR)/.stamp-configure-wasm: $(HOST_BUILDDIR)/.stamp-host | $(WASM_BU
 	--prefix=$(WASM_BINDIR) \
 	--enable-static \
 	--disable-shared \
-	--disable-tools \
 	--disable-tests \
 	--disable-extras \
 	--disable-samples \
+	--disable-icuio \
 	--disable-renaming \
 	--disable-icu-config \
 	--with-cross-build=$(HOST_BUILDDIR) \
