@@ -34,7 +34,7 @@ while [[ $# > 0 ]]; do
       properties="$properties /p:IcuTracing=true"
       ;;
     *)
-      inner_args="$inner_args -$opt"
+      inner_args="$inner_args $1"
       ;;
   esac
   shift
