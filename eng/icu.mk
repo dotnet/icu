@@ -47,8 +47,6 @@ ifeq ($(ICU_TRACING),true)
     CONFIGURE_ADD_ARGS += --enable-tracing
 endif
 
-
-
 $(WASM_BUILDDIR)/.stamp-configure-wasm: $(ICU_FILTER) $(HOST_BUILDDIR)/.stamp-host | $(WASM_BUILDDIR) check-env
 	cd $(WASM_BUILDDIR) && source $(EMSDK_PATH)/emsdk_env.sh && \
 	ICU_DATA_FILTER_FILE=$(ICU_FILTER) \
