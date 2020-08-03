@@ -80,12 +80,7 @@
                 "-/ExemplarCharactersIndex",
                 "-/ExemplarCharactersNumbers",
                 "-/ExemplarCharactersPunctuation",
-                "-/MoreInformation"
-            ]
-        },
-        {
-            "categories": ["locales_tree"],
-            "rules": [
+                "-/MoreInformation",
                 "-/calendar/*",
                 "+/calendar/default",
                 "+/calendar/gregorian",
