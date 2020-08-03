@@ -68,6 +68,12 @@
         "cnvalias": "exclude",
         "lang_tree": "exclude",
         "region_tree": "exclude",
+        "normalization": {
+            "blacklist": [
+                "nfkc_cf",
+                "nfkc"
+            ]
+        },
         "misc": {
             "whitelist": [
                 "currencyNumericCodes",
@@ -76,6 +82,13 @@
                 "langInfo",
                 "supplementalData",
                 "keyTypeData"
+            ]
+        },
+        "normalization": {
+            "blacklist": [
+                "nfkc_cf",
+                "nfc",
+                "nfkc"
             ]
         },
         "brkitr_dictionaries": "exclude",
