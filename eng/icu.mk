@@ -22,7 +22,7 @@ $(HOST_BUILDDIR)/.stamp-host: $(HOST_BUILDDIR)/.stamp-configure-host
 
 $(HOST_BUILDDIR)/.stamp-configure-host: | $(HOST_BUILDDIR)
 	cd $(HOST_BUILDDIR) && $(TOP)/icu/icu4c/source/configure \
-	--prefix=$(HOST_BINDIR) --disable-icu-config --disable-icuio --disable-extras --disable-tests --disable-samples
+	--prefix=$(HOST_BINDIR) --disable-icu-config --disable-extras --disable-tests --disable-samples
 	touch $@
 
 $(WASM_BUILDDIR):
@@ -47,7 +47,11 @@ ifeq ($(ICU_TRACING),true)
     CONFIGURE_ADD_ARGS += --enable-tracing
 endif
 
+# unfortunately, fileReplacements (https://github.com/unicode-org/icu/blob/master/docs/userguide/icu_data/buildtool.md#file-substitution) 
+# doesn't work for some reason so we copy curr/root.txt via `cp` manually (and reset that after)
+
 $(WASM_BUILDDIR)/.stamp-configure-wasm: $(ICU_FILTER) $(HOST_BUILDDIR)/.stamp-host | $(WASM_BUILDDIR) check-env
+	cp $(TOP)/icu-filters/curr/root.txt $(TOP)/icu/icu4c/source/data/curr/root.txt
 	cd $(WASM_BUILDDIR) && source $(EMSDK_PATH)/emsdk_env.sh && \
 	ICU_DATA_FILTER_FILE=$(ICU_FILTER) \
 	emconfigure $(TOP)/icu/icu4c/source/configure \
@@ -57,7 +61,6 @@ $(WASM_BUILDDIR)/.stamp-configure-wasm: $(ICU_FILTER) $(HOST_BUILDDIR)/.stamp-ho
 	--disable-tests \
 	--disable-extras \
 	--disable-samples \
-	--disable-icuio \
 	--disable-renaming \
 	--disable-icu-config \
 	--with-cross-build=$(HOST_BUILDDIR) \
@@ -65,4 +68,5 @@ $(WASM_BUILDDIR)/.stamp-configure-wasm: $(ICU_FILTER) $(HOST_BUILDDIR)/.stamp-ho
 	$(CONFIGURE_ADD_ARGS) \
 	CFLAGS="-Oz $(ICU_DEFINES)" \
 	CXXFLAGS="-fno-exceptions -Oz -Wno-sign-compare $(ICU_DEFINES)"
+	git checkout $(TOP)/icu/icu4c/source/data/curr/root.txt
 	touch $@
