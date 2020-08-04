@@ -266,7 +266,20 @@
         {
             "categories": ["locales_tree"],
             "files": {
-                "whitelist": ["zh_Hant"]
+                "whitelist": ["th"]
+            },
+            "rules": [
+                "-/calendar/*",
+                "+/calendar/default",
+                "+/calendar/gregorian",
+                "+/calendar/generic",
+                "+/calendar/buddhist"
+            ]
+        },
+        {
+            "categories": ["locales_tree"],
+            "files": {
+                "whitelist": ["zh", "zh_Hant"]
             },
             "rules": [
                 "-/calendar/*",
