@@ -57,6 +57,7 @@ $(WASM_BUILDDIR)/.stamp-configure-wasm: $(ICU_FILTER) $(HOST_BUILDDIR)/.stamp-ho
 	--disable-tests \
 	--disable-extras \
 	--disable-samples \
+	--disable-icuio \
 	--disable-renaming \
 	--disable-icu-config \
 	--with-cross-build=$(HOST_BUILDDIR) \
