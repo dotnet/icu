@@ -2,6 +2,8 @@
     "collationUCAData": "implicithan",
     "localeFilter": {
         "filterType": "locale",
+        "includeScripts": false,	
+        "includeChildren": false,
         "whitelist": [
             "en_US"
         ]
@@ -31,9 +33,14 @@
                 "currencyNumericCodes",
                 "numberingSystems",
                 "icuver",
-                "langInfo",
                 "supplementalData",
                 "keyTypeData"
+            ]
+        },
+        "curr_tree": {
+            "whitelist": [
+                "root", 
+                "en"
             ]
         },
         "brkitr_dictionaries": "exclude",
@@ -47,6 +54,7 @@
             "rules": [
                 "-/Currencies",
                 "+/Currencies/USD",
+                "+/Currencies/XXX",
                 "-/Currencies%narrow",
                 "-/Currencies%formal",
                 "-/Currencies%variant",
@@ -75,7 +83,12 @@
                 "-/ExemplarCharactersIndex",
                 "-/ExemplarCharactersNumbers",
                 "-/ExemplarCharactersPunctuation",
-                "-/MoreInformation",
+                "-/MoreInformation"
+            ]
+        },
+        {
+            "categories": ["locales_tree"],
+            "rules": [
                 "-/calendar/*",
                 "+/calendar/default",
                 "+/calendar/gregorian",

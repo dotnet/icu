@@ -3,10 +3,51 @@
     "localeFilter": {
         "filterType": "language",
         "whitelist": [
+            "ar",
+            "am",
+            "bg",
+            "bn",
+            "ca",
+            "cs",
+            "da",
+            "de",
+            "el",
             "en",
-            "ja",
-            "ko",
-            "zh"
+            "es",
+            "et",
+            "fa",
+            "fi",
+            "fil",
+            "fr",
+            "gu",
+            "he",
+            "hi",
+            "hr",
+            "hu",
+            "id",
+            "it",
+            "kn",
+            "lt",
+            "lv",
+            "ml",
+            "mr",
+            "ms",
+            "nl",
+            "no",
+            "pl",
+            "pt",
+            "ro",
+            "ru",
+            "sk",
+            "sl",
+            "sr",
+            "sv",
+            "sw",
+            "ta",
+            "te",
+            "tr",
+            "uk",
+            "vi"
         ]
     },
     "featureFilters": {
@@ -54,9 +95,18 @@
             "categories": ["curr_tree"],
             "rules": [
                 "-/Currencies",
-                "+/Currencies/CNY",
-                "+/Currencies/JPY",
-                "+/Currencies/KRW",
+                "+/Currencies/BRL",
+                "+/Currencies/EUR",
+                "+/Currencies/GBP",
+                "+/Currencies/ILS",
+                "+/Currencies/INR",
+                "+/Currencies/RUB",
+                "+/Currencies/THB",
+                "+/Currencies/TWD",
+                "+/Currencies/UAH",
+                "+/Currencies/USD",
+                "+/Currencies/VND",
+                "+/Currencies/SAR",
                 "+/Currencies/XXX",
                 "-/Currencies%narrow",
                 "-/Currencies%formal",
@@ -92,40 +142,87 @@
         {
             "categories": ["locales_tree"],
             "files": {
-                "whitelist": ["ko"]
+                "blacklist": [
+                    "root",
+                    "am",
+                    "ar",
+                    "fa",
+                    "he",
+                    "hi"
+                ]
             },
             "rules": [
                 "-/calendar/*",
                 "+/calendar/default",
                 "+/calendar/gregorian",
-                "+/calendar/generic",
-                "+/calendar/dangi"
+                "+/calendar/generic"
             ]
         },
         {
             "categories": ["locales_tree"],
             "files": {
-                "whitelist": ["ja"]
+                "whitelist": ["am"]
             },
             "rules": [
                 "-/calendar/*",
                 "+/calendar/default",
                 "+/calendar/gregorian",
                 "+/calendar/generic",
-                "+/calendar/japanese"
+                "+/calendar/ethiopic",
+                "+/calendar/ethiopic-amete-alem"
             ]
         },
         {
             "categories": ["locales_tree"],
             "files": {
-                "whitelist": ["zh", "zh_Hant"]
+                "whitelist": ["he"]
             },
             "rules": [
                 "-/calendar/*",
                 "+/calendar/default",
                 "+/calendar/gregorian",
                 "+/calendar/generic",
-                "+/calendar/roc"
+                "+/calendar/hebrew"
+            ]
+        },
+        {
+            "categories": ["locales_tree"],
+            "files": {
+                "whitelist": ["ar"]
+            },
+            "rules": [
+                "-/calendar/*",
+                "+/calendar/default",
+                "+/calendar/gregorian",
+                "+/calendar/generic",
+                "+/calendar/islamic"
+            ]
+        },
+        {
+            "categories": ["locales_tree"],
+            "files": {
+                "whitelist": ["fa"]
+            },
+            "rules": [
+                "-/calendar/*",
+                "+/calendar/default",
+                "+/calendar/gregorian",
+                "+/calendar/generic",
+                "+/calendar/persian",
+                "+/calendar/islamic"
+            ]
+        },
+        {
+            "categories": ["locales_tree"],
+            "files": {
+                "whitelist": ["hi"]
+            },
+            "rules": [
+                "-/calendar/*",
+                "+/calendar/default",
+                "+/calendar/gregorian",
+                "+/calendar/generic",
+                "+/calendar/indian"
             ]
         },
         {
@@ -153,6 +250,30 @@
                 "+/idValidity",
                 "+/timeData",
                 "+/weekData"
+            ]
+        },
+        {
+            "categories": ["locales_tree"],
+            "files": {
+                "whitelist": [
+                    "bn",
+                    "et",
+                    "gu",
+                    "kn",
+                    "ml",
+                    "mr",
+                    "ms",
+                    "no",
+                    "ta",
+                    "te"
+                ]
+            },
+            "rules": [
+                "-/*",
+                "+/%%ALIAS",
+                "+/LocaleScript",
+                "+/layout",
+                "+/Version"
             ]
         }
     ]

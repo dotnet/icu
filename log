@@ -1,0 +1,5 @@
+Downloading 'https://dot.net/v1/dotnet-install.sh'
+Trying to run 'curl https://dot.net/v1/dotnet-install.sh -sSL --retry 10 --create-dirs -o /home/egor/dotnet-icu/.dotnet/dotnet-install.sh' for maximum of 5 attempts.
+Ran 'curl https://dot.net/v1/dotnet-install.sh -sSL --retry 10 --create-dirs -o /home/egor/dotnet-icu/.dotnet/dotnet-install.sh' successfully.
+dotnet_install: Warning: Unable to locate zlib. Probable prerequisite missing; install zlib.
+dotnet-install: Downloading link: https://dotnetcli.azureedge.net/dotnet/Sdk/5.0.100-preview.6.20310.4/dotnet-sdk-5.0.100-preview.6.20310.4-linux-x64.tar.gz
