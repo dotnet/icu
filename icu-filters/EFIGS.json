@@ -40,6 +40,12 @@
                 "keyTypeData"
             ]
         },
+        "curr_tree": {
+            "whitelist": [
+                "root", 
+                "en"
+            ]
+        },
         "brkitr_dictionaries": "exclude",
         "brkitr_rules": {
             "whitelist": ["char"]
