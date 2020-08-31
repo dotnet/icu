@@ -121,9 +121,7 @@
             ]
         },
         "curr_tree": {
-            "whitelist": [
-                "root"
-            ]
+            "whitelist": ["root"]
         },
         "brkitr_dictionaries": "exclude",
         "brkitr_rules": {
