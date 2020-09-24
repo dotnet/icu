@@ -2,7 +2,7 @@
   <!-- Only building for wasm is supported -->
   <Target Name="Build">
     <ItemGroup>
-      <IcuFilter Include="icudt" />
+      <IcuFilter Include="icudt;icudt_no_CJK;icudt_EFIGS;icudt_CJK" />
     </ItemGroup>
     <PropertyGroup>
       <Makefile>icu.wasm.mk</Makefile>

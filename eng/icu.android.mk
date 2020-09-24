@@ -4,20 +4,30 @@ ICU_FILTER = $(TOP)/icu-filters/icudt.json
 ICU_VER = 67
 
 ANDROID_API=21
-ANDROID_FLAGS=-m64 -fstack-protector
+ANDROID_FLAGS=-m64
 ANDROID_PLATFORM=x86_64
+ANDROID_CX_SUFFIX=android$(ANDROID_API)
+ANDROID_AR=$(ANDROID_PLATFORM)-linux-android-ar
+ANDROID_RANLIB=$(ANDROID_PLATFORM)-linux-android-ranlib
 
 ifeq ($(ARCH),x86)
-	ANDROID_FLAGS=-m32 -fstack-protector
+	ANDROID_FLAGS=-m32
 	ANDROID_PLATFORM=i686
+	ANDROID_AR=$(ANDROID_PLATFORM)-linux-android-ar
+	ANDROID_RANLIB=$(ANDROID_PLATFORM)-linux-android-ranlib
 endif
 ifeq ($(ARCH),arm64)
-	ANDROID_FLAGS=-fpic -fstack-protector
+	ANDROID_FLAGS=-fpic
 	ANDROID_PLATFORM=aarch64
+	ANDROID_AR=$(ANDROID_PLATFORM)-linux-android-ar
+	ANDROID_RANLIB=$(ANDROID_PLATFORM)-linux-android-ranlib
 endif
 ifeq ($(ARCH),arm)
-	ANDROID_FLAGS=-march=armv7-a -mtune=cortex-a8 -mfpu=vfp -mfloat-abi=softfp -fpic -fstack-protector
-	ANDROID_PLATFORM=armv5
+	ANDROID_FLAGS=-march=armv7-a -mtune=cortex-a8 -mfpu=vfp -mfloat-abi=softfp -fpic
+	ANDROID_PLATFORM=armv7a
+	ANDROID_CX_SUFFIX=androideabi$(ANDROID_API)
+	ANDROID_AR=arm-linux-androideabi-ar
+	ANDROID_RANLIB=arm-linux-androideabi-ranlib
 endif
 
 all: icu-android
@@ -90,9 +100,9 @@ $(ANDROID_BUILDDIR)/.stamp-configure-android: $(ICU_FILTER) $(HOST_BUILDDIR)/.st
 	--with-cross-build=$(HOST_BUILDDIR) \
 	--with-data-packaging=archive \
 	$(CONFIGURE_ADD_ARGS) \
-	CFLAGS="-Os $(ANDROID_FLAGS) -I$(ANDROID_NDK_ROOT)/sysroot/usr/include -I$(ANDROID_NDK_ROOT)/sysroot/usr/include/$(ANDROID_PLATFORM)-linux-android" \
-    CXXFLAGS="-Os $(ANDROID_FLAGS) -I$(ANDROID_NDK_ROOT)/sysroot/usr/include -I$(ANDROID_NDK_ROOT)/sysroot/usr/include/$(ANDROID_PLATFORM)-linux-android" \
-    CC="$(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/darwin-$(ANDROID_PLATFORM)/bin/$(ANDROID_PLATFORM)-linux-android$(ANDROID_API)-clang" \
-    CXX="$(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/darwin-$(ANDROID_PLATFORM)/bin/$(ANDROID_PLATFORM)-linux-android$(ANDROID_API)-clang++" \
-    AR="$(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/darwin-$(ANDROID_PLATFORM)/bin/$(ANDROID_PLATFORM)-linux-android-ar" \
-    RANLIB="$(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/darwin-$(ANDROID_PLATFORM)/bin/$(ANDROID_PLATFORM)-linux-android-ranlib"
+	CFLAGS="-fno-exceptions -Oz -Wno-sign-compare $(ANDROID_FLAGS) -I$(ANDROID_NDK_ROOT)/sysroot/usr/include/$(ANDROID_PLATFORM)-linux-android" \
+    CXXFLAGS="-fno-exceptions -Oz -Wno-sign-compare $(ANDROID_FLAGS) -I$(ANDROID_NDK_ROOT)/sysroot/usr/include/$(ANDROID_PLATFORM)-linux-android" \
+    CC="$(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/darwin-x86_64/bin/$(ANDROID_PLATFORM)-linux-$(ANDROID_CX_SUFFIX)-clang" \
+    CXX="$(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/darwin-x86_64/bin/$(ANDROID_PLATFORM)-linux-$(ANDROID_CX_SUFFIX)-clang++" \
+    AR="$(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/darwin-x86_64/bin/$(ANDROID_AR)" \
+    RANLIB="$(ANDROID_NDK_ROOT)/toolchains/llvm/prebuilt/darwin-x86_64/bin/$(ANDROID_RANLIB)"
