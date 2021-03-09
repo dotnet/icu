@@ -81,6 +81,7 @@ stages:
           vmImage: macOS-10.15
         steps:
         - bash: |
+            ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=tvOS-sim /p:TargetArchitecture=x64 $(_InternalBuildArgs)
             ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=tvOS-sim /p:TargetArchitecture=arm64 $(_InternalBuildArgs)
             ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=tvOS /p:TargetArchitecture=arm64 $(_InternalBuildArgs)
             ### delete this entry after https://github.com/dotnet/runtime/pull/49305 is merged ##
