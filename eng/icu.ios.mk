@@ -1,5 +1,17 @@
 IOS_MIN_VERSION=8.0
 
+### Delete this when https://github.com/dotnet/runtime/pull/49305 is merged ###
+ifeq ($(TARGET_ARCHITECTURE),x64)
+	IOS_ARCH=-arch x86_64
+	IOS_SDK=iphonesimulator
+	IOS_ICU_HOST=i686-apple-darwin11
+endif
+### Delete this when https://github.com/dotnet/runtime/pull/49305 is merged ###
+ifeq ($(TARGET_ARCHITECTURE),x86)
+	IOS_ARCH=-arch i386
+	IOS_SDK=iphonesimulator
+	IOS_ICU_HOST=i686-apple-darwin11
+endif
 ifeq ($(TARGET_ARCHITECTURE),arm64)
 	IOS_ARCH=-arch arm64
 	IOS_SDK=iphoneos
