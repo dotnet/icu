@@ -51,7 +51,7 @@ stages:
       ############ iOS BUILD ############
       - job: Build_iOS
         displayName: iOS
-        timeoutInMinutes: 30
+        timeoutInMinutes: 45
         pool:
           vmImage: macOS-10.15
         steps:
