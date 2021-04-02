@@ -94,6 +94,21 @@ $(eval $(call TargetBuildTemplate,icudt))
 $(eval $(call TargetBuildTemplate,icudt_CJK))
 $(eval $(call TargetBuildTemplate,icudt_no_CJK))
 $(eval $(call TargetBuildTemplate,icudt_EFIGS))
+$(eval $(call TargetBuildTemplate,icudt_normalization))
+$(eval $(call TargetBuildTemplate,icudt_base))
+$(eval $(call TargetBuildTemplate,icudt_currency))
+$(eval $(call TargetBuildTemplate,icudt_coll))
 
 # build source+data for the main "icudt" filter and only data for the other filters
 all: lib-icudt data-icudt data-icudt_no_CJK data-icudt_EFIGS data-icudt_CJK
+
+shards: data-icudt_base data-icudt_normalization data-icudt_currency data-icudt_coll
+	du -k /Users/tammyqiu/icu/eng/..//artifacts/bin/icu-browser-wasm/icudt.dat
+	du -k /Users/tammyqiu/icu/eng/..//artifacts/bin/icu-browser-wasm/icudt_base.dat
+	du -k /Users/tammyqiu/icu/eng/..//artifacts/bin/icu-browser-wasm/icudt_normalization.dat
+	du -k /Users/tammyqiu/icu/eng/..//artifacts/bin/icu-browser-wasm/icudt_currency.dat
+	du -k /Users/tammyqiu/icu/eng/..//artifacts/bin/icu-browser-wasm/icudt_coll.dat
+	cp /Users/tammyqiu/icu/eng/..//artifacts/bin/icu-browser-wasm/icudt_normalization.dat /Users/tammyqiu/runtime2/artifacts/bin/native/net6.0-Browser-Debug-wasm/
+	cp /Users/tammyqiu/icu/eng/..//artifacts/bin/icu-browser-wasm/icudt_base.dat /Users/tammyqiu/runtime2/artifacts/bin/native/net6.0-Browser-Debug-wasm/
+	cp /Users/tammyqiu/icu/eng/..//artifacts/bin/icu-browser-wasm/icudt_currency.dat /Users/tammyqiu/runtime2/artifacts/bin/native/net6.0-Browser-Debug-wasm/
+	cp /Users/tammyqiu/icu/eng/..//artifacts/bin/icu-browser-wasm/icudt_coll.dat /Users/tammyqiu/runtime2/artifacts/bin/native/net6.0-Browser-Debug-wasm/

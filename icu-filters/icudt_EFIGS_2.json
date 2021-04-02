@@ -1,0 +1,46 @@
+{
+  "collationUCAData": "implicithan",
+  "strategy": "additive",
+  "featureFilters": {
+    "normalization": {
+        "blacklist": [
+            "nfkc_cf",
+            "nfkc"
+        ]
+    },
+    "misc": {
+        "whitelist": [
+            "currencyNumericCodes",
+            "numberingSystems",
+            "icuver",
+            "supplementalData",
+            "keyTypeData"
+        ]
+    },
+    "curr_tree": {
+        "whitelist": ["root"]
+    },
+    "brkitr_rules": {
+        "whitelist": ["char"]
+    }
+  },
+  "resourceFilters": [
+    {
+      "categories": ["curr_tree"],
+      "rules": [
+          "-/Currencies",
+          "+/Currencies/USD",
+          "+/Currencies/EUR"
+      ]
+    },
+    {
+      "categories": ["coll_tree"],
+      "rules": [
+          "-/*/*",
+          "+/collations/default",
+          "+/collations/standard",
+          "-/UCARules"
+      ]
+    }
+  ]
+}

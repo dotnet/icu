@@ -1,0 +1,10 @@
+{
+  "strategy": "additive",
+  "featureFilters": {
+    "misc": {
+        "whitelist": [
+            "windowsZones" 
+        ]
+    }
+  }
+}
