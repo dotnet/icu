@@ -198,8 +198,8 @@
       "confusables": "exclude",
       "stringprep": "exclude",
       "region_tree": "exclude",
-      "zone_tree": "exclude",
       "zone_supplemental": "exclude",
+      "zone_tree": "include",
       "translit": "exclude",
       "unames": "exclude",
       "ulayout": "exclude",
@@ -208,33 +208,24 @@
       "cnvalias": "exclude",
       "lang_tree": "exclude",
       "normalization": "exclude",
-      "curr_supplemental": "include",
       "misc": {
         "whitelist": [
-          "numberingSystems",
-          "currencyNumericCodes",
-          "supplementalData",
-          "keyTypeData"
+          "metaZones",
+          "zoneinfo64"
         ]
       },
-      "curr_tree": {
-        "whitelist": ["root"]
-      },
+      "curr_tree": "exclude",
+      "curr_supplemental": "exclude",
       "brkitr_dictionaries": "exclude",
       "brkitr_rules": "exclude",
       "brkitr_tree": "exclude"
   },
   "resourceFilters": [
     {
-      "categories": ["misc"],
-      "files": {
-          "whitelist": ["supplementalData"]
-      },
+      "categories": ["zone_tree"],
       "rules": [
-          "-/*",
-          "+/codeMappings",
-          "+/idValidity"
+        "+/zoneStrings/*"
       ]
-  }
+    }
   ]
 }

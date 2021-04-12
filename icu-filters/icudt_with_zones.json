@@ -1,4 +1,5 @@
 {
+  "collationUCAData": "implicithan",
   "localeFilter": {
       "filterType": "locale",
       "includeScripts": false,	
@@ -191,14 +192,12 @@
       ]
   },
   "featureFilters": {
-      "locales_tree": "exclude",
       "conversion_mappings": "exclude",
-      "coll_ucadata": "exclude",
-      "coll_tree": "exclude",
       "confusables": "exclude",
       "stringprep": "exclude",
-      "region_tree": "exclude",
-      "zone_tree": "exclude",
+      "zone_tree": {
+        "whitelist": ["root"]
+      },
       "zone_supplemental": "exclude",
       "translit": "exclude",
       "unames": "exclude",
@@ -207,34 +206,99 @@
       "rbnf_tree": "exclude",
       "cnvalias": "exclude",
       "lang_tree": "exclude",
+      "region_tree": "exclude",
       "normalization": "exclude",
-      "curr_supplemental": "include",
       "misc": {
-        "whitelist": [
-          "numberingSystems",
-          "currencyNumericCodes",
-          "supplementalData",
-          "keyTypeData"
-        ]
+          "whitelist": [
+              "numberingSystems",
+              "icuver",
+              "supplementalData",
+              "keyTypeData"
+          ]
       },
-      "curr_tree": {
-        "whitelist": ["root"]
-      },
+      "curr_tree": "exclude",
+      "curr_supplemental": "exclude",
       "brkitr_dictionaries": "exclude",
-      "brkitr_rules": "exclude",
-      "brkitr_tree": "exclude"
+      "brkitr_rules": {
+          "whitelist": ["char"]
+      }
   },
   "resourceFilters": [
-    {
-      "categories": ["misc"],
-      "files": {
-          "whitelist": ["supplementalData"]
+      {
+          "categories": ["locales_tree"],
+          "rules": [
+              "-/characterLabel",
+              "-/measurementSystemNames",
+              "-/listPattern",
+              "-/fields",
+              "-/delimiters",
+              "-/Ellipsis",
+              "-/NumberElements/latn/miscPatterns",
+              "-/NumberElements/latn/patternsLong",
+              "-/NumberElements/latn/patternsShort",
+              "-/NumberElements/*/patternsLong",
+              "-/NumberElements/*/patternsShort",
+              "-/NumberElements/minimalPairs",
+              "-/parse",
+              "-/AuxExemplarCharacters",
+              "-/ExemplarCharacters",
+              "-/ExemplarCharactersIndex",
+              "-/ExemplarCharactersNumbers",
+              "-/ExemplarCharactersPunctuation",
+              "-/MoreInformation"
+          ]
       },
-      "rules": [
-          "-/*",
-          "+/codeMappings",
-          "+/idValidity"
-      ]
-  }
+      {
+          "categories": ["locales_tree"],
+          "files": {
+              "blacklist": ["root"]
+          },
+          "rules": [
+              "-/calendar/*",
+              "+/calendar/default",
+              "+/calendar/gregorian",
+              "+/calendar/generic"
+          ]
+      },
+      {
+          "categories": ["locales_tree"],
+          "files": {
+              "whitelist": ["ja"]
+          },
+          "rules": [
+              "-/calendar/*",
+              "+/calendar/default",
+              "+/calendar/gregorian",
+              "+/calendar/generic",
+              "+/calendar/japanese"
+          ]
+      },
+      {
+          "categories": ["coll_tree"],
+          "rules": [
+              "-/*/*",
+              "+/collations/default",
+              "+/collations/standard",
+              "+/collations/private-kana",
+              "-/UCARules"
+          ]
+      },
+      {
+          "categories": ["misc"],
+          "files": {
+              "whitelist": ["supplementalData"]
+          },
+          "rules": [
+              "-/*",
+              "+/calendarData",
+              "+/calendarPreferenceData",
+              "+/cldrVersion",
+              "+/measurementData",
+              "+/codeMappings",
+              "+/idValidity",
+              "+/timeData",
+              "+/weekData"
+          ]
+      }
   ]
 }

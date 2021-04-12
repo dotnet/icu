@@ -1,5 +1,4 @@
 {
-  "collationUCAData": "implicithan",
   "localeFilter": {
       "filterType": "locale",
       "includeScripts": false,	
@@ -146,9 +145,7 @@
         "id_ID",
         "it_CH",
         "it_IT",
-        "ja_JP",
         "kn_IN",
-        "ko_KR",
         "lt_LT",
         "lv_LV",
         "ml_IN",
@@ -179,23 +176,19 @@
         "ta_MY",
         "ta_SG",
         "te_IN",
-        "th_TH",
         "tr_CY",
         "tr_TR",
         "uk_UA",
-        "vi_VN",
-        "zh_CN",
-        "zh_Hans_HK",
-        "zh_SG",
-        "zh_HK",
-        "zh_TW"
+        "vi_VN"
       ]
   },
   "featureFilters": {
-      "locales_tree": "exclude",
       "conversion_mappings": "exclude",
+      "coll_ucadata": "exclude",
+      "coll_tree": "exclude",
       "confusables": "exclude",
       "stringprep": "exclude",
+      "region_tree": "exclude",
       "zone_tree": "exclude",
       "zone_supplemental": "exclude",
       "translit": "exclude",
@@ -205,24 +198,70 @@
       "rbnf_tree": "exclude",
       "cnvalias": "exclude",
       "lang_tree": "exclude",
-      "region_tree": "exclude",
       "normalization": "exclude",
-      "misc": "exclude",
+      "misc": {
+        "whitelist": [
+          "numberingSystems",
+          "supplementalData",
+          "keyTypeData"
+        ]
+    },
       "curr_tree": "exclude",
       "curr_supplemental": "exclude",
       "brkitr_dictionaries": "exclude",
-      "brkitr_rules": "exclude"
+      "brkitr_rules": "exclude",
+      "brkitr_tree": "exclude"
   },
   "resourceFilters": [
-      {
-          "categories": ["coll_tree"],
-          "rules": [
-              "-/*/*",
-              "+/collations/default",
-              "+/collations/standard",
-              "+/collations/private-kana",
-              "-/UCARules"
-          ]
-      }
-  ]
+    {
+        "categories": ["locales_tree"],
+        "rules": [
+            "-/characterLabel",
+            "-/measurementSystemNames",
+            "-/listPattern",
+            "-/fields",
+            "-/delimiters",
+            "-/Ellipsis",
+            "-/NumberElements/latn/miscPatterns",
+            "-/NumberElements/latn/patternsLong",
+            "-/NumberElements/latn/patternsShort",
+            "-/NumberElements/*/patternsLong",
+            "-/NumberElements/*/patternsShort",
+            "-/NumberElements/minimalPairs",
+            "-/parse",
+            "-/AuxExemplarCharacters",
+            "-/ExemplarCharacters",
+            "-/ExemplarCharactersIndex",
+            "-/ExemplarCharactersNumbers",
+            "-/ExemplarCharactersPunctuation",
+            "-/MoreInformation"
+        ]
+    },
+    {
+        "categories": ["locales_tree"],
+        "files": {
+            "blacklist": ["root"]
+        },
+        "rules": [
+            "-/calendar/*",
+            "+/calendar/default",
+            "+/calendar/gregorian",
+            "+/calendar/generic"
+        ]
+    },
+    {
+      "categories": ["misc"],
+      "files": {
+          "whitelist": ["supplementalData"]
+      },
+      "rules": [
+        "-/*/*",
+        "+/calendarPreferenceData",
+        "+/timeData",
+        "+/weekData",
+        "+/cldrVersion",
+        "+/codeMappings"
+      ]
+  }
+]
 }
