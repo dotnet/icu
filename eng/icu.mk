@@ -96,37 +96,29 @@ $(eval $(call TargetBuildTemplate,icudt_no_CJK))
 $(eval $(call TargetBuildTemplate,icudt_EFIGS))
 $(eval $(call TargetBuildTemplate,icudt_normalization))
 $(eval $(call TargetBuildTemplate,icudt_base))
-$(eval $(call TargetBuildTemplate,icudt_efigsonly))
+$(eval $(call TargetBuildTemplate,icudt_efigs_locales))
 $(eval $(call TargetBuildTemplate,icudt_currency))
 $(eval $(call TargetBuildTemplate,icudt_coll))
-$(eval $(call TargetBuildTemplate,icudt_en))
-$(eval $(call TargetBuildTemplate,icudt_zh_base))
-$(eval $(call TargetBuildTemplate,icudt_en_base))
-$(eval $(call TargetBuildTemplate,icudt_cjk_base))
-$(eval $(call TargetBuildTemplate,icudt_efigs_base))
-$(eval $(call TargetBuildTemplate,icudt_no_cjk_base))
 $(eval $(call TargetBuildTemplate,icudt_zones))
 $(eval $(call TargetBuildTemplate,icudt_en_zones))
 $(eval $(call TargetBuildTemplate,icudt_cjk_zones))
 $(eval $(call TargetBuildTemplate,icudt_efigs_zones))
 $(eval $(call TargetBuildTemplate,icudt_zh_zones))
-$(eval $(call TargetBuildTemplate,icudt_zh))
-$(eval $(call TargetBuildTemplate,icudt_cjkonly))
-$(eval $(call TargetBuildTemplate,icudt_no_cjkonly))
+$(eval $(call TargetBuildTemplate,icudt_cjk_locales))
+$(eval $(call TargetBuildTemplate,icudt_no_cjk_locales))
 $(eval $(call TargetBuildTemplate,icudt_locales))
 $(eval $(call TargetBuildTemplate,icudt_efigs_coll))
+$(eval $(call TargetBuildTemplate,icudt_cjk_coll))
+$(eval $(call TargetBuildTemplate,icudt_no_cjk_coll))
 
-ICU_SHARDS := icudt_base icudt_normalization icudt_currency icudt_coll icudt_zh_base icudt_en_base icudt_cjk_base icudt_no_cjk_base icudt_efigs_base icudt_zones icudt_en_zones icudt_cjk_zones icudt_efigs_zones icudt_en icudt_efigsonly icudt_zh icudt_cjkonly icudt_no_cjkonly icudt_locales icudt_efigs_coll
+ICU_SHARDS := icudt_base icudt_normalization icudt_currency icudt_coll icudt_zones icudt_cjk_zones icudt_efigs_zones icudt_efigs_locales icudt_cjk_locales icudt_no_cjk_locales icudt_locales icudt_efigs_coll icudt_cjk_coll icudt_no_cjk_coll
 DATA_SHARDS := $(addprefix data-, $(ICU_SHARDS))
 
 # build source+data for the main "icudt" filter and only data for the other filters
 all: lib-icudt data-icudt data-icudt_no_CJK data-icudt_EFIGS data-icudt_CJK
 
-get_sizes = du -k /Users/tammyqiu/icu/eng/..//artifacts/bin/icu-browser-wasm/$(shard).dat; \
-						brotli /Users/tammyqiu/icu/eng/..//artifacts/bin/icu-browser-wasm/$(shard).dat; \
-						du -k /Users/tammyqiu/icu/eng/..//artifacts/bin/icu-browser-wasm/$(shard).dat.br; \
-						cp /Users/tammyqiu/icu/eng/..//artifacts/bin/icu-browser-wasm/$(shard).dat /Users/tammyqiu/runtime2/artifacts/bin/native/net6.0-Browser-Debug-wasm/;
+icu_dictionary.json:
+	cd $(TOP)/icu/icu4c/source/ && PYTHONPATH=python python3 -m icutools.databuilder --mode=makedict --filter_file=$(ICU_FILTER_PATH)/icudt.json \
+	&& pwd && mv icu_dictionary.json $(TARGET_BINDIR)
 
-shards: $(DATA_SHARDS)
-	rm /Users/tammyqiu/icu/eng/..//artifacts/bin/icu-browser-wasm/*.br
-	$(foreach shard, $(ICU_SHARDS), $(get_sizes))
+shards: $(DATA_SHARDS) icu_dictionary.json

@@ -11,6 +11,7 @@ import io as pyio
 import json
 import os
 import sys
+import re
 
 from . import *
 from .comment_stripper import CommentStripper
@@ -63,7 +64,7 @@ arg_group_required = flag_parser.add_argument_group("required arguments")
 arg_group_required.add_argument(
     "--mode",
     help = "What to do with the generated rules.",
-    choices = ["gnumake", "unix-exec", "windows-exec", "bazel-exec"],
+    choices = ["gnumake", "unix-exec", "windows-exec", "bazel-exec", "makedict"],
     required = True
 )
 
@@ -237,6 +238,48 @@ def add_copy_input_requests(requests, config, common_vars):
     result += requests
     return result
 
+def check_features(name):
+    for f in ["locales", "zones", "coll"]:
+        if f in name:
+            return f
+    return "essentials"
+
+def create_icu_dictionary(filter_dir):
+    # Generating a dictionary mapping locale to relevant shards
+    # Assumes that all filter files follow the naming convention:
+    #   icudt_<feature>_<locale division>.json
+    # Original filters for locale shards containing all features contain uppercase acronyms
+    #   i.e. icudt_CJK.dat vs icudt_cjk_locales.dat
+ 
+    locale_shards = ["efigs", "cjk", "no_cjk"]
+    icu_dict = {}
+    for f in os.listdir(filter_dir):
+        data_filename = os.path.splitext(f)[0] + ".dat"
+        if (f == "icudt.json"):
+            icu_dict["complete"] = [data_filename]
+        else:
+            feature = check_features(f)
+            with open (os.path.join(filter_dir, f), "r") as file:
+                data = json.load(file)
+                if "localeFilter" in data:
+                    locales = data["localeFilter"]["whitelist"]
+                    locales = set([l[:2] for l in locales])
+                    for loc in locales:
+                        if ((loc == "en") and ("cjk" in f.lower())):
+                            break
+                        if loc in icu_dict:
+                            if (bool(re.match(r'\w*[A-Z]\w*', f))):
+                                icu_dict[loc]["full"] = [data_filename]
+                            elif feature in icu_dict[loc]:
+                                icu_dict[loc][feature].append(data_filename)
+                            else:
+                                icu_dict[loc][feature] = [data_filename]
+                        else:
+                            icu_dict[loc] = dict()
+                            icu_dict[loc][feature] = [data_filename]
+    with open ("icu_dictionary.json", "w") as f:
+        json.dump(icu_dict, f, indent=2)
+
 
 class IO(object):
     """I/O operations required when computing the build actions"""
@@ -263,6 +306,12 @@ class IO(object):
 
 def main(argv):
     args = flag_parser.parse_args(argv)
+
+    if args.mode == "makedict":
+        filter_dir = os.path.abspath(os.path.dirname(args.filter_file))
+        create_icu_dictionary(filter_dir)
+        return 0
+
     config = Config(args)
 
     if args.mode == "gnumake":

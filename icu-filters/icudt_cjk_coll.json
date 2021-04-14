@@ -1,22 +1,22 @@
 {
+  "collationUCAData": "implicithan",
   "localeFilter": {
       "filterType": "locale",
       "includeScripts": false,	
       "includeChildren": false,
       "whitelist": [
+        "ja",
+        "ko",
         "zh"
       ]
   },
   "featureFilters": {
-      "locale_trees": "exclude",
+      "locales_tree": "exclude",
       "conversion_mappings": "exclude",
-      "coll_ucadata": "exclude",
-      "coll_tree": "exclude",
       "confusables": "exclude",
       "stringprep": "exclude",
-      "region_tree": "exclude",
+      "zone_tree": "exclude",
       "zone_supplemental": "exclude",
-      "zone_tree": "include",
       "translit": "exclude",
       "unames": "exclude",
       "ulayout": "exclude",
@@ -24,25 +24,24 @@
       "rbnf_tree": "exclude",
       "cnvalias": "exclude",
       "lang_tree": "exclude",
+      "region_tree": "exclude",
       "normalization": "exclude",
-      "misc": {
-        "whitelist": [
-          "metaZones",
-          "zoneinfo64"
-        ]
-      },
+      "misc": "exclude",
       "curr_tree": "exclude",
       "curr_supplemental": "exclude",
       "brkitr_dictionaries": "exclude",
-      "brkitr_rules": "exclude",
-      "brkitr_tree": "exclude"
+      "brkitr_rules": "exclude"
   },
   "resourceFilters": [
-    {
-      "categories": ["zone_tree"],
-      "rules": [
-        "+/zoneStrings/*"
-      ]
-    }
+      {
+          "categories": ["coll_tree"],
+          "rules": [
+              "-/*/*",
+              "+/collations/default",
+              "+/collations/standard",
+              "+/collations/private-kana",
+              "-/UCARules"
+          ]
+      }
   ]
 }

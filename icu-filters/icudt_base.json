@@ -235,7 +235,6 @@
                 "+/calendarPreferenceData",
                 "+/timeData",
                 "+/weekData",
-                "+/measurementData",
                 "+/cldrVersion"     
             ]
         }

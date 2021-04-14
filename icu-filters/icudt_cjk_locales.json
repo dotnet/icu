@@ -4,7 +4,10 @@
       "includeScripts": false,	
       "includeChildren": false,
       "whitelist": [
-          "zh"
+        "en",
+        "ja",
+        "ko",
+        "zh"
       ]
   },
   "featureFilters": {
@@ -28,7 +31,7 @@
         "whitelist": [
           "numberingSystems",
           "supplementalData",
-          "icuver"
+          "keyTypeData"
         ]
     },
       "curr_tree": "exclude",
@@ -75,17 +78,30 @@
         ]
     },
     {
+      "categories": ["locales_tree"],
+      "files": {
+          "whitelist": ["ja"]
+      },
+      "rules": [
+          "-/calendar/*",
+          "+/calendar/default",
+          "+/calendar/gregorian",
+          "+/calendar/generic",
+          "+/calendar/japanese"
+      ]
+  },
+    {
       "categories": ["misc"],
       "files": {
           "whitelist": ["supplementalData"]
       },
       "rules": [
-          "-/*",
-          "+/calendarData",
-          "+/calendarPreferenceData",
-          "+/timeData",
-          "+/weekData",
-          "+/codeMappings"
+        "-/*/*",
+        "+/calendarPreferenceData",
+        "+/timeData",
+        "+/weekData",
+        "+/cldrVersion",
+        "+/codeMappings"
       ]
   }
 ]

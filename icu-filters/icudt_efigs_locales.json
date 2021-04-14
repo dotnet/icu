@@ -1,5 +1,4 @@
 {
-  "collationUCAData": "implicithan",
   "localeFilter": {
       "filterType": "locale",
       "includeScripts": false,	
@@ -116,8 +115,11 @@
   },
   "featureFilters": {
       "conversion_mappings": "exclude",
+      "coll_ucadata": "exclude",
+      "coll_tree": "exclude",
       "confusables": "exclude",
       "stringprep": "exclude",
+      "region_tree": "exclude",
       "zone_tree": "exclude",
       "zone_supplemental": "exclude",
       "translit": "exclude",
@@ -127,86 +129,69 @@
       "rbnf_tree": "exclude",
       "cnvalias": "exclude",
       "lang_tree": "exclude",
-      "region_tree": "exclude",
       "normalization": "exclude",
       "misc": {
-          "whitelist": [
-              "numberingSystems",
-              "icuver",
-              "supplementalData",
-              "keyTypeData"
-          ]
+        "whitelist": [
+            "supplementalData"
+        ]
       },
       "curr_tree": "exclude",
       "curr_supplemental": "exclude",
       "brkitr_dictionaries": "exclude",
-      "brkitr_rules": {
-          "whitelist": ["char"]
-      }
+      "brkitr_rules": "exclude",
+      "brkitr_tree": "exclude"
   },
   "resourceFilters": [
-      {
-          "categories": ["locales_tree"],
-          "rules": [
-              "-/characterLabel",
-              "-/measurementSystemNames",
-              "-/listPattern",
-              "-/fields",
-              "-/delimiters",
-              "-/Ellipsis",
-              "-/NumberElements/latn/miscPatterns",
-              "-/NumberElements/latn/patternsLong",
-              "-/NumberElements/latn/patternsShort",
-              "-/NumberElements/*/patternsLong",
-              "-/NumberElements/*/patternsShort",
-              "-/NumberElements/minimalPairs",
-              "-/parse",
-              "-/AuxExemplarCharacters",
-              "-/ExemplarCharacters",
-              "-/ExemplarCharactersIndex",
-              "-/ExemplarCharactersNumbers",
-              "-/ExemplarCharactersPunctuation",
-              "-/MoreInformation"
-          ]
+    {
+        "categories": ["locales_tree"],
+        "rules": [
+            "-/characterLabel",
+            "-/measurementSystemNames",
+            "-/listPattern",
+            "-/fields",
+            "-/delimiters",
+            "-/Ellipsis",
+            "-/NumberElements/latn/miscPatterns",
+            "-/NumberElements/latn/patternsLong",
+            "-/NumberElements/latn/patternsShort",
+            "-/NumberElements/*/patternsLong",
+            "-/NumberElements/*/patternsShort",
+            "-/NumberElements/minimalPairs",
+            "-/parse",
+            "-/AuxExemplarCharacters",
+            "-/ExemplarCharacters",
+            "-/ExemplarCharactersIndex",
+            "-/ExemplarCharactersNumbers",
+            "-/ExemplarCharactersPunctuation",
+            "-/MoreInformation"
+        ]
+    },
+    {
+        "categories": ["locales_tree"],
+        "files": {
+            "blacklist": ["root"]
+        },
+        "rules": [
+            "-/calendar/*",
+            "+/calendar/default",
+            "+/calendar/gregorian",
+            "+/calendar/generic"
+        ]
+    },
+    {
+      "categories": ["misc"],
+      "files": {
+          "whitelist": ["supplementalData"]
       },
-      {
-          "categories": ["locales_tree"],
-          "files": {
-              "blacklist": ["root"]
-          },
-          "rules": [
-              "-/calendar/*",
-              "+/calendar/default",
-              "+/calendar/gregorian",
-              "+/calendar/generic"
-          ]
-      },
-      {
-          "categories": ["coll_tree"],
-          "rules": [
-              "-/*/*",
-              "+/collations/default",
-              "+/collations/standard",
-              "+/collations/private-kana",
-              "-/UCARules"
-          ]
-      },
-      {
-          "categories": ["misc"],
-          "files": {
-              "whitelist": ["supplementalData"]
-          },
-          "rules": [
-              "-/*",
-              "+/calendarData",
-              "+/calendarPreferenceData",
-              "+/cldrVersion",
-              "+/measurementData",
-              "+/codeMappings",
-              "+/idValidity",
-              "+/timeData",
-              "+/weekData"
-          ]
-      }
+      "rules": [
+          "-/*",
+          "+/cldrVersion",
+          "+/calendarData",
+          "+/calendarPreferenceData",
+          "+/timeData",
+          "+/measurementData",
+          "+/weekData"
+      ]
+    }
   ]
 }

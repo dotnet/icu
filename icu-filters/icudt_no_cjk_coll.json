@@ -1,10 +1,28 @@
 {
+  "collationUCAData": "implicithan",
   "localeFilter": {
       "filterType": "locale",
       "includeScripts": false,	
       "includeChildren": false,
       "whitelist": [
+        "ar_SA",
+        "am_ET",
+        "bg_BG",
+        "bn_BD",
+        "bn_IN",
+        "ca_AD",
+        "ca_ES",
+        "cs_CZ",
+        "da_DK",
+        "de_AT",
+        "de_BE",
+        "de_CH",
         "de_DE",
+        "de_IT",
+        "de_LI",
+        "de_LU",
+        "el_CY",
+        "el_GR",
         "en_AE",
         "en_AG",
         "en_AI",
@@ -108,18 +126,68 @@
         "en_ZM",
         "en_ZW",
         "en_US",
+        "es_419",
         "es_ES",
+        "es_MX",
+        "et_EE",
+        "fa_IR",
+        "fi_FI",
+        "fil_PH",
+        "fr_BE",
+        "fr_CA",
+        "fr_CH",
         "fr_FR",
-        "it_IT"
+        "gu_IN",
+        "he_IL",
+        "hi_IN",
+        "hr_BA",
+        "hr_HR",
+        "hu_HU",
+        "id_ID",
+        "it_CH",
+        "it_IT",
+        "kn_IN",
+        "lt_LT",
+        "lv_LV",
+        "ml_IN",
+        "mr_IN",
+        "ms_BN",
+        "ms_MY",
+        "ms_SG",
+        "nl_AW",
+        "nl_BE",
+        "nl_NL",
+        "pl_PL",
+        "pt_BR",
+        "pt_PT",
+        "ro_RO",
+        "ru_RU",
+        "sk_SK",
+        "sl_SI",
+        "sr_Cyrl_RS",
+        "sr_Latn_RS",
+        "sv_AX",
+        "sv_SE",
+        "sw_CD",
+        "sw_KE",
+        "sw_TZ",
+        "sw_UG",
+        "ta_IN",
+        "ta_LK",
+        "ta_MY",
+        "ta_SG",
+        "te_IN",
+        "tr_CY",
+        "tr_TR",
+        "uk_UA",
+        "vi_VN"
       ]
   },
   "featureFilters": {
+      "locales_tree": "exclude",
       "conversion_mappings": "exclude",
-      "coll_ucadata": "exclude",
-      "coll_tree": "exclude",
       "confusables": "exclude",
       "stringprep": "exclude",
-      "region_tree": "exclude",
       "zone_tree": "exclude",
       "zone_supplemental": "exclude",
       "translit": "exclude",
@@ -129,68 +197,23 @@
       "rbnf_tree": "exclude",
       "cnvalias": "exclude",
       "lang_tree": "exclude",
+      "region_tree": "exclude",
       "normalization": "exclude",
-      "misc": {
-        "whitelist": [
-            "supplementalData"
-        ]
-    },
+      "misc": "exclude",
       "curr_tree": "exclude",
       "curr_supplemental": "exclude",
       "brkitr_dictionaries": "exclude",
-      "brkitr_rules": "exclude",
-      "brkitr_tree": "exclude"
+      "brkitr_rules": "exclude"
   },
   "resourceFilters": [
-    {
-        "categories": ["locales_tree"],
-        "rules": [
-            "-/characterLabel",
-            "-/measurementSystemNames",
-            "-/listPattern",
-            "-/fields",
-            "-/delimiters",
-            "-/Ellipsis",
-            "-/NumberElements/latn/miscPatterns",
-            "-/NumberElements/latn/patternsLong",
-            "-/NumberElements/latn/patternsShort",
-            "-/NumberElements/*/patternsLong",
-            "-/NumberElements/*/patternsShort",
-            "-/NumberElements/minimalPairs",
-            "-/parse",
-            "-/AuxExemplarCharacters",
-            "-/ExemplarCharacters",
-            "-/ExemplarCharactersIndex",
-            "-/ExemplarCharactersNumbers",
-            "-/ExemplarCharactersPunctuation",
-            "-/MoreInformation"
-        ]
-    },
-    {
-        "categories": ["locales_tree"],
-        "files": {
-            "blacklist": ["root"]
-        },
-        "rules": [
-            "-/calendar/*",
-            "+/calendar/default",
-            "+/calendar/gregorian",
-            "+/calendar/generic"
-        ]
-    },
-    {
-      "categories": ["misc"],
-      "files": {
-          "whitelist": ["supplementalData"]
-      },
-      "rules": [
-          "-/*",
-          "+/cldrVersion",
-          "+/calendarData",
-          "+/calendarPreferenceData",
-          "+/timeData",
-          "+/weekData"
-      ]
-  }
-]
+      {
+          "categories": ["coll_tree"],
+          "rules": [
+              "-/*/*",
+              "+/collations/default",
+              "+/collations/standard",
+              "-/UCARules"
+          ]
+      }
+  ]
 }
