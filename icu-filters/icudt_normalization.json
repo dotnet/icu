@@ -207,7 +207,6 @@
         "rbnf_tree": "exclude",
         "cnvalias": "exclude",
         "lang_tree": "exclude",
-        "locales_tree": "exclude",
         "normalization": {
             "blacklist": [
                 "nfkc_cf",

@@ -134,7 +134,7 @@
         "whitelist": [
             "supplementalData"
         ]
-    },
+      },
       "curr_tree": "exclude",
       "curr_supplemental": "exclude",
       "brkitr_dictionaries": "exclude",
@@ -191,6 +191,6 @@
           "+/timeData",
           "+/weekData"
       ]
-  }
-]
+    }
+  ]
 }

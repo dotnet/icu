@@ -1,0 +1,47 @@
+{
+  "collationUCAData": "implicithan",
+  "localeFilter": {
+      "filterType": "locale",
+      "includeScripts": false,	
+      "includeChildren": false,
+      "whitelist": [
+        "ja",
+        "ko",
+        "zh"
+      ]
+  },
+  "featureFilters": {
+      "locales_tree": "exclude",
+      "conversion_mappings": "exclude",
+      "confusables": "exclude",
+      "stringprep": "exclude",
+      "zone_tree": "exclude",
+      "zone_supplemental": "exclude",
+      "translit": "exclude",
+      "unames": "exclude",
+      "ulayout": "exclude",
+      "unit_tree": "exclude",
+      "rbnf_tree": "exclude",
+      "cnvalias": "exclude",
+      "lang_tree": "exclude",
+      "region_tree": "exclude",
+      "normalization": "exclude",
+      "misc": "exclude",
+      "curr_tree": "exclude",
+      "curr_supplemental": "exclude",
+      "brkitr_dictionaries": "exclude",
+      "brkitr_rules": "exclude"
+  },
+  "resourceFilters": [
+      {
+          "categories": ["coll_tree"],
+          "rules": [
+              "-/*/*",
+              "+/collations/default",
+              "+/collations/standard",
+              "+/collations/private-kana",
+              "-/UCARules"
+          ]
+      }
+  ]
+}

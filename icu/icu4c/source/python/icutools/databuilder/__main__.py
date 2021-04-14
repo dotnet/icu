@@ -63,7 +63,7 @@ arg_group_required = flag_parser.add_argument_group("required arguments")
 arg_group_required.add_argument(
     "--mode",
     help = "What to do with the generated rules.",
-    choices = ["gnumake", "unix-exec", "windows-exec", "bazel-exec"],
+    choices = ["gnumake", "unix-exec", "windows-exec", "bazel-exec", "makedict"],
     required = True
 )
 
@@ -237,6 +237,24 @@ def add_copy_input_requests(requests, config, common_vars):
     result += requests
     return result
 
+def create_locale_dictionary(filter_dir):
+    locale_dict = {}
+    for f in os.listdir(filter_dir):
+        with open (os.path.join(filter_dir, f), "r") as file:
+            data = json.load(file)
+            if "localeFilter" in data:
+                locales = data["localeFilter"]["whitelist"]
+                locales = set([l[:2] for l in locales])
+                for loc in locales:
+                    if loc in locale_dict:
+                        locale_dict[loc].add(f)
+                    else:
+                        locale_dict[loc] = {f}
+    locale_dict = { k: list(locale_dict[k]) for k in locale_dict}
+    with open ("locale_dictionary.json", "w") as f:
+        json.dump(locale_dict, f, indent=2)
+        
+
 
 class IO(object):
     """I/O operations required when computing the build actions"""
@@ -263,6 +281,12 @@ class IO(object):
 
 def main(argv):
     args = flag_parser.parse_args(argv)
+
+    if args.mode == "makedict":
+        filter_dir = os.path.abspath(os.path.dirname(args.filter_file))
+        create_locale_dictionary(filter_dir)
+        return 0
+
     config = Config(args)
 
     if args.mode == "gnumake":
