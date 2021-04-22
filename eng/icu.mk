@@ -100,10 +100,8 @@ $(eval $(call TargetBuildTemplate,icudt_efigs_locales))
 $(eval $(call TargetBuildTemplate,icudt_currency))
 $(eval $(call TargetBuildTemplate,icudt_coll))
 $(eval $(call TargetBuildTemplate,icudt_zones))
-$(eval $(call TargetBuildTemplate,icudt_en_zones))
 $(eval $(call TargetBuildTemplate,icudt_cjk_zones))
 $(eval $(call TargetBuildTemplate,icudt_efigs_zones))
-$(eval $(call TargetBuildTemplate,icudt_zh_zones))
 $(eval $(call TargetBuildTemplate,icudt_cjk_locales))
 $(eval $(call TargetBuildTemplate,icudt_no_cjk_locales))
 $(eval $(call TargetBuildTemplate,icudt_locales))
@@ -119,6 +117,6 @@ all: lib-icudt data-icudt data-icudt_no_CJK data-icudt_EFIGS data-icudt_CJK
 
 icu_dictionary.json:
 	cd $(TOP)/icu/icu4c/source/ && PYTHONPATH=python python3 -m icutools.databuilder --mode=makedict --filter_file=$(ICU_FILTER_PATH)/icudt.json \
-	&& pwd && mv icu_dictionary.json $(TARGET_BINDIR)
+	&& mv icu_dictionary.json $(TARGET_BINDIR)
 
 shards: $(DATA_SHARDS) icu_dictionary.json
