@@ -101,6 +101,7 @@ $(eval $(call TargetBuildTemplate,icudt_currency))
 $(eval $(call TargetBuildTemplate,icudt_coll))
 $(eval $(call TargetBuildTemplate,icudt_zones))
 $(eval $(call TargetBuildTemplate,icudt_cjk_zones))
+$(eval $(call TargetBuildTemplate,icudt_no_cjk_zones))
 $(eval $(call TargetBuildTemplate,icudt_efigs_zones))
 $(eval $(call TargetBuildTemplate,icudt_cjk_locales))
 $(eval $(call TargetBuildTemplate,icudt_no_cjk_locales))
@@ -109,7 +110,7 @@ $(eval $(call TargetBuildTemplate,icudt_efigs_coll))
 $(eval $(call TargetBuildTemplate,icudt_cjk_coll))
 $(eval $(call TargetBuildTemplate,icudt_no_cjk_coll))
 
-ICU_SHARDS := icudt_base icudt_normalization icudt_currency icudt_coll icudt_zones icudt_cjk_zones icudt_efigs_zones icudt_efigs_locales icudt_cjk_locales icudt_no_cjk_locales icudt_locales icudt_efigs_coll icudt_cjk_coll icudt_no_cjk_coll
+ICU_SHARDS := icudt_base icudt_normalization icudt_currency icudt_coll icudt_zones icudt_cjk_zones icudt_no_cjk_zones icudt_efigs_zones icudt_efigs_locales icudt_cjk_locales icudt_no_cjk_locales icudt_locales icudt_efigs_coll icudt_cjk_coll icudt_no_cjk_coll
 DATA_SHARDS := $(addprefix data-, $(ICU_SHARDS))
 
 # build source+data for the main "icudt" filter and only data for the other filters

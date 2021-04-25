@@ -254,7 +254,7 @@ def create_icu_dictionary(filter_dir):
     locale_shards = ["efigs", "cjk", "no_cjk"]
     icu_dict = {}
     for f in os.listdir(filter_dir):
-        if (os.path.splitext(f)[1] == ".json"):
+        if (".json" in f):
             data_filename = os.path.splitext(f)[0] + ".dat"
             if (f == "icudt.json"):
                 icu_dict["complete"] = [data_filename]
@@ -268,16 +268,19 @@ def create_icu_dictionary(filter_dir):
                         for loc in locales:
                             if ((loc == "en") and ("cjk" in f.lower())):
                                 break
-                            if loc in icu_dict:
-                                if (bool(re.match(r'\w*[A-Z]\w*', f))):
-                                    icu_dict[loc]["full"] = [data_filename]
-                                elif feature in icu_dict[loc]:
-                                    icu_dict[loc][feature].append(data_filename)
-                                else:
-                                    icu_dict[loc][feature] = [data_filename]
-                            else:
+                            if loc not in icu_dict:
                                 icu_dict[loc] = dict()
+                            if (bool(re.match(r'\w*[A-Z]\w*', f))):
+                                icu_dict[loc]["full"] = [data_filename]
+                                break
+                            if feature not in icu_dict[loc]:
                                 icu_dict[loc][feature] = [data_filename]
+                            else:
+                                # Since order matters when loading icu data
+                                if f == "icudt_base.json":
+                                    icu_dict[loc][feature].insert(0, data_filename)
+                                else:
+                                    icu_dict[loc][feature].append(data_filename)
     with open ("icu_dictionary.json", "w") as f:
         json.dump(icu_dict, f, indent=2)
 

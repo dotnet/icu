@@ -233,7 +233,8 @@
       "rules": [
           "-/*",
           "+/codeMappings",
-          "+/idValidity"
+          "+/idValidity",
+          "+/cldrVersion"
       ]
   }
   ]
