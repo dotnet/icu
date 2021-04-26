@@ -1,8 +1,6 @@
 {
   "localeFilter": {
       "filterType": "locale",
-      "includeScripts": false,	
-      "includeChildren": false,
       "whitelist": [
         "en",
         "ja",
@@ -29,9 +27,7 @@
       "normalization": "exclude",
       "misc": {
         "whitelist": [
-          "numberingSystems",
-          "supplementalData",
-          "keyTypeData"
+          "supplementalData"
         ]
     },
       "curr_tree": "exclude",
@@ -96,12 +92,13 @@
           "whitelist": ["supplementalData"]
       },
       "rules": [
-        "-/*/*",
+        "-/*",
+        "+/calendarData",
         "+/calendarPreferenceData",
+        "+/measurementData",
         "+/timeData",
         "+/weekData",
-        "+/cldrVersion",
-        "+/codeMappings"
+        "+/cldrVersion"      
       ]
   }
 ]
