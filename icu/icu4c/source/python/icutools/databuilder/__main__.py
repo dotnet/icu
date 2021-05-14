@@ -238,11 +238,74 @@ def add_copy_input_requests(requests, config, common_vars):
     result += requests
     return result
 
-def check_features(name):
-    for f in ["locales", "zones", "coll"]:
-        if f in name:
-            return f
-    return "essentials"
+class Dictionary(object):
+    def __init__ (self, filter_dir, config_path, output_dir):
+        self.filter_dir = filter_dir
+        self.config_path = config_path
+        self.output_dir = output_dir
+        self.locale_shards = ["efigs", "cjk", "no_cjk", "full"]
+        self.filter_file_names = []
+        self.dictionary = {}
+
+        # Dictionary of features of the format 
+        # <feature name> : <bool indicating whether or not its also subdivided by shard>
+        self.features = {
+            "normalization": False,
+            "currency": False,
+            "locales": True,
+            "zones": True,
+            "coll": True
+        }
+        self.icu_dict = {}
+        
+    def check_features(self, name):
+        for f in self.features:
+            if f in name:
+                return f
+        return "essentials"
+
+    def get_locales_from_shards(self, shard, locales):
+        return [x for x in locales if x.split("_") in shard]
+
+    # Create localeFilter component of filter
+    def get_locale_filters(self, locale_filter, shard_name, shard_locales, shard_dependent):
+        filter = {"filterType": "locale"}
+        if shard_name in locale_filter:
+            filter.update(locale_filter[shard_name])
+        whitelist = locale_filter["whitelist"]
+        filter["whitelist"] = self.get_locales_from_shards(shard_locales, whitelist) if shard_dependent else whitelist
+        return filter
+    
+    def create_filters(self):
+        config = json.load(self.config_path)
+        filter_data = config["filter"]
+        shard_data = config["shards"]
+
+        # First update dictionary object with shard information
+        self.dictionary = shard_data
+        for shard in self.locale_shards:
+            for feat in self.features:
+                shard_dependent = self.features[feat]
+                filter = {"strategy": "additive"} 
+                if feat in filter_data:
+                    filter.update(filter_data[feat])
+                filter["localeFilter"] = self.get_locale_filters(filter_data["localeFilter"], shard, shard_data[shard], shard_dependent)
+                filter["featureFilter"] = filter_data["featureFilter"][feat]
+                filter["resourceFilter"] = filter_data["resourceFilter"][feat]
+                filter_file_name = "icudt_{shard}".format(shard=shard)
+                filter_file_name = filter_file_name + ".dat" if shard_dependent else filter_file_name + "_{feat}.dat".format(feat=feat)
+                self.filter_file_names.append(filter_file_name)
+                with open (os.path.join(self.filter_dir, filter_file_name), "w") as f:
+                    json.dump(filter, f, indent=2)
+    
+    def generate_props(self):
+        with open (os.path.join(self.output_dir, "ICU.DataFiles.props"), "w") as f:
+            f.write("<Project>\n")
+            f.write("\t<ItemGroup>\n")
+            for filename in self.filter_file_names:
+                f.write("\t\t<PlatformManifestFileEntry Include=\"{filename}\" IsNative=\"true\" />\n".format(filename=filename))
+            f.write("\t</ItemGroup>\n")
+            f.write("</Project>")
 
 def create_icu_dictionary(filter_dir):
     # Generating a dictionary mapping locale to relevant shards
@@ -250,8 +313,6 @@ def create_icu_dictionary(filter_dir):
     #   icudt_<feature>_<locale division>.json
     # Original filters for locale shards containing all features contain uppercase acronyms
     #   i.e. icudt_CJK.dat vs icudt_cjk_locales.dat
- 
-    locale_shards = ["efigs", "cjk", "no_cjk"]
     icu_dict = {}
     for f in os.listdir(filter_dir):
         if (".json" in f):

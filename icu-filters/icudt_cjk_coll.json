@@ -5,6 +5,7 @@
       "includeScripts": false,	
       "includeChildren": false,
       "whitelist": [
+        "en",
         "ja",
         "ko",
         "zh"

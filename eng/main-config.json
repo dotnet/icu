@@ -1,9 +1,22 @@
 {
-  "localeFilter": {
-      "filterType": "locale",
-      "includeScripts": false,	
-      "includeChildren": false,
-      "whitelist": [
+  "shards": {
+    "efigs": ["en", "fr", "it", "de", "es"],
+    "cjk": ["zh", "ja", "ko"],
+    "no_cjk": ["*"],
+    "full": "locales",
+    "invariant": "invariant"
+  },
+  "filter": {
+    "coll": {
+      "collationUCAData": "implicithan"
+    },
+    "localeFilter": {
+        "filterType": "locale",
+        "cjk": {
+          "includeScripts": false,	
+          "includeChildren": false
+        },
+        "whitelist": [
           "ar_SA",
           "am_ET",
           "bg_BG",
@@ -188,54 +201,141 @@
           "zh_SG",
           "zh_HK",
           "zh_TW"
-      ]
-  },
-  "featureFilters": {
-      "locales_tree": "exclude",
-      "conversion_mappings": "exclude",
-      "coll_ucadata": "exclude",
-      "coll_tree": "exclude",
-      "confusables": "exclude",
-      "stringprep": "exclude",
-      "region_tree": "exclude",
-      "zone_tree": "exclude",
-      "zone_supplemental": "exclude",
-      "translit": "exclude",
-      "unames": "exclude",
-      "ulayout": "exclude",
-      "unit_tree": "exclude",
-      "rbnf_tree": "exclude",
-      "cnvalias": "exclude",
-      "lang_tree": "exclude",
-      "normalization": "exclude",
-      "curr_supplemental": "include",
-      "misc": {
-        "whitelist": [
-          "numberingSystems",
-          "currencyNumericCodes",
-          "supplementalData",
-          "keyTypeData"
         ]
+      
+    },
+    "featureFilters": {
+      "normalization": {
+        "normalization": {
+          "blacklist": [
+            "nkfc_cf",
+            "nkfc"
+          ]
+        }
       },
-      "curr_tree": {
-        "whitelist": ["root"]
+      "currency": {
+        "curr_supplemental": "include",
+        "misc": {
+          "whitelist": [
+            "numberingSystems",
+            "currencyNumericCodes",
+            "supplementalData",
+            "keyTypeData"
+          ]
+        },
+        "curr_tree": {
+          "whitelist": ["root"]
+        }
       },
-      "brkitr_dictionaries": "exclude",
-      "brkitr_rules": "exclude",
-      "brkitr_tree": "exclude"
-  },
-  "resourceFilters": [
-    {
-      "categories": ["misc"],
-      "files": {
+      "locales": {
+        "locales_tree": "include",
+        "misc": {
+          "whitelist": [
+            "supplementalData"
+          ]
+        }
+      },
+      "zones": {
+        "zone_tree": "include",
+        "misc": {
+          "whitelist": [
+            "metaZones",
+            "zoneinfo64"
+          ]
+        }
+      },
+      "coll": {
+        "coll_ucadata": "include",
+        "coll_tree": "include"
+      }
+    },
+    "resourceFilters": {
+      "currency": [
+        {
+          "categories": ["misc"],
+          "files": {
           "whitelist": ["supplementalData"]
-      },
-      "rules": [
+          },
+          "rules": [
           "-/*",
           "+/codeMappings",
           "+/idValidity",
           "+/cldrVersion"
+          ]
+        }
+      ],
+      "locales": [
+        {
+          "categories": ["locales_tree"],
+          "rules": [
+            "-/characterLabel",
+            "-/measurementSystemNames",
+            "-/listPattern",
+            "-/fields",
+            "-/delimiters",
+            "-/Ellipsis",
+            "-/NumberElements/latn/miscPatterns",
+            "-/NumberElements/latn/patternsLong",
+            "-/NumberElements/latn/patternsShort",
+            "-/NumberElements/*/patternsLong",
+            "-/NumberElements/*/patternsShort",
+            "-/NumberElements/minimalPairs",
+            "-/parse",
+            "-/AuxExemplarCharacters",
+            "-/ExemplarCharacters",
+            "-/ExemplarCharactersIndex",
+            "-/ExemplarCharactersNumbers",
+            "-/ExemplarCharactersPunctuation",
+            "-/MoreInformation"
+          ]
+        },
+        {
+          "categories": ["locales_tree"],
+          "files": {
+            "blacklist": ["root"]
+          },
+          "rules": [
+            "-/calendar/*",
+            "+/calendar/default",
+            "+/calendar/gregorian",
+            "+/calendar/generic"
+          ]
+        },
+        {
+          "categories": ["misc"],
+          "files": {
+            "whitelist": ["supplementalData"]
+          },
+          "rules": [
+            "-/*",
+            "+/cldrVersion",
+            "+/calendarData",
+            "+/calendarPreferenceData",
+            "+/timeData",
+            "+/measurementData",
+            "+/weekData"
+          ]
+        }
+      ],
+      "zones": [
+        {
+          "categories": ["zone_tree"],
+          "rules": [
+            "+/zoneStrings/*"
+          ]
+        }
+      ],
+      "coll": [
+        {
+          "categories": ["coll_tree"],
+          "rules": [
+              "-/*/*",
+              "+/collations/default",
+              "+/collations/standard",
+              "-/UCARules"
+          ]
+        }
       ]
     }
-  ]
+  }
 }
