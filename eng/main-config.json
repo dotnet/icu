@@ -1,10 +1,22 @@
 {
   "shards": {
-    "efigs": ["en", "fr", "it", "de", "es"],
-    "cjk": ["zh", "ja", "ko"],
-    "no_cjk": ["*"],
-    "full": "locales",
-    "invariant": "invariant"
+    "efigs": "(?:en|fr|it|de|es)",
+    "cjk": "(?:zh|ja|ko)",
+    "no_cjk": "^(?!.*(zh|ja|ko))",
+    "full": "full"
+  },
+  "packs": {
+    "base": {
+      "core": [ "base", "normalization" ], 
+      "features": ["currency"]
+    },
+    "shards": {
+      "extends": "base",
+      "full": ["full"],
+      "core": ["locales", "coll"],
+      "features": ["zones"]
+    },
+    "full": "full"
   },
   "filter": {
     "coll": {
@@ -12,10 +24,8 @@
     },
     "localeFilter": {
         "filterType": "locale",
-        "cjk": {
-          "includeScripts": false,	
-          "includeChildren": false
-        },
+        "includeScripts": false,	
+        "includeChildren": false,
         "whitelist": [
           "ar_SA",
           "am_ET",
@@ -205,6 +215,17 @@
       
     },
     "featureFilters": {
+      "base": {
+        "misc": {
+          "whitelist": [
+            "icuver",
+            "supplementalData"
+          ]
+        },
+        "brkitr_rules": {
+          "whitelist": ["char"]
+        }
+      },
       "normalization": {
         "normalization": {
           "blacklist": [
@@ -250,6 +271,17 @@
       }
     },
     "resourceFilters": {
+      "base": [
+        {
+          "categories": ["misc"],
+          "files": {
+            "whitelist": ["supplementalData"]
+          },
+          "rules": [
+            "+/cldrVersion"     
+          ]
+        }
+      ],
       "currency": [
         {
           "categories": ["misc"],
@@ -257,7 +289,6 @@
           "whitelist": ["supplementalData"]
           },
           "rules": [
-          "-/*",
           "+/codeMappings",
           "+/idValidity",
           "+/cldrVersion"
@@ -268,25 +299,15 @@
         {
           "categories": ["locales_tree"],
           "rules": [
-            "-/characterLabel",
-            "-/measurementSystemNames",
-            "-/listPattern",
-            "-/fields",
-            "-/delimiters",
-            "-/Ellipsis",
+            "+/NumberElements",
             "-/NumberElements/latn/miscPatterns",
             "-/NumberElements/latn/patternsLong",
             "-/NumberElements/latn/patternsShort",
             "-/NumberElements/*/patternsLong",
             "-/NumberElements/*/patternsShort",
             "-/NumberElements/minimalPairs",
-            "-/parse",
-            "-/AuxExemplarCharacters",
-            "-/ExemplarCharacters",
-            "-/ExemplarCharactersIndex",
-            "-/ExemplarCharactersNumbers",
-            "-/ExemplarCharactersPunctuation",
-            "-/MoreInformation"
+            "+/Version",
+            "+/layout"
           ]
         },
         {
@@ -295,10 +316,22 @@
             "blacklist": ["root"]
           },
           "rules": [
-            "-/calendar/*",
             "+/calendar/default",
             "+/calendar/gregorian",
             "+/calendar/generic"
+          ]
+        },
+        {
+          "shards": ["cjk", "full"],
+          "categories": ["locales_tree"],
+          "files": {
+              "whitelist": ["ja"]
+          },
+          "rules": [
+              "+/calendar/default",
+              "+/calendar/gregorian",
+              "+/calendar/generic",
+              "+/calendar/japanese"
           ]
         },
         {
@@ -307,7 +340,6 @@
             "whitelist": ["supplementalData"]
           },
           "rules": [
-            "-/*",
             "+/cldrVersion",
             "+/calendarData",
             "+/calendarPreferenceData",
@@ -329,7 +361,6 @@
         {
           "categories": ["coll_tree"],
           "rules": [
-              "-/*/*",
               "+/collations/default",
               "+/collations/standard",
               "-/UCARules"

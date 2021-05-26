@@ -4,6 +4,7 @@
 # Python 2/3 Compatibility (ICU-20299)
 # TODO(ICU-20301): Remove this.
 from __future__ import print_function
+from functools import reduce
 
 import argparse
 import glob as pyglob
@@ -12,6 +13,7 @@ import json
 import os
 import sys
 import re
+import collections
 
 from . import *
 from .comment_stripper import CommentStripper
@@ -80,6 +82,22 @@ flag_parser.add_argument(
     default = None
 )
 flag_parser.add_argument(
+    "--filter_dir",
+    metavar = "PATH",
+    help = "Path to an ICU filter directory.",
+    default = None
+)
+flag_parser.add_argument(
+    "--shard_cfg",
+    help = "Path to shard configuration file.",
+    default = None
+)
+flag_parser.add_argument(
+    "--exclude_feats",
+    help = "Excluded features from full ICU data file.",
+    default = None
+)
+flag_parser.add_argument(
     "--include_uni_core_data",
     help = "Include the full Unicode core data in the dat file.",
     default = False,
@@ -119,7 +137,6 @@ arg_group_exec.add_argument(
     help = "The build configuration of the tools. Used in 'windows-exec' mode only.",
     default = "x86/Debug"
 )
-
 
 class Config(object):
 
@@ -239,111 +256,171 @@ def add_copy_input_requests(requests, config, common_vars):
     return result
 
 class Dictionary(object):
-    def __init__ (self, filter_dir, config_path, output_dir):
+    def __init__ (self, filter_dir, config_path, output_dir, exclude_feats):
         self.filter_dir = filter_dir
-        self.config_path = config_path
         self.output_dir = output_dir
-        self.locale_shards = ["efigs", "cjk", "no_cjk", "full"]
         self.filter_file_names = []
-        self.dictionary = {}
+        self.dictionary = {"packs": {}}
+        self.locale_whitelist = {}
+        self.exclude_feats = exclude_feats.split(",")
+        with open(config_path, "r") as file:
+            self.config = json.load(file)
 
         # Dictionary of features of the format 
         # <feature name> : <bool indicating whether or not its also subdivided by shard>
         self.features = {
+            "base": False,
             "normalization": False,
             "currency": False,
             "locales": True,
             "zones": True,
-            "coll": True
+            "coll": True,
+            "full": True
         }
         self.icu_dict = {}
-        
-    def check_features(self, name):
-        for f in self.features:
-            if f in name:
-                return f
-        return "essentials"
 
     def get_locales_from_shards(self, shard, locales):
-        return [x for x in locales if x.split("_") in shard]
+        return [x for x in locales if re.match(shard, x.split("_")[0])]
 
     # Create localeFilter component of filter
-    def get_locale_filters(self, locale_filter, shard_name, shard_locales, shard_dependent):
-        filter = {"filterType": "locale"}
-        if shard_name in locale_filter:
-            filter.update(locale_filter[shard_name])
-        whitelist = locale_filter["whitelist"]
-        filter["whitelist"] = self.get_locales_from_shards(shard_locales, whitelist) if shard_dependent else whitelist
+    def get_locale_filters(self, locale_filter, shard_name=""):
+        filter = {}
+        for param in locale_filter:
+            if param == "whitelist":
+                filter["whitelist"] = self.locale_whitelist[shard_name] if shard_name != "" else self.locale_whitelist["full"]
+            else:
+                filter[param] = locale_filter[param]
         return filter
     
+    def get_locale_whitelist(self, shard_data, locale_filters):
+        for shard in shard_data:
+            if "?" in shard_data[shard]:
+                self.locale_whitelist[shard] = self.get_locales_from_shards(shard_data[shard], locale_filters["whitelist"])
+        self.locale_whitelist["full"] = locale_filters["whitelist"]
+    
+    def get_full_feature_filters(self, filter_data, filter):
+        filter = {}
+        for key, val in filter_data.items():
+            if key not in self.exclude_feats:
+                for param in val:
+                    if param not in filter:
+                        filter[param] = val[param]
+                    else:
+                        for lists in val[param]:
+                            if lists in filter[param]:
+                                filter[param][lists] += val[param][lists]
+                                filter[param][lists] = list(set(filter[param][lists]))
+                            else:
+                                filter[param][lists] = val[lists]
+        return filter
+    
+    def get_resource_filters(self, filter_data, shard="", feature=""):
+        filter = []
+        if feature == "full":
+            supplemental = []
+            for category in filter_data:
+                if category not in self.exclude_feats:
+                    for rules in filter_data[category]:
+                        # This is the only category with overlapping rules
+
+                        if rules["categories"] == ["misc"] and rules["files"]["whitelist"] == ["supplementalData"]:
+                            supplemental += rules["rules"]
+                        else:
+                            filter.append(rules)
+            filter.append( { 
+                            "categories": "misc", 
+                            "files": { 
+                                "whitelist": ["supplementalData"]
+                            }, 
+                            "rules": list(set(supplemental)) 
+                        })
+        else:
+            if feature in filter_data:
+                if shard == "full":
+                    filter = filter_data[feature]
+                else:
+                    filter = [f for f in filter_data[feature] if ("shards" not in f) or (shard in f["shards"])]
+        return filter
+
     def create_filters(self):
-        config = json.load(self.config_path)
-        filter_data = config["filter"]
-        shard_data = config["shards"]
+        filter_data = self.config["filter"]
+        shard_data = self.config["shards"]
+        self.get_locale_whitelist(shard_data, filter_data["localeFilter"])
 
         # First update dictionary object with shard information
-        self.dictionary = shard_data
-        for shard in self.locale_shards:
-            for feat in self.features:
-                shard_dependent = self.features[feat]
-                filter = {"strategy": "additive"} 
+        self.dictionary["shards"] = shard_data
+        for feat in self.features:
+            shard_dependent = self.features[feat]
+            filter = {"strategy": "additive"}
+            filter["localeFilter"] = self.get_locale_filters(filter_data["localeFilter"])
+            if feat == "full":
+                # Include any additional filter parameters that are at the root level
+                filter = reduce(filter.update, [filter_data[k] for k in filter_data if k not in ["featureFilters", "resourceFilters", "localeFilter"] + self.exclude_feats])
+                filter["featureFilters"] = self.get_full_feature_filters(filter_data["featureFilters"], {})
+                filter["resourceFilters"] = self.get_resource_filters(filter_data["resourceFilters"], feature="full")
+            else:
                 if feat in filter_data:
                     filter.update(filter_data[feat])
-                filter["localeFilter"] = self.get_locale_filters(filter_data["localeFilter"], shard, shard_data[shard], shard_dependent)
-                filter["featureFilter"] = filter_data["featureFilter"][feat]
-                filter["resourceFilter"] = filter_data["resourceFilter"][feat]
-                filter_file_name = "icudt_{shard}".format(shard=shard)
-                filter_file_name = filter_file_name + ".dat" if shard_dependent else filter_file_name + "_{feat}.dat".format(feat=feat)
+                if feat in filter_data["featureFilters"]:
+                    filter["featureFilters"] = filter_data["featureFilters"][feat]
+            if shard_dependent:
+                for shard in shard_data:
+                    filter["localeFilter"] = self.get_locale_filters(filter_data["localeFilter"], shard_name=shard)
+                    filter["resourceFilters"] = self.get_resource_filters(filter_data["resourceFilters"], shard=shard, feature=feat)
+                    filter_file_name = "icudt_{shard}_{feat}.json".format(shard=shard, feat=feat)
+                    self.filter_file_names.append(filter_file_name)
+                    with open (os.path.join(self.filter_dir, filter_file_name), "w") as f:
+                        json.dump(filter, f, indent=2)
+            else:
+                # filter["localeFilter"] = self.get_locale_filters(filter_data["localeFilter"])
+                filter["resourceFilters"] = self.get_resource_filters(filter_data["resourceFilters"], feature=feat)
+                filter_file_name = "icudt_{feat}.json".format(feat=feat)
                 self.filter_file_names.append(filter_file_name)
                 with open (os.path.join(self.filter_dir, filter_file_name), "w") as f:
-                    json.dump(filter, f, indent=2)
+                        json.dump(filter, f, indent=2)        
     
     def generate_props(self):
         with open (os.path.join(self.output_dir, "ICU.DataFiles.props"), "w") as f:
             f.write("<Project>\n")
             f.write("\t<ItemGroup>\n")
             for filename in self.filter_file_names:
+                filename = filename.replace("json", "dat")
                 f.write("\t\t<PlatformManifestFileEntry Include=\"{filename}\" IsNative=\"true\" />\n".format(filename=filename))
             f.write("\t</ItemGroup>\n")
             f.write("</Project>")
 
-def create_icu_dictionary(filter_dir):
-    # Generating a dictionary mapping locale to relevant shards
-    # Assumes that all filter files follow the naming convention:
-    #   icudt_<feature>_<locale division>.json
-    # Original filters for locale shards containing all features contain uppercase acronyms
-    #   i.e. icudt_CJK.dat vs icudt_cjk_locales.dat
-    icu_dict = {}
-    for f in os.listdir(filter_dir):
-        if (".json" in f):
-            data_filename = os.path.splitext(f)[0] + ".dat"
-            if (f == "icudt.json"):
-                icu_dict["complete"] = [data_filename]
-            else:
-                feature = check_features(f)
-                with open (os.path.join(filter_dir, f), "r") as file:
-                    data = json.load(file)
-                    if "localeFilter" in data:
-                        locales = data["localeFilter"]["whitelist"]
-                        locales = set([l[:2] for l in locales])
-                        for loc in locales:
-                            if ((loc == "en") and ("cjk" in f.lower())):
-                                break
-                            if loc not in icu_dict:
-                                icu_dict[loc] = dict()
-                            if (bool(re.match(r'\w*[A-Z]\w*', f))):
-                                icu_dict[loc]["full"] = [data_filename]
-                                break
-                            if feature not in icu_dict[loc]:
-                                icu_dict[loc][feature] = [data_filename]
-                            else:
-                                # Since order matters when loading icu data
-                                if f == "icudt_base.json":
-                                    icu_dict[loc][feature].insert(0, data_filename)
-                                else:
-                                    icu_dict[loc][feature].append(data_filename)
-    with open ("icu_dictionary.json", "w") as f:
-        json.dump(icu_dict, f, indent=2)
+    def get_file_names(self, pack_features, shard):
+        return ["icudt_{feat}.dat".format(feat=feat) if not self.features[feat] 
+                                    else "icudt_{shard}_{feat}.dat".format(shard=shard, feat=feat) 
+                                    for feat in pack_features]
+
+    def create_packs(self, pack, shard=""):
+        file_pack = {}
+        for item in pack:
+            if item == "base" or item == "extends":
+                file_pack[item] = pack[item]
+            elif item == "core" or item == "full":
+                file_pack[item] = self.get_file_names(pack[item], shard)
+            elif item == "features":
+                for feat in pack[item]:
+                    file_pack[feat] = self.get_file_names([feat], shard)
+        return file_pack
+
+    def create_dictionary(self):
+        packs = self.config["packs"]
+        for pack in packs:
+            if pack == "base":
+                self.dictionary["packs"][pack] = self.create_packs(packs[pack])
+            if pack == "shards":
+                for shard in self.config["shards"]:
+                    if shard == "full":
+                        self.dictionary["packs"]["full"] = "icudt_full_full.dat"
+                    else:
+                        self.dictionary["packs"][shard] = self.create_packs(packs[pack], shard=shard)
+        self.filter_file_names.append("icu_dictionary.js")
+        with open (os.path.join(self.output_dir, "icu_dictionary.js"), "w") as f:
+            text = "dictionary = " + json.dumps(self.dictionary, indent=2)
+            f.write(text)
 
 
 class IO(object):
@@ -373,8 +450,10 @@ def main(argv):
     args = flag_parser.parse_args(argv)
 
     if args.mode == "makedict":
-        filter_dir = os.path.abspath(os.path.dirname(args.filter_file))
-        create_icu_dictionary(filter_dir)
+        dictionary = Dictionary(args.filter_dir, args.shard_cfg, args.out_dir, args.exclude_feats)
+        dictionary.create_filters()
+        dictionary.generate_props()
+        dictionary.create_dictionary()
         return 0
 
     config = Config(args)
