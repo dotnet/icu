@@ -218,13 +218,16 @@
       "base": {
         "misc": {
           "whitelist": [
+            "numberingSystems",
             "icuver",
+            "keyTypeData",
             "supplementalData"
           ]
         },
         "brkitr_rules": {
           "whitelist": ["char"]
-        }
+        },
+        "brkitr_tree": "include"
       },
       "normalization": {
         "normalization": {
@@ -273,12 +276,43 @@
     "resourceFilters": {
       "base": [
         {
-          "categories": ["misc"],
+          "categories": [
+            "misc"
+          ],
           "files": {
-            "whitelist": ["supplementalData"]
+            "whitelist": [
+              "supplementalData"
+            ]
           },
           "rules": [
-            "+/cldrVersion"     
+            "+/calendarData",
+            "+/calendarPreferenceData",
+            "+/timeData",
+            "+/weekData",
+            "+/cldrVersion"
+          ]
+        },
+        {
+          "categories": [
+            "brkitr_tree"
+          ],
+          "rules": [
+            "+/"
+          ]
+        },
+        {
+          "categories": [
+            "misc"
+          ],
+          "files": {
+            "whitelist": [
+              "numberingSystems",
+              "icuver",
+              "keyTypeData"
+            ]
+          },
+          "rules": [
+            "+/"
           ]
         }
       ],
@@ -292,6 +326,21 @@
           "+/codeMappings",
           "+/idValidity",
           "+/cldrVersion"
+          ]
+        },
+        {
+          "categories": [
+            "misc"
+          ],
+          "files": {
+            "whitelist": [
+              "numberingSystems",
+              "currencyNumericCodes",
+              "keyTypeData"
+            ]
+          },
+          "rules": [
+            "+/"
           ]
         }
       ],
@@ -322,6 +371,19 @@
           ]
         },
         {
+          "categories": [
+            "locales_tree"
+          ],
+          "files": {
+            "whitelist": [
+              "root"
+            ]
+          },
+          "rules": [
+            "+/calendar"
+          ]
+        },
+        {
           "shards": ["cjk", "full"],
           "categories": ["locales_tree"],
           "files": {
@@ -341,6 +403,7 @@
           },
           "rules": [
             "+/cldrVersion",
+            "+/codeMappings",
             "+/calendarData",
             "+/calendarPreferenceData",
             "+/timeData",

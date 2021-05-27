@@ -318,22 +318,36 @@ class Dictionary(object):
         filter = []
         if feature == "full":
             supplemental = []
+
+            # for other misc files that needed to be added with "+/"
+            misc_whitelist = []
             for category in filter_data:
                 if category not in self.exclude_feats:
                     for rules in filter_data[category]:
                         # This is the only category with overlapping rules
-
-                        if rules["categories"] == ["misc"] and rules["files"]["whitelist"] == ["supplementalData"]:
-                            supplemental += rules["rules"]
+                        if rules["categories"] == ["misc"]:
+                            if rules["files"]["whitelist"] == ["supplementalData"]:
+                                supplemental += rules["rules"]
+                            if rules["rules"] == ["+/"]:
+                                misc_whitelist += rules["files"]["whitelist"]
                         else:
                             filter.append(rules)
-            filter.append( { 
-                            "categories": "misc", 
-                            "files": { 
-                                "whitelist": ["supplementalData"]
-                            }, 
-                            "rules": list(set(supplemental)) 
-                        })
+            if len(supplemental) > 0:
+                filter.append( { 
+                                "categories": "misc", 
+                                "files": { 
+                                    "whitelist": ["supplementalData"]
+                                }, 
+                                "rules": list(set(supplemental)) 
+                            })
+            if len(misc_whitelist) > 0 :
+                filter.append( { 
+                                "categories": "misc", 
+                                "files": { 
+                                    "whitelist": list(set(misc_whitelist))
+                                }, 
+                                "rules": ["+/"]
+                            })
         else:
             if feature in filter_data:
                 if shard == "full":
@@ -351,7 +365,7 @@ class Dictionary(object):
         self.dictionary["shards"] = shard_data
         for feat in self.features:
             shard_dependent = self.features[feat]
-            filter = {"strategy": "additive"}
+            filter = {}
             filter["localeFilter"] = self.get_locale_filters(filter_data["localeFilter"])
             if feat == "full":
                 # Include any additional filter parameters that are at the root level
@@ -363,6 +377,7 @@ class Dictionary(object):
                     filter.update(filter_data[feat])
                 if feat in filter_data["featureFilters"]:
                     filter["featureFilters"] = filter_data["featureFilters"][feat]
+            filter["strategy"] = "additive"
             if shard_dependent:
                 for shard in shard_data:
                     filter["localeFilter"] = self.get_locale_filters(filter_data["localeFilter"], shard_name=shard)
