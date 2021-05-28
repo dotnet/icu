@@ -280,11 +280,17 @@ class Dictionary(object):
         self.icu_dict = {}
 
     def get_locales_from_shards(self, shard, locales):
-        return [x for x in locales if re.match(shard, x.split("_")[0])]
+        if shard != "cjk":
+            return [x for x in locales if re.match(shard, x.split("_")[0])]
+        else:
+            return list(set([x.split("_")[0] for x in locales]))
 
     # Create localeFilter component of filter
     def get_locale_filters(self, locale_filter, shard_name=""):
         filter = {}
+        filter["filterType"] = "locale" if shard_name != "cjk" else "language"
+        filter["includeScripts"] = (shard_name == "cjk")
+        filter["includeChildren"] = (shard_name == "cjk")
         for param in locale_filter:
             if param == "whitelist":
                 filter["whitelist"] = self.locale_whitelist[shard_name] if shard_name != "" else self.locale_whitelist["full"]

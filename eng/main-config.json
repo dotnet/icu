@@ -23,9 +23,6 @@
       "collationUCAData": "implicithan"
     },
     "localeFilter": {
-        "filterType": "locale",
-        "includeScripts": false,	
-        "includeChildren": false,
         "whitelist": [
           "ar_SA",
           "am_ET",
@@ -342,7 +339,18 @@
           "rules": [
             "+/"
           ]
-        }
+        },
+        {
+          "shards": ["cjk"],
+          "categories": ["curr_tree"],
+          "rules": [
+              "+/Currencies/USD",
+              "+/Currencies/CNY",
+              "+/Currencies/JPY",
+              "+/Currencies/KRW",
+              "+/Currencies/XXX"
+          ]
+      }
       ],
       "locales": [
         {
@@ -397,6 +405,34 @@
           ]
         },
         {
+            "shards": ["cjk"],
+            "categories": ["locales_tree"],
+            "files": {
+                "whitelist": ["ko"]
+            },
+            "rules": [
+                "-/calendar/*",
+                "+/calendar/default",
+                "+/calendar/gregorian",
+                "+/calendar/generic",
+                "+/calendar/dangi"
+            ]
+        },
+        {
+          "shards": ["cjk"],  
+          "categories": ["locales_tree"],
+            "files": {
+                "whitelist": ["zh", "zh_Hant"]
+            },
+            "rules": [
+                "-/calendar/*",
+                "+/calendar/default",
+                "+/calendar/gregorian",
+                "+/calendar/generic",
+                "+/calendar/roc"
+            ]
+        },
+        {
           "categories": ["misc"],
           "files": {
             "whitelist": ["supplementalData"]
@@ -422,13 +458,24 @@
       ],
       "coll": [
         {
+          "shards": ["no_cjk, efigs"],
           "categories": ["coll_tree"],
           "rules": [
               "+/collations/default",
               "+/collations/standard",
               "-/UCARules"
           ]
-        }
+        },
+        {
+          "shards": ["cjk", "full"],
+          "categories": ["coll_tree"],
+          "rules": [
+              "+/collations/default",
+              "+/collations/standard",
+              "+/collations/private-kana",
+              "-/UCARules"
+          ]
+      }
       ]
     }
   }
