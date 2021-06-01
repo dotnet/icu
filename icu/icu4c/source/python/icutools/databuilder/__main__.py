@@ -404,6 +404,7 @@ class Dictionary(object):
         with open (os.path.join(self.output_dir, "ICU.DataFiles.props"), "w") as f:
             f.write("<Project>\n")
             f.write("\t<ItemGroup>\n")
+            f.write("\t\t<PlatformManifestFileEntry Include=\"icu_dictionary.js\" IsNative=\"true\" />\n")
             for filename in self.filter_file_names:
                 filename = filename.replace("json", "dat")
                 f.write("\t\t<PlatformManifestFileEntry Include=\"{filename}\" IsNative=\"true\" />\n".format(filename=filename))
