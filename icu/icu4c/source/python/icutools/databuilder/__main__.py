@@ -279,11 +279,11 @@ class Dictionary(object):
         }
         self.icu_dict = {}
 
-    def get_locales_from_shards(self, shard, locales):
-        if shard != "cjk":
-            return [x for x in locales if re.match(shard, x.split("_")[0])]
-        else:
-            return list(set([x.split("_")[0] for x in locales]))
+    def get_locales_from_shards(self, shard, pattern, locales):
+        whitelist = [x for x in locales if re.match(pattern, x.split("_")[0])]
+        if shard == "cjk":
+            whitelist = list(set([x.split("_")[0] for x in whitelist]))
+        return whitelist
 
     # Create localeFilter component of filter
     def get_locale_filters(self, locale_filter, shard_name=""):
@@ -301,7 +301,7 @@ class Dictionary(object):
     def get_locale_whitelist(self, shard_data, locale_filters):
         for shard in shard_data:
             if "?" in shard_data[shard]:
-                self.locale_whitelist[shard] = self.get_locales_from_shards(shard_data[shard], locale_filters["whitelist"])
+                self.locale_whitelist[shard] = self.get_locales_from_shards(shard, shard_data[shard], locale_filters["whitelist"])
         self.locale_whitelist["full"] = locale_filters["whitelist"]
     
     def get_full_feature_filters(self, filter_data, filter):
@@ -337,7 +337,8 @@ class Dictionary(object):
                             if rules["rules"] == ["+/"]:
                                 misc_whitelist += rules["files"]["whitelist"]
                         else:
-                            filter.append(rules)
+                            if ("shards" in rules and shard in rules["shards"]) or ("shards" not in rules):
+                                filter.append(rules)
             if len(supplemental) > 0:
                 filter.append( { 
                                 "categories": "misc", 
@@ -356,10 +357,7 @@ class Dictionary(object):
                             })
         else:
             if feature in filter_data:
-                if shard == "full":
-                    filter = filter_data[feature]
-                else:
-                    filter = [f for f in filter_data[feature] if ("shards" not in f) or (shard in f["shards"])]
+                filter = [f for f in filter_data[feature] if ("shards" not in f) or (shard in f["shards"])]
         return filter
 
     def create_filters(self):

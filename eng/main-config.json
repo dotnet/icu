@@ -1,7 +1,7 @@
 {
   "shards": {
     "efigs": "(?:en|fr|it|de|es)",
-    "cjk": "(?:zh|ja|ko)",
+    "cjk": "(?:en|zh|ja|ko)",
     "no_cjk": "^(?!.*(zh|ja|ko))",
     "full": "full"
   },
@@ -341,16 +341,16 @@
           ]
         },
         {
-          "shards": ["cjk"],
-          "categories": ["curr_tree"],
+          "categories": [
+            "curr_tree"
+          ],
+          "files": {
+            "whitelist": [ "root" ]
+          },
           "rules": [
-              "+/Currencies/USD",
-              "+/Currencies/CNY",
-              "+/Currencies/JPY",
-              "+/Currencies/KRW",
-              "+/Currencies/XXX"
+            "+/"
           ]
-      }
+        }
       ],
       "locales": [
         {
@@ -398,9 +398,6 @@
               "whitelist": ["ja"]
           },
           "rules": [
-              "+/calendar/default",
-              "+/calendar/gregorian",
-              "+/calendar/generic",
               "+/calendar/japanese"
           ]
         },
@@ -411,10 +408,6 @@
                 "whitelist": ["ko"]
             },
             "rules": [
-                "-/calendar/*",
-                "+/calendar/default",
-                "+/calendar/gregorian",
-                "+/calendar/generic",
                 "+/calendar/dangi"
             ]
         },
@@ -425,10 +418,6 @@
                 "whitelist": ["zh", "zh_Hant"]
             },
             "rules": [
-                "-/calendar/*",
-                "+/calendar/default",
-                "+/calendar/gregorian",
-                "+/calendar/generic",
                 "+/calendar/roc"
             ]
         },
@@ -458,7 +447,7 @@
       ],
       "coll": [
         {
-          "shards": ["no_cjk, efigs"],
+          "shards": ["no_cjk", "efigs"],
           "categories": ["coll_tree"],
           "rules": [
               "+/collations/default",
