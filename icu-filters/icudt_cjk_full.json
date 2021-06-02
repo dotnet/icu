@@ -1,25 +1,59 @@
 {
-  "localeFilter": {
-    "filterType": "language",
-    "includeScripts": true,
-    "includeChildren": true,
-    "whitelist": [
-      "ko",
-      "en",
-      "ja",
-      "zh"
-    ]
-  },
+  "collationUCAData": "implicithan",
   "featureFilters": {
-    "locales_tree": "include",
     "misc": {
       "whitelist": [
-        "supplementalData"
+        "supplementalData",
+        "icuver",
+        "numberingSystems",
+        "currencyNumericCodes",
+        "keyTypeData"
       ]
-    }
+    },
+    "brkitr_rules": {
+      "whitelist": [
+        "char"
+      ]
+    },
+    "brkitr_tree": "include",
+    "normalization": {
+      "blacklist": [
+        "nkfc_cf",
+        "nkfc"
+      ]
+    },
+    "curr_supplemental": "include",
+    "curr_tree": {
+      "whitelist": [
+        "root"
+      ]
+    },
+    "locales_tree": "include",
+    "coll_ucadata": "include",
+    "coll_tree": "include"
   },
-  "strategy": "additive",
   "resourceFilters": [
+    {
+      "categories": [
+        "brkitr_tree"
+      ],
+      "rules": [
+        "+/"
+      ]
+    },
+    {
+      "categories": [
+        "curr_tree"
+      ],
+      "files": {
+        "whitelist": [
+          "root"
+        ]
+      },
+      "rules": [
+        "+/"
+      ]
+    },
     {
       "categories": [
         "locales_tree"
@@ -115,23 +149,63 @@
       ]
     },
     {
-      "categories": [
-        "misc"
+      "shards": [
+        "cjk",
+        "full"
       ],
+      "categories": [
+        "coll_tree"
+      ],
+      "rules": [
+        "+/collations/default",
+        "+/collations/standard",
+        "+/collations/private-kana",
+        "-/UCARules"
+      ]
+    },
+    {
+      "categories": "misc",
       "files": {
         "whitelist": [
           "supplementalData"
         ]
       },
       "rules": [
-        "+/cldrVersion",
-        "+/codeMappings",
         "+/calendarData",
         "+/calendarPreferenceData",
+        "+/codeMappings",
         "+/timeData",
         "+/measurementData",
+        "+/cldrVersion",
+        "+/idValidity",
         "+/weekData"
       ]
+    },
+    {
+      "categories": "misc",
+      "files": {
+        "whitelist": [
+          "icuver",
+          "numberingSystems",
+          "keyTypeData",
+          "currencyNumericCodes"
+        ]
+      },
+      "rules": [
+        "+/"
+      ]
     }
-  ]
+  ],
+  "strategy": "additive",
+  "localeFilter": {
+    "filterType": "language",
+    "includeScripts": true,
+    "includeChildren": true,
+    "whitelist": [
+      "ko",
+      "en",
+      "ja",
+      "zh"
+    ]
+  }
 }

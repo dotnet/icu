@@ -145,7 +145,9 @@
       "id_ID",
       "it_CH",
       "it_IT",
+      "ja_JP",
       "kn_IN",
+      "ko_KR",
       "lt_LT",
       "lv_LV",
       "ml_IN",
@@ -180,28 +182,102 @@
       "tr_CY",
       "tr_TR",
       "uk_UA",
-      "vi_VN"
+      "vi_VN",
+      "zh_CN",
+      "zh_Hans_HK",
+      "zh_SG",
+      "zh_HK",
+      "zh_TW"
     ]
   },
-  "collationUCAData": "implicithan",
   "featureFilters": {
-    "coll_ucadata": "include",
-    "coll_tree": "include"
+    "locales_tree": "include",
+    "misc": {
+      "whitelist": [
+        "supplementalData"
+      ]
+    }
   },
   "strategy": "additive",
   "resourceFilters": [
     {
-      "shards": [
-        "no_cjk",
-        "efigs"
-      ],
       "categories": [
-        "coll_tree"
+        "locales_tree"
       ],
       "rules": [
-        "+/collations/default",
-        "+/collations/standard",
-        "-/UCARules"
+        "+/NumberElements",
+        "-/NumberElements/latn/miscPatterns",
+        "-/NumberElements/latn/patternsLong",
+        "-/NumberElements/latn/patternsShort",
+        "-/NumberElements/*/patternsLong",
+        "-/NumberElements/*/patternsShort",
+        "-/NumberElements/minimalPairs",
+        "+/Version",
+        "+/layout"
+      ]
+    },
+    {
+      "categories": [
+        "locales_tree"
+      ],
+      "files": {
+        "blacklist": [
+          "root"
+        ]
+      },
+      "rules": [
+        "+/calendar/default",
+        "+/calendar/gregorian",
+        "+/calendar/generic"
+      ]
+    },
+    {
+      "categories": [
+        "locales_tree"
+      ],
+      "files": {
+        "whitelist": [
+          "root"
+        ]
+      },
+      "rules": [
+        "+/calendar"
+      ]
+    },
+    {
+      "shards": [
+        "cjk",
+        "full"
+      ],
+      "categories": [
+        "locales_tree"
+      ],
+      "files": {
+        "whitelist": [
+          "ja"
+        ]
+      },
+      "rules": [
+        "+/calendar/japanese"
+      ]
+    },
+    {
+      "categories": [
+        "misc"
+      ],
+      "files": {
+        "whitelist": [
+          "supplementalData"
+        ]
+      },
+      "rules": [
+        "+/cldrVersion",
+        "+/codeMappings",
+        "+/calendarData",
+        "+/calendarPreferenceData",
+        "+/timeData",
+        "+/measurementData",
+        "+/weekData"
       ]
     }
   ]

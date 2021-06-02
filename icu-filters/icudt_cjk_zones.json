@@ -1,47 +1,30 @@
 {
   "localeFilter": {
-      "filterType": "locale",
-      "includeScripts": false,	
-      "includeChildren": false,
-      "whitelist": [
-        "ja",
-        "ko",
-        "zh"
-      ]
+    "filterType": "language",
+    "includeScripts": true,
+    "includeChildren": true,
+    "whitelist": [
+      "ko",
+      "en",
+      "ja",
+      "zh"
+    ]
   },
   "featureFilters": {
-      "locale_trees": "exclude",
-      "conversion_mappings": "exclude",
-      "coll_ucadata": "exclude",
-      "coll_tree": "exclude",
-      "confusables": "exclude",
-      "stringprep": "exclude",
-      "region_tree": "exclude",
-      "zone_supplemental": "exclude",
-      "zone_tree": "include",
-      "translit": "exclude",
-      "unames": "exclude",
-      "ulayout": "exclude",
-      "unit_tree": "exclude",
-      "rbnf_tree": "exclude",
-      "cnvalias": "exclude",
-      "lang_tree": "exclude",
-      "normalization": "exclude",
-      "misc": {
-        "whitelist": [
-          "metaZones",
-          "zoneinfo64"
-        ]
-      },
-      "curr_tree": "exclude",
-      "curr_supplemental": "exclude",
-      "brkitr_dictionaries": "exclude",
-      "brkitr_rules": "exclude",
-      "brkitr_tree": "exclude"
+    "zone_tree": "include",
+    "misc": {
+      "whitelist": [
+        "metaZones",
+        "zoneinfo64"
+      ]
+    }
   },
+  "strategy": "additive",
   "resourceFilters": [
     {
-      "categories": ["zone_tree"],
+      "categories": [
+        "zone_tree"
+      ],
       "rules": [
         "+/zoneStrings/*"
       ]
