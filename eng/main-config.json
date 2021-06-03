@@ -22,6 +22,9 @@
     "coll": {
       "collationUCAData": "implicithan"
     },
+    "strategy": {
+      "strategy": "additive"
+    },
     "localeFilter": {
         "whitelist": [
           "ar_SA",
