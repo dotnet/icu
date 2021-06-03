@@ -39,7 +39,7 @@ stages:
           image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-webassembly-20210111135621-8ac9b02
         steps:
         - bash: |
-            ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Browser /p:TargetArchitecture=wasm $(_InternalBuildArgs)
+            ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Browser /p:TargetArchitecture=wasm /p:IcuSharding=true $(_InternalBuildArgs)
           displayName: Build
         - task: PublishPipelineArtifact@1
           displayName: Upload artifacts

@@ -124,4 +124,10 @@ dictionary:
 shards: dictionary $(DATA_SHARDS) 
 
 # build source+data for the main "icudt" filter and only data for the other filters
+ifeq ($(ICU_SHARDING), true)
 all: lib-icudt data-icudt data-icudt_no_CJK data-icudt_EFIGS data-icudt_CJK dictionary shards
+else
+all: lib-icudt data-icudt data-icudt_no_CJK data-icudt_EFIGS data-icudt_CJK 
+endif
+
+
