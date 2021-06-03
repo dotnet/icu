@@ -6,7 +6,7 @@
     <Copy SourceFiles="$(MSBuildThisFileDirectory)\..\icu-filters\curr-root.txt" 
           DestinationFiles="$(MSBuildThisFileDirectory)\..\icu\icu4c\source\data\curr\root.txt"/> 
     <Exec WorkingDirectory="$(MSBuildThisFileDirectory)"
-          Command="make -f icu.mk all TARGET_OS=$(TargetOS.ToLower()) TARGET_ARCHITECTURE=$(TargetArchitecture) ICU_TRACING=$(IcuTracing) ICU_SHARDING=$(IcuSharding)SHELL=/bin/bash"
+          Command="make -f icu.mk all TARGET_OS=$(TargetOS.ToLower()) TARGET_ARCHITECTURE=$(TargetArchitecture) ICU_TRACING=$(IcuTracing) ICU_SHARDING=$(IcuSharding) SHELL=/bin/bash"
           IgnoreStandardErrorWarningFormat="true" />
   </Target>
   <Target Name="Restore" />
