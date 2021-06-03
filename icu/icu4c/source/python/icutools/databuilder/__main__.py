@@ -360,20 +360,31 @@ class Dictionary(object):
                 filter = [f for f in filter_data[feature] if ("shards" not in f) or (shard in f["shards"])]
         return filter
 
+    def update_dict(self, dict1, dict_list):
+        for d in dict_list:
+            dict1.update(d)
+    
     def create_filters(self):
+        """
+            Generates filters for ICU shards based on a main-config.json file
+        """
         filter_data = self.config["filter"]
         shard_data = self.config["shards"]
+
+        # populate locale whitelists for each shard type
         self.get_locale_whitelist(shard_data, filter_data["localeFilter"])
 
         # First update dictionary object with shard information
         self.dictionary["shards"] = shard_data
         for feat in self.features:
-            shard_dependent = self.features[feat]
             filter = {}
-            filter["localeFilter"] = self.get_locale_filters(filter_data["localeFilter"])
+            shard_dependent = self.features[feat]
+
+            # for shards with all features
             if feat == "full":
-                # Include any additional filter parameters that are at the root level
-                filter = reduce(filter.update, [filter_data[k] for k in filter_data if k not in ["featureFilters", "resourceFilters", "localeFilter"] + self.exclude_feats])
+                # Include any additional filter parameters that are at the root level of main-config.json
+                root_features = [filter_data[k] for k in filter_data if k not in ["featureFilters", "resourceFilters", "localeFilter"] + self.exclude_feats]
+                self.update_dict(filter, root_features)
                 filter["featureFilters"] = self.get_full_feature_filters(filter_data["featureFilters"], {})
                 filter["resourceFilters"] = self.get_resource_filters(filter_data["resourceFilters"], feature="full")
             else:
@@ -381,17 +392,19 @@ class Dictionary(object):
                     filter.update(filter_data[feat])
                 if feat in filter_data["featureFilters"]:
                     filter["featureFilters"] = filter_data["featureFilters"][feat]
-            filter["strategy"] = "additive"
             if shard_dependent:
                 for shard in shard_data:
                     filter["localeFilter"] = self.get_locale_filters(filter_data["localeFilter"], shard_name=shard)
                     filter["resourceFilters"] = self.get_resource_filters(filter_data["resourceFilters"], shard=shard, feature=feat)
+
                     filter_file_name = "icudt_{shard}_{feat}.json".format(shard=shard, feat=feat)
+
+                    # Used for generating props file later
                     self.filter_file_names.append(filter_file_name)
                     with open (os.path.join(self.filter_dir, filter_file_name), "w") as f:
                         json.dump(filter, f, indent=2)
             else:
-                # filter["localeFilter"] = self.get_locale_filters(filter_data["localeFilter"])
+                filter["localeFilter"] = self.get_locale_filters(filter_data["localeFilter"])
                 filter["resourceFilters"] = self.get_resource_filters(filter_data["resourceFilters"], feature=feat)
                 filter_file_name = "icudt_{feat}.json".format(feat=feat)
                 self.filter_file_names.append(filter_file_name)
@@ -415,6 +428,25 @@ class Dictionary(object):
                                     for feat in pack_features]
 
     def create_packs(self, pack, shard=""):
+        """
+            Create packs portion of ICU dictionary, which has the format:
+            "packs": {
+                "base": {
+                    "core": [],
+                    "currency": []
+                },
+                "efigs": {
+                    "extends": "base",
+                    "full: [
+                        <file name of full-featured shard>
+                    ],
+                    "core": [],
+                    "zones": []
+                },
+                ...,
+                "full" : [<file name of complete data archive>]
+            }
+        """
         file_pack = {}
         for item in pack:
             if item == "base" or item == "extends":
@@ -427,6 +459,10 @@ class Dictionary(object):
         return file_pack
 
     def create_dictionary(self):
+        """
+            Creates dictionary which will be consumed by library_mono.js in the runtime.
+            The structure of the packs portion is described in main-config.json
+        """
         packs = self.config["packs"]
         for pack in packs:
             if pack == "base":
