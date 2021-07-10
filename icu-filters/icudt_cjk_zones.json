@@ -1,0 +1,33 @@
+{
+  "localeFilter": {
+    "filterType": "language",
+    "includeScripts": true,
+    "includeChildren": true,
+    "whitelist": [
+      "ko",
+      "en",
+      "ja",
+      "zh"
+    ]
+  },
+  "featureFilters": {
+    "zone_tree": "include",
+    "misc": {
+      "whitelist": [
+        "metaZones",
+        "zoneinfo64"
+      ]
+    }
+  },
+  "strategy": "additive",
+  "resourceFilters": [
+    {
+      "categories": [
+        "zone_tree"
+      ],
+      "rules": [
+        "+/zoneStrings/*"
+      ]
+    }
+  ]
+}

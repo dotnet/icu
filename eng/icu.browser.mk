@@ -1,5 +1,6 @@
 ENV_INIT_SCRIPT = source $(EMSDK_PATH)/emsdk_env.sh &&
 ENV_CONFIGURE_WRAPPER = emconfigure
+ICU_SHARDING = true
 
 CONFIGURE_COMPILER_FLAGS += \
 	CFLAGS="-Oz -fno-exceptions -Wno-sign-compare $(ICU_DEFINES)" \

@@ -4,6 +4,7 @@
 # Python 2/3 Compatibility (ICU-20299)
 # TODO(ICU-20301): Remove this.
 from __future__ import print_function
+from functools import reduce
 
 import argparse
 import glob as pyglob
@@ -11,6 +12,8 @@ import io as pyio
 import json
 import os
 import sys
+import re
+import collections
 
 from . import *
 from .comment_stripper import CommentStripper
@@ -63,7 +66,7 @@ arg_group_required = flag_parser.add_argument_group("required arguments")
 arg_group_required.add_argument(
     "--mode",
     help = "What to do with the generated rules.",
-    choices = ["gnumake", "unix-exec", "windows-exec", "bazel-exec"],
+    choices = ["gnumake", "unix-exec", "windows-exec", "bazel-exec", "makedict"],
     required = True
 )
 
@@ -76,6 +79,22 @@ flag_parser.add_argument(
     "--filter_file",
     metavar = "PATH",
     help = "Path to an ICU data filter JSON file.",
+    default = None
+)
+flag_parser.add_argument(
+    "--filter_dir",
+    metavar = "PATH",
+    help = "Path to an ICU filter directory.",
+    default = None
+)
+flag_parser.add_argument(
+    "--shard_cfg",
+    help = "Path to shard configuration file.",
+    default = None
+)
+flag_parser.add_argument(
+    "--exclude_feats",
+    help = "Excluded features from full ICU data file.",
     default = None
 )
 flag_parser.add_argument(
@@ -118,7 +137,6 @@ arg_group_exec.add_argument(
     help = "The build configuration of the tools. Used in 'windows-exec' mode only.",
     default = "x86/Debug"
 )
-
 
 class Config(object):
 
@@ -237,6 +255,259 @@ def add_copy_input_requests(requests, config, common_vars):
     result += requests
     return result
 
+class Dictionary(object):
+    def __init__ (self, filter_dir, config_path, output_dir, exclude_feats):
+        self.filter_dir = filter_dir
+        self.output_dir = output_dir
+        self.filter_file_names = []
+        self.dictionary = {"packs": {}}
+        self.locale_whitelist = {}
+        self.exclude_feats = exclude_feats.split(",")
+        with open(config_path, "r") as file:
+            self.config = json.load(file)
+
+        # Dictionary of features of the format 
+        # <feature name> : <bool indicating whether or not its also subdivided by shard>
+        self.features = {
+            "base": False,
+            "normalization": False,
+            "currency": False,
+            "locales": True,
+            "zones": True,
+            "coll": True,
+            "full": True
+        }
+        self.icu_dict = {}
+
+    def get_locales_from_shards(self, shard, pattern, locales):
+        whitelist = [x for x in locales if re.match(pattern, x.split("_")[0])]
+        if shard == "cjk":
+            whitelist = list(set([x.split("_")[0] for x in whitelist]))
+        return whitelist
+
+    # Create localeFilter component of filter
+    def get_locale_filters(self, locale_filter, shard_name=""):
+        filter = {}
+        filter["filterType"] = "locale" if shard_name != "cjk" else "language"
+        filter["includeScripts"] = (shard_name == "cjk")
+        filter["includeChildren"] = (shard_name == "cjk")
+        for param in locale_filter:
+            if param == "whitelist":
+                filter["whitelist"] = self.locale_whitelist[shard_name] if shard_name != "" else self.locale_whitelist["full"]
+            else:
+                filter[param] = locale_filter[param]
+        return filter
+    
+    def get_locale_whitelist(self, shard_data, locale_filters):
+        for shard in shard_data:
+            if "?" in shard_data[shard]:
+                self.locale_whitelist[shard] = self.get_locales_from_shards(shard, shard_data[shard], locale_filters["whitelist"])
+        self.locale_whitelist["full"] = locale_filters["whitelist"]
+    
+    def get_full_feature_filters(self, filter_data, filter):
+        """
+            Merges parameters for all features. Used for full-featured shards. Features are 
+            formatted as follows in main-config.json
+            "featureFilters":{
+                <feature name>: {
+                    <param 1>: {
+                        "whitelist"/"blacklist": [
+                            <data file names>
+                        ]
+                    }
+                }, ...
+            }
+        """
+        filter = {}
+        for key, val in filter_data.items():
+            if key not in self.exclude_feats:
+                for param in val:
+                    if param not in filter:
+                        filter[param] = val[param]
+                    else:
+                        for lists in val[param]:
+                            if lists in filter[param]:
+                                filter[param][lists] += val[param][lists]
+                                filter[param][lists] = list(set(filter[param][lists]))
+                            else:
+                                filter[param][lists] = val[lists]
+        return filter
+    
+    def get_resource_filters(self, filter_data, shard="", feature=""):
+        """
+            Merges parameters for all resources. Used for full-featured shards. Resources are 
+            formatted as follows in main-config.json
+            "resourceFilters": [
+                <feature name>: [
+                    {
+                        "categories": [<feature category],
+                        "files": {
+                            "whitelist"/"blacklist": [ <data file names> ]
+                        },
+                        "rules": [
+                            <list of rules to include>
+                        ]
+                    }
+                ], ...
+            ]
+        """
+        filter = []
+        if feature == "full":
+            supplemental = []
+
+            # for other misc files that needed to be added with "+/"
+            misc_whitelist = []
+            for category in filter_data:
+                if category not in self.exclude_feats:
+                    for rules in filter_data[category]:
+                        # This is the only category with overlapping rules
+                        if rules["categories"] == ["misc"]:
+                            if rules["files"]["whitelist"] == ["supplementalData"]:
+                                supplemental += rules["rules"]
+                            if rules["rules"] == ["+/"]:
+                                misc_whitelist += rules["files"]["whitelist"]
+                        else:
+                            if ("shards" in rules and shard in rules["shards"]) or ("shards" not in rules):
+                                filter.append(rules)
+            if len(supplemental) > 0:
+                filter.append( { 
+                                "categories": "misc", 
+                                "files": { 
+                                    "whitelist": ["supplementalData"]
+                                }, 
+                                "rules": list(set(supplemental)) 
+                            })
+            if len(misc_whitelist) > 0 :
+                filter.append( { 
+                                "categories": "misc", 
+                                "files": { 
+                                    "whitelist": list(set(misc_whitelist))
+                                }, 
+                                "rules": ["+/"]
+                            })
+        else:
+            if feature in filter_data:
+                filter = [f for f in filter_data[feature] if ("shards" not in f) or (shard in f["shards"])]
+        return filter
+
+    def update_dict(self, dict1, dict_list):
+        for d in dict_list:
+            dict1.update(d)
+    
+    def create_filters(self):
+        """
+            Generates filters for ICU shards based on a main-config.json file
+        """
+        filter_data = self.config["filter"]
+        shard_data = self.config["shards"]
+
+        # populate locale whitelists for each shard type
+        self.get_locale_whitelist(shard_data, filter_data["localeFilter"])
+
+        # First update dictionary object with shard information
+        self.dictionary["shards"] = shard_data
+        for feat in self.features:
+            filter = {}
+            shard_dependent = self.features[feat]
+
+            # for shards with all features
+            if feat == "full":
+                # Include any additional filter parameters that are at the root level of main-config.json
+                root_features = [filter_data[k] for k in filter_data if k not in ["featureFilters", "resourceFilters", "localeFilter"] + self.exclude_feats]
+                self.update_dict(filter, root_features)
+                filter["featureFilters"] = self.get_full_feature_filters(filter_data["featureFilters"], {})
+                filter["resourceFilters"] = self.get_resource_filters(filter_data["resourceFilters"], feature="full")
+            else:
+                if feat in filter_data:
+                    filter.update(filter_data[feat])
+                if feat in filter_data["featureFilters"]:
+                    filter["featureFilters"] = filter_data["featureFilters"][feat]
+            if shard_dependent:
+                for shard in shard_data:
+                    filter["localeFilter"] = self.get_locale_filters(filter_data["localeFilter"], shard_name=shard)
+                    filter["resourceFilters"] = self.get_resource_filters(filter_data["resourceFilters"], shard=shard, feature=feat)
+
+                    filter_file_name = "icudt_{shard}_{feat}.json".format(shard=shard, feat=feat)
+
+                    # Used for generating props file later
+                    self.filter_file_names.append(filter_file_name)
+                    with open (os.path.join(self.filter_dir, filter_file_name), "w") as f:
+                        json.dump(filter, f, indent=2)
+            else:
+                filter["localeFilter"] = self.get_locale_filters(filter_data["localeFilter"])
+                filter["resourceFilters"] = self.get_resource_filters(filter_data["resourceFilters"], feature=feat)
+                filter_file_name = "icudt_{feat}.json".format(feat=feat)
+                self.filter_file_names.append(filter_file_name)
+                with open (os.path.join(self.filter_dir, filter_file_name), "w") as f:
+                        json.dump(filter, f, indent=2)        
+    
+    def generate_props(self):
+        with open (os.path.join(self.output_dir, "ICU.DataFiles.props"), "w") as f:
+            f.write("<Project>\n")
+            f.write("\t<ItemGroup>\n")
+            f.write("\t\t<PlatformManifestFileEntry Include=\"icu_dictionary.js\" IsNative=\"true\" />\n")
+            for filename in self.filter_file_names:
+                filename = filename.replace("json", "dat")
+                f.write("\t\t<PlatformManifestFileEntry Include=\"{filename}\" IsNative=\"true\" />\n".format(filename=filename))
+            f.write("\t</ItemGroup>\n")
+            f.write("</Project>")
+
+    def get_file_names(self, pack_features, shard):
+        return ["icudt_{feat}.dat".format(feat=feat) if not self.features[feat] 
+                                    else "icudt_{shard}_{feat}.dat".format(shard=shard, feat=feat) 
+                                    for feat in pack_features]
+
+    def create_packs(self, pack, shard=""):
+        """
+            Create packs portion of ICU dictionary, which has the format:
+            "packs": {
+                "base": {
+                    "core": [],
+                    "currency": []
+                },
+                "efigs": {
+                    "extends": "base",
+                    "full: [
+                        <file name of full-featured shard>
+                    ],
+                    "core": [],
+                    "zones": []
+                },
+                ...,
+                "full" : [<file name of complete data archive>]
+            }
+        """
+        file_pack = {}
+        for item in pack:
+            if item == "base" or item == "extends":
+                file_pack[item] = pack[item]
+            elif item == "core" or item == "full":
+                file_pack[item] = self.get_file_names(pack[item], shard)
+            elif item == "features":
+                for feat in pack[item]:
+                    file_pack[feat] = self.get_file_names([feat], shard)
+        return file_pack
+
+    def create_dictionary(self):
+        """
+            Creates dictionary which will be consumed by library_mono.js in the runtime.
+            The structure of the packs portion is described in main-config.json
+        """
+        packs = self.config["packs"]
+        for pack in packs:
+            if pack == "base":
+                self.dictionary["packs"][pack] = self.create_packs(packs[pack])
+            if pack == "shards":
+                for shard in self.config["shards"]:
+                    if shard == "full":
+                        self.dictionary["packs"]["full"] = "icudt_full_full.dat"
+                    else:
+                        self.dictionary["packs"][shard] = self.create_packs(packs[pack], shard=shard)
+        self.filter_file_names.append("icu_dictionary.js")
+        with open (os.path.join(self.output_dir, "icu_dictionary.js"), "w") as f:
+            text = "dictionary = " + json.dumps(self.dictionary, indent=2)
+            f.write(text)
+
 
 class IO(object):
     """I/O operations required when computing the build actions"""
@@ -263,6 +534,14 @@ class IO(object):
 
 def main(argv):
     args = flag_parser.parse_args(argv)
+
+    if args.mode == "makedict":
+        dictionary = Dictionary(args.filter_dir, args.shard_cfg, args.out_dir, args.exclude_feats)
+        dictionary.create_filters()
+        dictionary.generate_props()
+        dictionary.create_dictionary()
+        return 0
+
     config = Config(args)
 
     if args.mode == "gnumake":

@@ -94,6 +94,40 @@ $(eval $(call TargetBuildTemplate,icudt))
 $(eval $(call TargetBuildTemplate,icudt_CJK))
 $(eval $(call TargetBuildTemplate,icudt_no_CJK))
 $(eval $(call TargetBuildTemplate,icudt_EFIGS))
+$(eval $(call TargetBuildTemplate,icudt_normalization))
+$(eval $(call TargetBuildTemplate,icudt_base))
+$(eval $(call TargetBuildTemplate,icudt_currency))
+$(eval $(call TargetBuildTemplate,icudt_full_full))
+$(eval $(call TargetBuildTemplate,icudt_full_coll))
+$(eval $(call TargetBuildTemplate,icudt_full_zones))
+$(eval $(call TargetBuildTemplate,icudt_full_locales))
+$(eval $(call TargetBuildTemplate,icudt_efigs_locales))
+$(eval $(call TargetBuildTemplate,icudt_efigs_coll))
+$(eval $(call TargetBuildTemplate,icudt_efigs_full))
+$(eval $(call TargetBuildTemplate,icudt_efigs_zones))
+$(eval $(call TargetBuildTemplate,icudt_cjk_locales))
+$(eval $(call TargetBuildTemplate,icudt_cjk_zones))
+$(eval $(call TargetBuildTemplate,icudt_cjk_full))
+$(eval $(call TargetBuildTemplate,icudt_cjk_coll))
+$(eval $(call TargetBuildTemplate,icudt_no_cjk_full))
+$(eval $(call TargetBuildTemplate,icudt_no_cjk_coll))
+$(eval $(call TargetBuildTemplate,icudt_no_cjk_zones))
+$(eval $(call TargetBuildTemplate,icudt_no_cjk_locales))
+
+
+ICU_SHARDS := icudt_base icudt_normalization icudt_currency icudt_cjk_zones icudt_no_cjk_zones icudt_efigs_zones icudt_efigs_locales icudt_cjk_locales icudt_no_cjk_locales icudt_efigs_coll icudt_cjk_coll icudt_no_cjk_coll icudt_efigs_full icudt_cjk_full icudt_no_cjk_full icudt_full_full
+DATA_SHARDS := $(addprefix data-, $(ICU_SHARDS))
+
+dictionary:
+	cd $(TOP)/icu/icu4c/source/ && PYTHONPATH=python python3 -m icutools.databuilder --mode=makedict --filter_dir=$(ICU_FILTER_PATH) --out_dir=$(TARGET_BINDIR) --shard_cfg=$(abspath $(CURDIR)/main-config.json) --exclude_feats=zones;
+
+shards: dictionary $(DATA_SHARDS) 
 
 # build source+data for the main "icudt" filter and only data for the other filters
-all: lib-icudt data-icudt data-icudt_no_CJK data-icudt_EFIGS data-icudt_CJK
+ifeq ($(ICU_SHARDING), true)
+all: lib-icudt data-icudt data-icudt_no_CJK data-icudt_EFIGS data-icudt_CJK dictionary shards
+else
+all: lib-icudt data-icudt data-icudt_no_CJK data-icudt_EFIGS data-icudt_CJK 
+endif
+
+

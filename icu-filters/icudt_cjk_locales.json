@@ -1,0 +1,137 @@
+{
+  "localeFilter": {
+    "filterType": "language",
+    "includeScripts": true,
+    "includeChildren": true,
+    "whitelist": [
+      "ko",
+      "en",
+      "ja",
+      "zh"
+    ]
+  },
+  "featureFilters": {
+    "locales_tree": "include",
+    "misc": {
+      "whitelist": [
+        "supplementalData"
+      ]
+    }
+  },
+  "strategy": "additive",
+  "resourceFilters": [
+    {
+      "categories": [
+        "locales_tree"
+      ],
+      "rules": [
+        "+/NumberElements",
+        "-/NumberElements/latn/miscPatterns",
+        "-/NumberElements/latn/patternsLong",
+        "-/NumberElements/latn/patternsShort",
+        "-/NumberElements/*/patternsLong",
+        "-/NumberElements/*/patternsShort",
+        "-/NumberElements/minimalPairs",
+        "+/Version",
+        "+/layout"
+      ]
+    },
+    {
+      "categories": [
+        "locales_tree"
+      ],
+      "files": {
+        "blacklist": [
+          "root"
+        ]
+      },
+      "rules": [
+        "+/calendar/default",
+        "+/calendar/gregorian",
+        "+/calendar/generic"
+      ]
+    },
+    {
+      "categories": [
+        "locales_tree"
+      ],
+      "files": {
+        "whitelist": [
+          "root"
+        ]
+      },
+      "rules": [
+        "+/calendar"
+      ]
+    },
+    {
+      "shards": [
+        "cjk",
+        "full"
+      ],
+      "categories": [
+        "locales_tree"
+      ],
+      "files": {
+        "whitelist": [
+          "ja"
+        ]
+      },
+      "rules": [
+        "+/calendar/japanese"
+      ]
+    },
+    {
+      "shards": [
+        "cjk"
+      ],
+      "categories": [
+        "locales_tree"
+      ],
+      "files": {
+        "whitelist": [
+          "ko"
+        ]
+      },
+      "rules": [
+        "+/calendar/dangi"
+      ]
+    },
+    {
+      "shards": [
+        "cjk"
+      ],
+      "categories": [
+        "locales_tree"
+      ],
+      "files": {
+        "whitelist": [
+          "zh",
+          "zh_Hant"
+        ]
+      },
+      "rules": [
+        "+/calendar/roc"
+      ]
+    },
+    {
+      "categories": [
+        "misc"
+      ],
+      "files": {
+        "whitelist": [
+          "supplementalData"
+        ]
+      },
+      "rules": [
+        "+/cldrVersion",
+        "+/codeMappings",
+        "+/calendarData",
+        "+/calendarPreferenceData",
+        "+/timeData",
+        "+/measurementData",
+        "+/weekData"
+      ]
+    }
+  ]
+}

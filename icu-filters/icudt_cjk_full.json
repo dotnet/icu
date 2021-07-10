@@ -1,0 +1,211 @@
+{
+  "collationUCAData": "implicithan",
+  "featureFilters": {
+    "misc": {
+      "whitelist": [
+        "supplementalData",
+        "icuver",
+        "numberingSystems",
+        "currencyNumericCodes",
+        "keyTypeData"
+      ]
+    },
+    "brkitr_rules": {
+      "whitelist": [
+        "char"
+      ]
+    },
+    "brkitr_tree": "include",
+    "normalization": {
+      "blacklist": [
+        "nkfc_cf",
+        "nkfc"
+      ]
+    },
+    "curr_supplemental": "include",
+    "curr_tree": {
+      "whitelist": [
+        "root"
+      ]
+    },
+    "locales_tree": "include",
+    "coll_ucadata": "include",
+    "coll_tree": "include"
+  },
+  "resourceFilters": [
+    {
+      "categories": [
+        "brkitr_tree"
+      ],
+      "rules": [
+        "+/"
+      ]
+    },
+    {
+      "categories": [
+        "curr_tree"
+      ],
+      "files": {
+        "whitelist": [
+          "root"
+        ]
+      },
+      "rules": [
+        "+/"
+      ]
+    },
+    {
+      "categories": [
+        "locales_tree"
+      ],
+      "rules": [
+        "+/NumberElements",
+        "-/NumberElements/latn/miscPatterns",
+        "-/NumberElements/latn/patternsLong",
+        "-/NumberElements/latn/patternsShort",
+        "-/NumberElements/*/patternsLong",
+        "-/NumberElements/*/patternsShort",
+        "-/NumberElements/minimalPairs",
+        "+/Version",
+        "+/layout"
+      ]
+    },
+    {
+      "categories": [
+        "locales_tree"
+      ],
+      "files": {
+        "blacklist": [
+          "root"
+        ]
+      },
+      "rules": [
+        "+/calendar/default",
+        "+/calendar/gregorian",
+        "+/calendar/generic"
+      ]
+    },
+    {
+      "categories": [
+        "locales_tree"
+      ],
+      "files": {
+        "whitelist": [
+          "root"
+        ]
+      },
+      "rules": [
+        "+/calendar"
+      ]
+    },
+    {
+      "shards": [
+        "cjk",
+        "full"
+      ],
+      "categories": [
+        "locales_tree"
+      ],
+      "files": {
+        "whitelist": [
+          "ja"
+        ]
+      },
+      "rules": [
+        "+/calendar/japanese"
+      ]
+    },
+    {
+      "shards": [
+        "cjk"
+      ],
+      "categories": [
+        "locales_tree"
+      ],
+      "files": {
+        "whitelist": [
+          "ko"
+        ]
+      },
+      "rules": [
+        "+/calendar/dangi"
+      ]
+    },
+    {
+      "shards": [
+        "cjk"
+      ],
+      "categories": [
+        "locales_tree"
+      ],
+      "files": {
+        "whitelist": [
+          "zh",
+          "zh_Hant"
+        ]
+      },
+      "rules": [
+        "+/calendar/roc"
+      ]
+    },
+    {
+      "shards": [
+        "cjk",
+        "full"
+      ],
+      "categories": [
+        "coll_tree"
+      ],
+      "rules": [
+        "+/collations/default",
+        "+/collations/standard",
+        "+/collations/private-kana",
+        "-/UCARules"
+      ]
+    },
+    {
+      "categories": "misc",
+      "files": {
+        "whitelist": [
+          "supplementalData"
+        ]
+      },
+      "rules": [
+        "+/calendarData",
+        "+/calendarPreferenceData",
+        "+/codeMappings",
+        "+/timeData",
+        "+/measurementData",
+        "+/cldrVersion",
+        "+/idValidity",
+        "+/weekData"
+      ]
+    },
+    {
+      "categories": "misc",
+      "files": {
+        "whitelist": [
+          "icuver",
+          "numberingSystems",
+          "keyTypeData",
+          "currencyNumericCodes"
+        ]
+      },
+      "rules": [
+        "+/"
+      ]
+    }
+  ],
+  "strategy": "additive",
+  "localeFilter": {
+    "filterType": "language",
+    "includeScripts": true,
+    "includeChildren": true,
+    "whitelist": [
+      "ko",
+      "en",
+      "ja",
+      "zh"
+    ]
+  }
+}
