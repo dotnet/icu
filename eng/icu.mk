@@ -90,10 +90,10 @@ data-$(1): $(TARGET_OBJDIR)/$(1)/.stamp-configure | $(TARGET_OBJDIR)/$(1) $(TARG
 
 endef
 
-$(eval $(call TargetBuildTemplate,icudt))
+$(eval $(call TargetBuildTemplate,icudt_mobile))
 $(eval $(call TargetBuildTemplate,icudt_CJK))
 $(eval $(call TargetBuildTemplate,icudt_no_CJK))
 $(eval $(call TargetBuildTemplate,icudt_EFIGS))
 
 # build source+data for the main "icudt" filter and only data for the other filters
-all: lib-icudt data-icudt data-icudt_no_CJK data-icudt_EFIGS data-icudt_CJK
+all: lib-icudt_mobile data-icudt_mobile data-icudt_no_CJK data-icudt_EFIGS data-icudt_CJK
