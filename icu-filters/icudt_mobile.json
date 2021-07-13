@@ -216,6 +216,7 @@
                 "currencyNumericCodes",
                 "numberingSystems",
                 "icuver",
+                "likelySubtags",
                 "supplementalData",
                 "keyTypeData"
             ]
