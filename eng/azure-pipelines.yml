@@ -63,7 +63,7 @@ stages:
           displayName: Upload artifacts
           inputs:
             targetPath: 'artifacts/bin'
-            artifactName: Artifacts_Browser
+            artifactName: Artifacts_Browser_Threading
             condition: and(succeeded(), ne(variables['System.TeamProject'], 'public'), ne(variables['Build.Reason'], 'PullRequest'))
 
       ############ iOS BUILD ############
@@ -164,6 +164,10 @@ stages:
         - task: DownloadPipelineArtifact@2
           inputs:
             artifact: Artifacts_Browser
+            path: 'artifacts/bin'
+        - task: DownloadPipelineArtifact@2
+          inputs:
+            artifact: Artifacts_Browser_Threading
             path: 'artifacts/bin'
         - task: DownloadPipelineArtifact@2
           inputs:
