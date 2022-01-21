@@ -48,6 +48,24 @@ stages:
             artifactName: Artifacts_Browser
             condition: and(succeeded(), ne(variables['System.TeamProject'], 'public'), ne(variables['Build.Reason'], 'PullRequest'))
 
+      - job: Build_Browser_Threading
+        displayName: Browser_Threading
+        timeoutInMinutes: 30
+        pool:
+          vmImage: ubuntu-18.04
+        container:
+          image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-webassembly-20210111135621-8ac9b02
+        steps:
+        - bash: |
+            ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Browser /p:TargetArchitecture=wasm /p:WasmEnableThreads=true $(_InternalBuildArgs)
+          displayName: Build
+        - task: PublishPipelineArtifact@1
+          displayName: Upload artifacts
+          inputs:
+            targetPath: 'artifacts/bin'
+            artifactName: Artifacts_Browser
+            condition: and(succeeded(), ne(variables['System.TeamProject'], 'public'), ne(variables['Build.Reason'], 'PullRequest'))
+
       ############ iOS BUILD ############
       - job: Build_iOS
         displayName: iOS
@@ -134,6 +152,7 @@ stages:
         condition: and(succeeded(), ne(variables['System.TeamProject'], 'public'), ne(variables['Build.Reason'], 'PullRequest'))
         dependsOn:
           - Build_Browser
+          - Build_Browser_Threading
           - Build_iOS
           - Build_MacCatalyst
           - Build_tvOS

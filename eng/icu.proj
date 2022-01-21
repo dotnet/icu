@@ -1,17 +1,30 @@
 <Project>
-  <Target Name="Build" Condition="'$(PackOnly)' != 'true'">
+  <Target Name="Build" Condition="'$(PackOnly)' != 'true'" DependsOnTargets="PatchEmscripten">
     <Error Condition="'$(TargetOS)' == ''" Text="TargetOS needs to be specified!" />
     <Error Condition="'$(TargetArchitecture)' == ''" Text="TargetArchitecture needs to be specified!" />
+
+    <PropertyGroup>
+      <_ExtraParams Condition="'$(WasmEnableThreads)' == 'true'">WASM_ENABLE_THREADS=true</_ExtraParams>
+    </PropertyGroup>
 
     <Copy SourceFiles="$(MSBuildThisFileDirectory)\..\icu-filters\curr-root.txt" 
           DestinationFiles="$(MSBuildThisFileDirectory)\..\icu\icu4c\source\data\curr\root.txt"/> 
     <Exec WorkingDirectory="$(MSBuildThisFileDirectory)"
-          Command="make -f icu.mk all TARGET_OS=$(TargetOS.ToLower()) TARGET_ARCHITECTURE=$(TargetArchitecture) ICU_TRACING=$(IcuTracing) SHELL=/bin/bash"
+          Command="make -f icu.mk all TARGET_OS=$(TargetOS.ToLower()) TARGET_ARCHITECTURE=$(TargetArchitecture) ICU_TRACING=$(IcuTracing) $(_ExtraParams) SHELL=/bin/bash"
           IgnoreStandardErrorWarningFormat="true" />
   </Target>
   <Target Name="Restore" />
   <Target Name="Test" />
   <Target Name="Pack" DependsOnTargets="Build">
     <MSBuild Projects="$(MSBuildThisFileDirectory)nuget\Microsoft.NETCore.Runtime.ICU.Transport.pkgproj" Targets="Build" />
+  </Target>
+
+  <!-- 
+    The version of emscripten we are on, emcmake does not pass 'experimental-wasm-threads' to node. In order for the build to  
+    succeed, we need to provide a patched version of that file. Ideally, fixing upstream would be best, but until then, patch.
+  -->
+  <Target Name="PatchEmscripten" Condition="'$(TargetOS)' == 'Browser' and '$(WasmEnableThreads)' == 'true'">
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)patches\emcmake.py"
+          DestinationFolder="$(EMSDK_PATH)\upstream\emscripten" />
   </Target>
 </Project>
