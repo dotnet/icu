@@ -28,12 +28,17 @@
           Command="cp --verbose $(MSBuildThisFileDirectory)patches/emcmake.py $(EMSDK_PATH)/upstream/emscripten"
           IgnoreStandardErrorWarningFormat="true" />
     <Exec WorkingDirectory="$(MSBuildThisFileDirectory)"
-          Command="cat $(EMSDK_PATH)/upstream/emscripten/emcmake.py"
+          Command="cp --verbose $(MSBuildThisFileDirectory)patches/emcc.py $(EMSDK_PATH)/upstream/emscripten"
           IgnoreStandardErrorWarningFormat="true" />
-
-<!--
+    <Exec WorkingDirectory="$(MSBuildThisFileDirectory)"
+          Command="cat $(EMSDK_PATH)/upstream/emscripten/emcc.py"
+          IgnoreStandardErrorWarningFormat="true" />
+    
+    <!--
     <Copy SourceFiles="$(MSBuildThisFileDirectory)patches\emcmake.py"
           DestinationFolder="$(EMSDK_PATH)\upstream\emscripten" />
--->
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)patches\emcc.py"
+          DestinationFolder="$(EMSDK_PATH)\upstream\emscripten" />
+    -->
   </Target>
 </Project>
