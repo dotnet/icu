@@ -613,11 +613,6 @@ def make_js_executable(script):
     cmd = '/usr/bin/env -S ' + cmd
   logger.debug('adding `#!` to JavaScript file: %s' % cmd)
 
-  print('cmd: ')
-  print(cmd)
-  print('\nsrc: ')
-  print(src)
-  print('\n\n')
   # add shebang
   with open(script, 'w') as f:
     f.write('#!/bin/sh\n":" //# comment; exec /usr/bin/env %s --experimental-wasm-threads --experimental-wasm-bulk-memory\n' % cmd)
