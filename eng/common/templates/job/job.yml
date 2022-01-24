@@ -202,14 +202,6 @@ jobs:
         ArtifactName: ${{ coalesce(parameters.enablePublishBuildArtifacts.artifactName, '$(Agent.Os)_$(Agent.JobName)' ) }}
       continueOnError: true
       condition: always()
-    - task: PublishBuildArtifacts@1
-      displayName: Publish Obj Artifacts
-      inputs:
-        PathtoPublish: '$(Build.SourcesDirectory)/artifacts/obj/icu-browser-wasm/icudt_browser'
-        PublishLocation: Container
-        ArtifactName: ${{ coalesce(parameters.enablePublishBuildArtifacts.artifactName, '$(Agent.Os)_$(Agent.JobName)_Obj' ) }}
-      continueOnError: true
-      condition: always()
   - ${{ if or(and(eq(parameters.enablePublishTestResults, 'true'), eq(parameters.testResultsFormat, '')), eq(parameters.testResultsFormat, 'xunit')) }}:
     - task: PublishTestResults@2
       displayName: Publish XUnit Test Results
@@ -221,6 +213,7 @@ jobs:
         mergeTestResults: ${{ parameters.mergeTestResults }}
       continueOnError: true
       condition: always()
+
   - ${{ if or(and(eq(parameters.enablePublishTestResults, 'true'), eq(parameters.testResultsFormat, '')), eq(parameters.testResultsFormat, 'vstest')) }}:
     - task: PublishTestResults@2
       displayName: Publish TRX Test Results
