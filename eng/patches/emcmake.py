@@ -5,6 +5,7 @@
 # found in the LICENSE file.
 
 import sys
+from tools import building
 from tools import shared
 from tools import config
 from tools import utils
@@ -25,20 +26,17 @@ variables so that emcc etc. are used. Typical usage:
     return 1
 
   args = sys.argv[1:]
+  env = building.get_building_env()
 
   def has_substr(args, substr):
     return any(substr in s for s in args)
 
-  # Insert arg for the Emscripten toolchain file if the user didn't specify one.
-  # User specified arguments come afterwards so they can overwrite variables defined in toolchain file.
+  # Append the Emscripten toolchain file if the user didn't specify one.
   if not has_substr(args, '-DCMAKE_TOOLCHAIN_FILE'):
-    args.append(1, '-DCMAKE_TOOLCHAIN_FILE=' + utils.path_from_root('cmake/Modules/Platform/Emscripten.cmake'))
+    args.append(1, '-DCMAKE_TOOLCHAIN_FILE=' + utils.path_from_root('cmake', 'Modules', 'Platform', 'Emscripten.cmake'))
 
   if not has_substr(args, '-DCMAKE_CROSSCOMPILING_EMULATOR'):
     node_js = config.NODE_JS[0]
-    # In order to allow cmake to run code built with pthreads we need to pass some extra flags to node.
-    # Note that we also need --experimental-wasm-bulk-memory which is true by default and hence not added here
-    # See https://github.com/emscripten-core/emscripten/issues/15522
     args.append(f'-DCMAKE_CROSSCOMPILING_EMULATOR={node_js};--experimental-wasm-threads')
 
   # On Windows specify MinGW Makefiles or ninja if we have them and no other
@@ -49,13 +47,17 @@ variables so that emcc etc. are used. Typical usage:
       args += ['-G', 'MinGW Makefiles']
     elif utils.which('ninja'):
       args += ['-G', 'Ninja']
-    else:
-      print('emcmake: no compatible cmake generator found; Please install ninja or mingw32-make, or specify a generator explicitly using -G', file=sys.stderr)
-      return 1
+
+  # CMake has a requirement that it wants sh.exe off PATH if MinGW Makefiles
+  # is being used. This happens quite often, so do this automatically on
+  # behalf of the user. See
+  # http://www.cmake.org/Wiki/CMake_MinGW_Compiler_Issues
+  if utils.WINDOWS and 'MinGW Makefiles' in args:
+    env = building.remove_sh_exe_from_path(env)
 
   print('configure: ' + shared.shlex_join(args), file=sys.stderr)
   try:
-    shared.check_call(args)
+    shared.check_call(args, env=env)
     return 0
   except CalledProcessError as e:
     return e.returncode
