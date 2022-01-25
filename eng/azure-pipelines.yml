@@ -168,7 +168,7 @@ stages:
         - task: DownloadPipelineArtifact@2
           inputs:
             artifact: Artifacts_Browser_Threading
-            path: 'artifacts/bin'
+            path: 'artifacts/bin/browser-threading'
         - task: DownloadPipelineArtifact@2
           inputs:
             artifact: Artifacts_iOS
