@@ -5,6 +5,6 @@
     <PreReleaseVersionLabel>rtm</PreReleaseVersionLabel>
   </PropertyGroup>
   <PropertyGroup>
-    <MicrosoftDotNetBuildTasksPackagingVersion>5.0.0-beta.21565.1</MicrosoftDotNetBuildTasksPackagingVersion>
+    <MicrosoftDotNetBuildTasksPackagingVersion>5.0.0-beta.22055.3</MicrosoftDotNetBuildTasksPackagingVersion>
   </PropertyGroup>
 </Project>
