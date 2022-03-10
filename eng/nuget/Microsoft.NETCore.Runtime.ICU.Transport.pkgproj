@@ -106,6 +106,7 @@
     <File Include="$(RepoRoot)\artifacts\bin\icu-iossimulator-x64\lib\libicudata.a" TargetPath="runtimes\iossimulator-x64\native\lib\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Include="$(RepoRoot)\artifacts\bin\icu-iossimulator-x64\include\**" TargetPath="runtimes\iossimulator-x64\native\include\%(RecursiveDir)%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat" TargetPath="runtimes\iossimulator-x64\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
+    <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat.lzfse" TargetPath="runtimes\iossimulator-x64\native\lib\%(Filename).dat.lzfse" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' == 'true'" Include="$(RepoRoot)\artifacts\bin\icu-iossimulator-x64\*.dat" TargetPath="runtimes\iossimulator-x64\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
   </ItemGroup>
 
@@ -115,6 +116,7 @@
     <File Include="$(RepoRoot)\artifacts\bin\icu-iossimulator-x86\lib\libicudata.a" TargetPath="runtimes\iossimulator-x86\native\lib\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Include="$(RepoRoot)\artifacts\bin\icu-iossimulator-x86\include\**" TargetPath="runtimes\iossimulator-x86\native\include\%(RecursiveDir)%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat" TargetPath="runtimes\iossimulator-x86\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
+    <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat.lzfse" TargetPath="runtimes\iossimulator-x86\native\lib\%(Filename).dat.lzfse" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' == 'true'" Include="$(RepoRoot)\artifacts\bin\icu-iossimulator-x86\*.dat" TargetPath="runtimes\iossimulator-x86\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
   </ItemGroup>
 
@@ -124,6 +126,7 @@
     <File Include="$(RepoRoot)\artifacts\bin\icu-iossimulator-arm64\lib\libicudata.a" TargetPath="runtimes\iossimulator-arm64\native\lib\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Include="$(RepoRoot)\artifacts\bin\icu-iossimulator-arm64\include\**" TargetPath="runtimes\iossimulator-arm64\native\include\%(RecursiveDir)%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat" TargetPath="runtimes\iossimulator-arm64\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
+    <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat.lzfse" TargetPath="runtimes\iossimulator-arm64\native\lib\%(Filename).dat.lzfse" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' == 'true'" Include="$(RepoRoot)\artifacts\bin\icu-iossimulator-arm64\*.dat" TargetPath="runtimes\iossimulator-arm64\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
   </ItemGroup>
 
@@ -133,6 +136,7 @@
     <File Include="$(RepoRoot)\artifacts\bin\icu-ios-arm64\lib\libicudata.a" TargetPath="runtimes\ios-arm64\native\lib\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Include="$(RepoRoot)\artifacts\bin\icu-ios-arm64\include\**" TargetPath="runtimes\ios-arm64\native\include\%(RecursiveDir)%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat" TargetPath="runtimes\ios-arm64\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
+    <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat.lzfse" TargetPath="runtimes\ios-arm64\native\lib\%(Filename).dat.lzfse" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' == 'true'" Include="$(RepoRoot)\artifacts\bin\icu-ios-arm64\*.dat" TargetPath="runtimes\ios-arm64\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
   </ItemGroup>
 
@@ -142,6 +146,7 @@
     <File Include="$(RepoRoot)\artifacts\bin\icu-ios-arm\lib\libicudata.a" TargetPath="runtimes\ios-arm\native\lib\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Include="$(RepoRoot)\artifacts\bin\icu-ios-arm\include\**" TargetPath="runtimes\ios-arm\native\include\%(RecursiveDir)%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat" TargetPath="runtimes\ios-arm\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
+    <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat.lzfse" TargetPath="runtimes\ios-arm\native\lib\%(Filename).dat.lzfse" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' == 'true'" Include="$(RepoRoot)\artifacts\bin\icu-ios-arm\*.dat" TargetPath="runtimes\ios-arm\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
   </ItemGroup>
 
@@ -152,6 +157,7 @@
     <File Include="$(RepoRoot)\artifacts\bin\icu-maccatalyst-x64\lib\libicudata.a" TargetPath="runtimes\maccatalyst-x64\native\lib\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Include="$(RepoRoot)\artifacts\bin\icu-maccatalyst-x64\include\**" TargetPath="runtimes\maccatalyst-x64\native\include\%(RecursiveDir)%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat" TargetPath="runtimes\maccatalyst-x64\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
+    <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat.lzfse" TargetPath="runtimes\maccatalyst-x64\native\lib\%(Filename).dat.lzfse" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' == 'true'" Include="$(RepoRoot)\artifacts\bin\icu-maccatalyst-x64\*.dat" TargetPath="runtimes\maccatalyst-x64\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
   </ItemGroup>
   <ItemGroup Condition="'$(AddAllTargetOSToPackage)' == 'true' or '$(PackageRID)' == 'maccatalyst-arm64'">
@@ -160,6 +166,7 @@
     <File Include="$(RepoRoot)\artifacts\bin\icu-maccatalyst-arm64\lib\libicudata.a" TargetPath="runtimes\maccatalyst-arm64\native\lib\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Include="$(RepoRoot)\artifacts\bin\icu-maccatalyst-arm64\include\**" TargetPath="runtimes\maccatalyst-arm64\native\include\%(RecursiveDir)%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat" TargetPath="runtimes\maccatalyst-arm64\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
+    <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat.lzfse" TargetPath="runtimes\maccatalyst-arm64\native\lib\%(Filename).dat.lzfse" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' == 'true'" Include="$(RepoRoot)\artifacts\bin\icu-maccatalyst-arm64\*.dat" TargetPath="runtimes\maccatalyst-arm64\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
   </ItemGroup>
 
@@ -170,6 +177,7 @@
     <File Include="$(RepoRoot)\artifacts\bin\icu-tvossimulator-x64\lib\libicudata.a" TargetPath="runtimes\tvossimulator-x64\native\lib\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Include="$(RepoRoot)\artifacts\bin\icu-tvossimulator-x64\include\**" TargetPath="runtimes\tvossimulator-x64\native\include\%(RecursiveDir)%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat" TargetPath="runtimes\tvossimulator-x64\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
+    <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat.lzfse" TargetPath="runtimes\tvossimulator-x64\native\lib\%(Filename).dat.lzfse" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' == 'true'" Include="$(RepoRoot)\artifacts\bin\icu-tvossimulator-x64\*.dat" TargetPath="runtimes\tvossimulator-x64\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
   </ItemGroup>
 
@@ -179,6 +187,7 @@
     <File Include="$(RepoRoot)\artifacts\bin\icu-tvossimulator-arm64\lib\libicudata.a" TargetPath="runtimes\tvossimulator-arm64\native\lib\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Include="$(RepoRoot)\artifacts\bin\icu-tvossimulator-arm64\include\**" TargetPath="runtimes\tvossimulator-arm64\native\include\%(RecursiveDir)%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat" TargetPath="runtimes\tvossimulator-arm64\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
+    <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat.lzfse" TargetPath="runtimes\tvossimulator-arm64\native\lib\%(Filename).dat.lzfse" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' == 'true'" Include="$(RepoRoot)\artifacts\bin\icu-tvossimulator-arm64\*.dat" TargetPath="runtimes\tvossimulator-arm64\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
   </ItemGroup>
 
@@ -188,6 +197,7 @@
     <File Include="$(RepoRoot)\artifacts\bin\icu-tvos-arm64\lib\libicudata.a" TargetPath="runtimes\tvos-arm64\native\lib\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Include="$(RepoRoot)\artifacts\bin\icu-tvos-arm64\include\**" TargetPath="runtimes\tvos-arm64\native\include\%(RecursiveDir)%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat" TargetPath="runtimes\tvos-arm64\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
+    <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\mobile\*.dat.lzfse" TargetPath="runtimes\tvos-arm64\native\lib\%(Filename).dat.lzfse" SkipPackageFileCheck="true" />
     <File Condition="'$(OverrideBundledDatFiles)' == 'true'" Include="$(RepoRoot)\artifacts\bin\icu-tvos-arm64\*.dat" TargetPath="runtimes\tvos-arm64\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
   </ItemGroup>
 
