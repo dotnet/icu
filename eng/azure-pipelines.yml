@@ -57,7 +57,7 @@ stages:
         displayName: iOS
         timeoutInMinutes: 45
         pool:
-          vmImage: macOS-10.15
+          vmImage: macos-11
         steps:
         - bash: |
             ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=iOSSimulator /p:TargetArchitecture=x64 $(_InternalBuildArgs)
@@ -78,7 +78,7 @@ stages:
         displayName: MacCatalyst
         timeoutInMinutes: 45
         pool:
-          vmImage: macOS-10.15
+          vmImage: macos-11
         steps:
         - bash: |
             ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=MacCatalyst /p:TargetArchitecture=x64 $(_InternalBuildArgs)
@@ -96,7 +96,7 @@ stages:
         displayName: tvOS
         timeoutInMinutes: 30
         pool:
-          vmImage: macOS-10.15
+          vmImage: macos-11
         steps:
         - bash: |
             ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=tvOSSimulator /p:TargetArchitecture=x64 $(_InternalBuildArgs)
