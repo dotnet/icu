@@ -20,7 +20,7 @@
   </Target>
 
   <!-- 
-    The version of emscripten we are on, emcmake does not pass 'experimental-wasm-threads' to node. In order for the build to  
+    The version of emscripten wes are on, emcmake does not pass 'experimental-wasm-threads' to node. In order for the build to  
     succeed, we need to provide a patched version of that file. Ideally, fixing upstream would be best, but until then, patch.
   -->
   <Target Name="PatchEmscripten" Condition="'$(TargetOS)' == 'Browser' and '$(WasmEnableThreads)' == 'true'">
@@ -34,6 +34,23 @@
     </ReadLinesFromFile>
     <WriteLinesToFile
             File="$(RepoRoot)\artifacts\bin\icu-browser-wasm\emscripten-version.txt"
+            Lines="@(_ItemsFromEmscriptenVersionFile->Replace('&quot;', ''))"
+            Overwrite="true" />
+  </Target>
+  <Target Name="PatchEmscripten" Condition="'$(TargetOS)' == 'Wasi' and '$(WasmEnableThreads)' == 'true'">
+   <!-- 
+    change this for wasi-sdk 
+    -->
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)patches\emcc.py"
+          DestinationFolder="$(WASISDK_PATH)\upstream\emscripten" />
+  </Target>
+  <Target Name="CopyEmscriptenVersion" Condition="'$(TargetOS)' == 'Wasi'">
+    <ReadLinesFromFile File="$(WASISDK_PATH)\upstream\emscripten\wasi-sdk-version.txt" >
+      <Output TaskParameter="Lines"
+              ItemName="_ItemsFromEmscriptenVersionFile"/>
+    </ReadLinesFromFile>
+    <WriteLinesToFile
+            File="$(RepoRoot)\artifacts\bin\icu-browser-wasm\wasi-sdk-version.txt"
             Lines="@(_ItemsFromEmscriptenVersionFile->Replace('&quot;', ''))"
             Overwrite="true" />
   </Target>
