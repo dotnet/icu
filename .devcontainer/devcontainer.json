@@ -11,7 +11,7 @@
 	},
 	"remoteEnv": {
 		"EMSDK_PATH": "${containerWorkspaceFolder}/artifacts/emsdk",
-		"WASISDK_PATH": "${containerWorkspaceFolder}/artifacts/wasi-sdk",
+		"WASI_SDK_PATH": "${containerWorkspaceFolder}/artifacts/wasi-sdk",
 	},
 
 	// Use 'postCreateCommand' to run commands after the container is created.

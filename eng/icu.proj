@@ -37,21 +37,29 @@
             Lines="@(_ItemsFromEmscriptenVersionFile->Replace('&quot;', ''))"
             Overwrite="true" />
   </Target>
-  <Target Name="PatchEmscripten" Condition="'$(TargetOS)' == 'Wasi' and '$(WasmEnableThreads)' == 'true'">
-   <!-- 
-    change this for wasi-sdk 
-    -->
-    <Copy SourceFiles="$(MSBuildThisFileDirectory)patches\emcc.py"
-          DestinationFolder="$(WASISDK_PATH)\upstream\emscripten" />
-  </Target>
-  <Target Name="CopyEmscriptenVersion" Condition="'$(TargetOS)' == 'Wasi'">
-    <ReadLinesFromFile File="$(WASISDK_PATH)\upstream\emscripten\wasi-sdk-version.txt" >
-      <Output TaskParameter="Lines"
-              ItemName="_ItemsFromEmscriptenVersionFile"/>
+  <Target Name="PatchWasiSdk" Condition="'$(TargetOS)' == 'Wasi' and '$(WasmEnableThreads)' == 'true'">
+    <ReadLinesFromFile File="$(MSBuildThisFileDirectory)/wasi-sdk/wasi-sdk-version.txt">
+    <Output TaskParameter="Lines" ItemName="_VersionLines" />
     </ReadLinesFromFile>
-    <WriteLinesToFile
-            File="$(RepoRoot)\artifacts\bin\icu-browser-wasm\wasi-sdk-version.txt"
-            Lines="@(_ItemsFromEmscriptenVersionFile->Replace('&quot;', ''))"
-            Overwrite="true" />
+
+    <PropertyGroup>
+      <WASI_SDK_PATH>$(ProvisionWasiSdkDir)</WASI_SDK_PATH>
+      <WasiLocalPath>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', 'wasi'))</WasiLocalPath>
+      <WasiSdkVersion>%(_VersionLines.Identity)</WasiSdkVersion>
+      <WasiSdkUrl>https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-linux.tar.gz</WasiSdkUrl>
+      <WasiSdkUrl Condition="'$(HostOS)' == 'osx'" >https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-macos.tar.gz</WasiSdkUrl>
+      <WasiSdkUrl Condition="'$(HostOS)' == 'windows'" >https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-mingw.tar.gz</WasiSdkUrl>
+    </PropertyGroup>
+
+    <RemoveDir Directories="$(WASI_SDK_PATH)" />
+    <Exec Command="rm -rf wasi-sdk-*/ wasi-sdk/ &amp;&amp; curl -L -o- $(WasiSdkUrl) | tar -xvz &amp;&amp; mv wasi-sdk-$(WasiSdkVersion).*/ wasi-sdk/ &amp;&amp; cp wasi-sdk-version.txt wasi-sdk/wasi-sdk-version.txt"
+          Condition="'$(HostOS)' != 'windows'"
+          WorkingDirectory="$(WasiLocalPath)"
+          IgnoreStandardErrorWarningFormat="true" />
+
+    <Exec Command="powershell -NonInteractive -command &quot;&amp; .\provision.ps1 -WasiSdkUrl $(WasiSdkUrl) -WasiSdkVersion $(WasiSdkVersion) ; Exit $LastExitCode &quot;"
+          Condition="'$(HostOS)' == 'windows'"
+          WorkingDirectory="$(WasiLocalPath)"
+          IgnoreStandardErrorWarningFormat="true" />  
   </Target>
 </Project>

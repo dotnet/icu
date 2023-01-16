@@ -93,8 +93,9 @@ endef
 
 ifeq ($(TARGET_OS),browser)
 $(eval $(call TargetBuildTemplate,icudt_browser,icudt))
-ifeq ($(TARGET_OS),WASI)
-$(eval $(call TargetBuildTemplate,icudt_wasi,icudt))
+endif
+ifeq ($(TARGET_OS),Wasi)
+$(eval $(call TargetBuildTemplate,icudt_browser,icudt))
 else
 $(eval $(call TargetBuildTemplate,icudt_mobile,icudt))
 endif
