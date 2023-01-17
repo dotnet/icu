@@ -51,9 +51,10 @@
       <WasiSdkUrl Condition="'$(HostOS)' == 'windows'" >https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-mingw.tar.gz</WasiSdkUrl>
     </PropertyGroup>
 
-    <Exec Command="rm -rf wasi-sdk-*/ wasi-sdk/ &amp;&amp; curl -L -o- $(WasiSdkUrl) | tar -xvz &amp;&amp; mv wasi-sdk-$(WasiSdkVersion).*/ wasi-sdk/"
+    <RemoveDir Directories="$(WASI_SDK_PATH)" />
+    <Exec Command="curl -L -o wasi-sdk-$WasiSdkVersion.0.tar.gz $(WasiSdkUrl) &amp;&amp; mkdir -p $(WASI_SDK_PATH) &amp;&amp; tar --strip-components=1 -xvzf wasi-sdk-$WasiSdkVersion.0.tar.gz -C $(WASI_SDK_PATH) &amp;&amp; cp $(WasiLocalPath)/wasi-sdk-version.txt $(WASI_SDK_PATH)/wasi-sdk-version.txt"
           Condition="'$(HostOS)' != 'windows'"
-          WorkingDirectory="$(WasiLocalPath)"
+          WorkingDirectory="$(ArtifactsDir)"
           IgnoreStandardErrorWarningFormat="true" />
 
     <Exec Command="powershell -NonInteractive -command &quot;&amp; .\provision.ps1 -WasiSdkUrl $(WasiSdkUrl) -WasiSdkVersion $(WasiSdkVersion) ; Exit $LastExitCode &quot;"
