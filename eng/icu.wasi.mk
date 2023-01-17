@@ -1,4 +1,4 @@
-ENV_INIT_SCRIPT = source $(WASI_SDK_PATH)/share/cmake/wasi-sdk.cmake &&
+#ENV_INIT_SCRIPT = source $(WASI_SDK_PATH)/share/cmake/wasi-sdk.cmake
 # TODO find out if this is needed for wasi-sdk 
 # ENV_CONFIGURE_WRAPPER = emconfigure
 
@@ -11,5 +11,4 @@ CONFIGURE_COMPILER_FLAGS += \
 	CXXFLAGS="-Oz -fno-exceptions -Wno-sign-compare $(THREADS_FLAG) $(ICU_DEFINES)"
 
 check-env:
-	@if [ -z "$(WASI_SDK_PATH)" ]; then echo "The WASI_SDK_PATH environment variable needs to set to the location of the WASI SDK."; exit 1; fi
-
+:

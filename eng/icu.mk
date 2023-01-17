@@ -1,7 +1,7 @@
 TOP = $(CURDIR)/../
 ICU_FILTER_PATH=$(abspath $(TOP)/icu-filters)
 
-TARGET_OS ?= browser
+TARGET_OS ?= wasi
 TARGET_ARCHITECTURE ?= wasm
 
 HOST_OBJDIR = $(TOP)/artifacts/obj/icu-host
@@ -91,11 +91,8 @@ data-$(2): $(TARGET_OBJDIR)/$(1)/.stamp-configure | $(TARGET_OBJDIR)/$(1) $(TARG
 
 endef
 
-ifeq ($(TARGET_OS),browser)
+ifeq ($(TARGET_ARCHITECTURE),wasm)
 $(eval $(call TargetBuildTemplate,icudt_browser,icudt))
-#ifeq ($(TARGET_OS),Wasi)
-#$(eval $(call TargetBuildTemplate,icudt_browser,icudt))
-#endif
 else
 $(eval $(call TargetBuildTemplate,icudt_mobile,icudt))
 endif

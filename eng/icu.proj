@@ -1,5 +1,5 @@
 <Project>
-  <Target Name="Build" Condition="'$(PackOnly)' != 'true'" DependsOnTargets="PatchEmscripten;CopyEmscriptenVersion">
+  <Target Name="Build" Condition="'$(PackOnly)' != 'true'" DependsOnTargets="PatchEmscripten;CopyEmscriptenVersion;PatchWasiSdk">
     <Error Condition="'$(TargetOS)' == ''" Text="TargetOS needs to be specified!" />
     <Error Condition="'$(TargetArchitecture)' == ''" Text="TargetArchitecture needs to be specified!" />
 
@@ -25,10 +25,10 @@
   -->
   <Target Name="PatchEmscripten" Condition="'$(TargetOS)' == 'Browser' and '$(WasmEnableThreads)' == 'true'">
     <Copy SourceFiles="$(MSBuildThisFileDirectory)patches\emcc.py"
-          DestinationFolder="$(EMSDK_PATH)\upstream\emscripten" />
+          DestinationFolder="$(EMSDK)\upstream\emscripten" />
   </Target>
   <Target Name="CopyEmscriptenVersion" Condition="'$(TargetOS)' == 'Browser'">
-    <ReadLinesFromFile File="$(EMSDK_PATH)\upstream\emscripten\emscripten-version.txt" >
+    <ReadLinesFromFile File="$(EMSDK)\upstream\emscripten\emscripten-version.txt" >
       <Output TaskParameter="Lines"
               ItemName="_ItemsFromEmscriptenVersionFile"/>
     </ReadLinesFromFile>
@@ -37,22 +37,21 @@
             Lines="@(_ItemsFromEmscriptenVersionFile->Replace('&quot;', ''))"
             Overwrite="true" />
   </Target>
-  <Target Name="PatchWasiSdk" Condition="'$(TargetOS)' == 'Wasi' and '$(WasmEnableThreads)' == 'true'">
-    <ReadLinesFromFile File="$(MSBuildThisFileDirectory)/wasi-sdk/wasi-sdk-version.txt">
+  <Target Name="PatchWasiSdk" Condition="'$(TargetOS)' == 'Wasi'">
+    <ReadLinesFromFile File="$(MSBuildThisFileDirectory)/.devcontainer/wasi-sdk-version.txt">
     <Output TaskParameter="Lines" ItemName="_VersionLines" />
     </ReadLinesFromFile>
 
     <PropertyGroup>
-      <WASI_SDK_PATH>$(ProvisionWasiSdkDir)</WASI_SDK_PATH>
-      <WasiLocalPath>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', 'wasi'))</WasiLocalPath>
-      <WasiSdkVersion>%(_VersionLines.Identity)</WasiSdkVersion>
+      <WASI_SDK_PATH>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../artifcats/wasi-sdk'))</WASI_SDK_PATH>
+      <WasiLocalPath>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../artifacts/wasi-sdk'))</WasiLocalPath>
+      <WasiSdkVersion>19</WasiSdkVersion>
       <WasiSdkUrl>https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-linux.tar.gz</WasiSdkUrl>
       <WasiSdkUrl Condition="'$(HostOS)' == 'osx'" >https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-macos.tar.gz</WasiSdkUrl>
       <WasiSdkUrl Condition="'$(HostOS)' == 'windows'" >https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-mingw.tar.gz</WasiSdkUrl>
     </PropertyGroup>
 
-    <RemoveDir Directories="$(WASI_SDK_PATH)" />
-    <Exec Command="rm -rf wasi-sdk-*/ wasi-sdk/ &amp;&amp; curl -L -o- $(WasiSdkUrl) | tar -xvz &amp;&amp; mv wasi-sdk-$(WasiSdkVersion).*/ wasi-sdk/ &amp;&amp; cp wasi-sdk-version.txt wasi-sdk/wasi-sdk-version.txt"
+    <Exec Command="rm -rf wasi-sdk-*/ wasi-sdk/ &amp;&amp; curl -L -o- $(WasiSdkUrl) | tar -xvz &amp;&amp; mv wasi-sdk-$(WasiSdkVersion).*/ wasi-sdk/"
           Condition="'$(HostOS)' != 'windows'"
           WorkingDirectory="$(WasiLocalPath)"
           IgnoreStandardErrorWarningFormat="true" />

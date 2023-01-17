@@ -11,9 +11,6 @@ elif [[ "$__TargetOS" == Wasi ]]; then
 WASI_SDK_PATH=$PWD/artifacts/wasi-sdk
 rm -rf $WASI_SDK_PATH
 git clone https://github.com/WebAssembly/wasi-sdk.git $WASI_SDK_PATH
-WasiSdkVersion="`cat ./.devcontainer/wasi-sdk-version.txt 2>&1`"
-cd $WASI_SDK_PATH && ./wasi-sdk install $WasiSdkVersion
-cd $WASI_SDK_PATH && ./wasi-sdk activate $WasiSdkVersion
 # ready to build, e.g.:
 # ./build.sh /p:TargetOS=Wasi /p:TargetArchitecture=wasm /p:IcuTracing=true
 fi

@@ -10,7 +10,7 @@
 		}
 	},
 	"remoteEnv": {
-		"EMSDK_PATH": "${containerWorkspaceFolder}/artifacts/emsdk",
+		"EMSDK": "${containerWorkspaceFolder}/artifacts/emsdk",
 		"WASI_SDK_PATH": "${containerWorkspaceFolder}/artifacts/wasi-sdk",
 	},
 
