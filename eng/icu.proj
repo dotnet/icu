@@ -1,5 +1,5 @@
 <Project>
-  <Target Name="Build" Condition="'$(PackOnly)' != 'true'" DependsOnTargets="PatchEmscripten;CopyEmscriptenVersion">
+  <Target Name="Build" Condition="'$(PackOnly)' != 'true'" DependsOnTargets="PatchEmscripten;CopyEmscriptenVersion;PatchWasiSdk">
     <Error Condition="'$(TargetOS)' == ''" Text="TargetOS needs to be specified!" />
     <Error Condition="'$(TargetArchitecture)' == ''" Text="TargetArchitecture needs to be specified!" />
 
@@ -36,5 +36,29 @@
             File="$(RepoRoot)\artifacts\bin\icu-browser-wasm\emscripten-version.txt"
             Lines="@(_ItemsFromEmscriptenVersionFile->Replace('&quot;', ''))"
             Overwrite="true" />
+  </Target>
+  <Target Name="PatchWasiSdk" Condition="'$(TargetOS)' == 'Wasi'">
+    <ReadLinesFromFile File="../.devcontainer/wasi-sdk-version.txt">
+    <Output TaskParameter="Lines" ItemName="_VersionLines" />
+    </ReadLinesFromFile>
+
+    <PropertyGroup>
+      <WASI_SDK_PATH>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../artifcats/wasi-sdk'))</WASI_SDK_PATH>
+      <WasiLocalPath>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../artifacts/wasi-sdk'))</WasiLocalPath>
+      <WasiSdkVersion>%(_VersionLines.Identity)</WasiSdkVersion>
+      <WasiSdkUrl>https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-linux.tar.gz</WasiSdkUrl>
+      <WasiSdkUrl Condition="'$(HostOS)' == 'osx'" >https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-macos.tar.gz</WasiSdkUrl>
+      <WasiSdkUrl Condition="'$(HostOS)' == 'windows'" >https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-mingw.tar.gz</WasiSdkUrl>
+    </PropertyGroup>
+
+    <Exec Command="rm -rf wasi-sdk-*/ wasi-sdk/ &amp;&amp; curl -L -o- $(WasiSdkUrl) | tar -xvz &amp;&amp; mv wasi-sdk-$(WasiSdkVersion).*/ wasi-sdk/"
+          Condition="'$(HostOS)' != 'windows'"
+          WorkingDirectory="$(WasiLocalPath)"
+          IgnoreStandardErrorWarningFormat="true" />
+
+    <Exec Command="powershell -NonInteractive -command &quot;&amp; .\provision.ps1 -WasiSdkUrl $(WasiSdkUrl) -WasiSdkVersion $(WasiSdkVersion) ; Exit $LastExitCode &quot;"
+          Condition="'$(HostOS)' == 'windows'"
+          WorkingDirectory="$(WasiLocalPath)"
+          IgnoreStandardErrorWarningFormat="true" />  
   </Target>
 </Project>
