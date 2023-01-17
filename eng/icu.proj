@@ -38,14 +38,14 @@
             Overwrite="true" />
   </Target>
   <Target Name="PatchWasiSdk" Condition="'$(TargetOS)' == 'Wasi'">
-    <ReadLinesFromFile File="$(MSBuildThisFileDirectory)/.devcontainer/wasi-sdk-version.txt">
+    <ReadLinesFromFile File="../.devcontainer/wasi-sdk-version.txt">
     <Output TaskParameter="Lines" ItemName="_VersionLines" />
     </ReadLinesFromFile>
 
     <PropertyGroup>
       <WASI_SDK_PATH>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../artifcats/wasi-sdk'))</WASI_SDK_PATH>
       <WasiLocalPath>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../artifacts/wasi-sdk'))</WasiLocalPath>
-      <WasiSdkVersion>19</WasiSdkVersion>
+      <WasiSdkVersion>%(_VersionLines.Identity)</WasiSdkVersion>
       <WasiSdkUrl>https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-linux.tar.gz</WasiSdkUrl>
       <WasiSdkUrl Condition="'$(HostOS)' == 'osx'" >https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-macos.tar.gz</WasiSdkUrl>
       <WasiSdkUrl Condition="'$(HostOS)' == 'windows'" >https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-mingw.tar.gz</WasiSdkUrl>
