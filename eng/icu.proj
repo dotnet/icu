@@ -41,9 +41,5 @@
     <ReadLinesFromFile File="../.devcontainer/wasi-sdk-version.txt">
     <Output TaskParameter="Lines" ItemName="_VersionLines" />
     </ReadLinesFromFile>
-
-    <PropertyGroup>
-      <WASI_SDK_PATH>$([MSBuild]::EnsureTrailingSlash('$(WASI_SDK_PATH)').Replace('', '/'))</WASI_SDK_PATH>  
-    <PropertyGroup
   </Target>
 </Project>
