@@ -43,13 +43,22 @@
     </ReadLinesFromFile>
 
     <PropertyGroup>
-      <WASI_SDK_PATH>$([MSBuild]::EnsureTrailingSlash('$(WASI_SDK_PATH)').Replace('\', '/'))</WASI_SDK_PATH>
-      <!-- <WasiLocalPath>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', 'wasi'))</WasiLocalPath>
+      <WASI_SDK_PATH>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../artifacts/wasi-sdk'))</WASI_SDK_PATH>
+      <WasiLocalPath>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../artifacts/wasi-sdk'))</WasiLocalPath>
       <WasiSdkVersion>%(_VersionLines.Identity)</WasiSdkVersion>
       <WasiSdkUrl>https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-linux.tar.gz</WasiSdkUrl>
       <WasiSdkUrl Condition="'$(HostOS)' == 'osx'" >https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-macos.tar.gz</WasiSdkUrl>
       <WasiSdkUrl Condition="'$(HostOS)' == 'windows'" >https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-mingw.tar.gz</WasiSdkUrl>
-   --> </PropertyGroup>
-   
+    </PropertyGroup>
+
+    <Exec Command="rm -rf wasi-sdk-*/ wasi-sdk/ &amp;&amp; curl -L -o- $(WasiSdkUrl) | tar -xvz &amp;&amp; mv wasi-sdk-$(WasiSdkVersion).*/ wasi-sdk/"
+          Condition="'$(HostOS)' != 'windows'"
+          WorkingDirectory="$(WasiLocalPath)"
+          IgnoreStandardErrorWarningFormat="true" />
+
+    <Exec Command="powershell -NonInteractive -command &quot;&amp; .\provision.ps1 -WasiSdkUrl $(WasiSdkUrl) -WasiSdkVersion $(WasiSdkVersion) ; Exit $LastExitCode &quot;"
+          Condition="'$(HostOS)' == 'windows'"
+          WorkingDirectory="$(WasiLocalPath)"
+          IgnoreStandardErrorWarningFormat="true" />  
   </Target>
 </Project>
