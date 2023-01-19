@@ -479,9 +479,13 @@ DecimalFormat& DecimalFormat::operator=(const DecimalFormat& rhs) {
 
 DecimalFormat::~DecimalFormat() {
     if (fields == nullptr) { return; }
-
+#ifndef __wasi__
     delete fields->atomicParser.exchange(nullptr);
     delete fields->atomicCurrencyParser.exchange(nullptr);
+#else
+    delete fields->atomicParser;
+    delete fields->atomicCurrencyParser;
+#endif
     delete fields;
 }
 
@@ -1637,8 +1641,13 @@ void DecimalFormat::touch(UErrorCode& status) {
     setupFastFormat();
 
     // Delete the parsers if they were made previously
+#ifndef __wasi__   
     delete fields->atomicParser.exchange(nullptr);
     delete fields->atomicCurrencyParser.exchange(nullptr);
+#else
+    delete fields->atomicParser;
+    delete fields->atomicCurrencyParser;
+#endif
 
     // In order for the getters to work, we need to populate some fields in NumberFormat.
     NumberFormat::setCurrency(fields->exportedProperties.currency.get(status).getISOCurrency(), status);
@@ -1673,7 +1682,11 @@ const numparse::impl::NumberParserImpl* DecimalFormat::getParser(UErrorCode& sta
     }
 
     // First try to get the pre-computed parser
+#ifndef __wasi__   
     auto* ptr = fields->atomicParser.load();
+#else
+    auto* ptr = fields->atomicParser;
+#endif
     if (ptr != nullptr) {
         return ptr;
     }
@@ -1692,6 +1705,7 @@ const numparse::impl::NumberParserImpl* DecimalFormat::getParser(UErrorCode& sta
     // it is set to what is actually stored in the atomic
     // if another thread beat us to computing the parser object.
     auto* nonConstThis = const_cast<DecimalFormat*>(this);
+#ifndef __wasi__
     if (!nonConstThis->fields->atomicParser.compare_exchange_strong(ptr, temp)) {
         // Another thread beat us to computing the parser
         delete temp;
@@ -1700,13 +1714,21 @@ const numparse::impl::NumberParserImpl* DecimalFormat::getParser(UErrorCode& sta
         // Our copy of the parser got stored in the atomic
         return temp;
     }
+#else
+    nonConstThis->fields->atomicParser = temp;
+    return temp;
+#endif
 }
 
 const numparse::impl::NumberParserImpl* DecimalFormat::getCurrencyParser(UErrorCode& status) const {
     if (U_FAILURE(status)) { return nullptr; }
 
     // First try to get the pre-computed parser
+#ifndef __wasi__
     auto* ptr = fields->atomicCurrencyParser.load();
+#else
+    auto* ptr = fields->atomicCurrencyParser;
+#endif
     if (ptr != nullptr) {
         return ptr;
     }
@@ -1721,6 +1743,7 @@ const numparse::impl::NumberParserImpl* DecimalFormat::getCurrencyParser(UErrorC
     // Note: ptr starts as nullptr; during compare_exchange, it is set to what is actually stored in the
     // atomic if another thread beat us to computing the parser object.
     auto* nonConstThis = const_cast<DecimalFormat*>(this);
+#ifndef __wasi__
     if (!nonConstThis->fields->atomicCurrencyParser.compare_exchange_strong(ptr, temp)) {
         // Another thread beat us to computing the parser
         delete temp;
@@ -1729,6 +1752,10 @@ const numparse::impl::NumberParserImpl* DecimalFormat::getCurrencyParser(UErrorC
         // Our copy of the parser got stored in the atomic
         return temp;
     }
+#else
+    nonConstThis->fields->atomicCurrencyParser = temp;
+    return temp;
+#endif
 }
 
 void
