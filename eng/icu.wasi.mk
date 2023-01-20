@@ -1,5 +1,4 @@
 # TODO: add other host platform/arch combinations
-HOST=$(shell hostname)
 UNAME_S := $(shell uname -s)
 UNAME_M := $(shell uname -m)
 UNAME_R := $(shell uname -r)
