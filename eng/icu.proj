@@ -1,4 +1,6 @@
 <Project>
+  <Import Project="$(RepositoryEngineeringDir)Versions.props" />
+
   <Target Name="Build" Condition="'$(PackOnly)' != 'true'" DependsOnTargets="PatchEmscripten;CopyEmscriptenVersion;PatchWasiSdk">
     <Error Condition="'$(TargetOS)' == ''" Text="TargetOS needs to be specified!" />
     <Error Condition="'$(TargetArchitecture)' == ''" Text="TargetArchitecture needs to be specified!" />
@@ -38,20 +40,16 @@
             Overwrite="true" />
   </Target>
   <Target Name="PatchWasiSdk" Condition="'$(TargetOS)' == 'Wasi'">
-    <ReadLinesFromFile File="../.devcontainer/wasi-sdk-version.txt">
-    <Output TaskParameter="Lines" ItemName="_VersionLines" />
-    </ReadLinesFromFile>
-
     <PropertyGroup>
-      <WASI_SDK_PATH>$(RepoRoot)\artifacts</WASI_SDK_PATH>
-      <WasiLocalPath>$(RepoRoot)\artifacts</WasiLocalPath>
-      <WasiSdkVersion>%(_VersionLines.Identity)</WasiSdkVersion>
-      <WasiSdkUrl>https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-linux.tar.gz</WasiSdkUrl>
-      <WasiSdkUrl Condition="$([MSBuild]::IsOSPlatform('OSX'))" >https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-macos.tar.gz</WasiSdkUrl>
+      <_WasiLocalPath>$(RepoRoot)\artifacts</_WasiLocalPath>
+      <_WasiSdkUrl Condition="$([MSBuild]::IsOSPlatform('Linux'))">https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-linux.tar.gz</_WasiSdkUrl>
+      <_WasiSdkUrl Condition="$([MSBuild]::IsOSPlatform('OSX'))">https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-macos.tar.gz</_WasiSdkUrl>
     </PropertyGroup>
 
-    <Exec Command="rm -rf wasi-sdk-*/ wasi-sdk/ &amp;&amp; curl -L -o- $(WasiSdkUrl) | tar -xvz &amp;&amp; mv wasi-sdk-$(WasiSdkVersion).*/ wasi-sdk/"
-          WorkingDirectory="$(WasiLocalPath)"
+    <Error Condition="'$(_WasiSdkUrl)' == ''" Text="_WasiSdkUrl is not set!" />
+
+    <Exec Command="rm -rf wasi-sdk-*/ wasi-sdk/ &amp;&amp; curl -L -o- $(_WasiSdkUrl) --fail -S | tar -xvz &amp;&amp; mv wasi-sdk-$(WasiSdkVersion).*/ wasi-sdk/"
+          WorkingDirectory="$(_WasiLocalPath)"
           IgnoreStandardErrorWarningFormat="true" />
 
   </Target>

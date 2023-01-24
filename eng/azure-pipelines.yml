@@ -120,7 +120,7 @@ stages:
           inputs:
             targetPath: 'artifacts/bin'
             artifactName: Artifacts_Wasi_Threading
-            condition: and(succeeded(), ne(variables['System.TeamProject'], 'public'), ne(variables['Build.Reason'], 'PullRequest'))      
+            condition: and(succeeded(), ne(variables['System.TeamProject'], 'public'), ne(variables['Build.Reason'], 'PullRequest'))
 
       ############ iOS BUILD ############
       - job: Build_iOS
