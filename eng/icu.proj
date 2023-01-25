@@ -9,7 +9,7 @@
       <_ExtraParams Condition="'$(WasmEnableThreads)' == 'true'">WASM_ENABLE_THREADS=true</_ExtraParams>
     </PropertyGroup>
 
-    <!-- Directory to provision and use WASI sdk if WASI_SDK_PATH env variable is not set -->
+    <!-- Set WASI sdk path if WASI_SDK_PATH env variable is not set -->
     <PropertyGroup Condition="'$(TargetOS)' == 'Wasi' and '$(WASI_SDK_PATH)' == ''">
       <WASI_SDK_PATH Condition="'$(WASI_SDK_PATH)' == ''">$(RepoRoot)artifacts/wasi-sdk</WASI_SDK_PATH>
     </PropertyGroup>
@@ -44,6 +44,8 @@
             Lines="@(_ItemsFromEmscriptenVersionFile->Replace('&quot;', ''))"
             Overwrite="true" />
   </Target>
+
+  <!-- Download WASI sdk if WASI_SDK_PATH env variable is not set -->
   <Target Name="DownloadWasiSdk" Condition="'$(TargetOS)' == 'Wasi'  and '$(WASI_SDK_PATH)' == ''">
     <PropertyGroup>
       <_WasiLocalPath>$(RepoRoot)\artifacts</_WasiLocalPath>
