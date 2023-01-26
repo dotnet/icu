@@ -58,6 +58,5 @@
     <Exec Command="rm -rf wasi-sdk-*/ wasi-sdk/ &amp;&amp; curl -L -o- $(_WasiSdkUrl) --fail -S | tar -xvz &amp;&amp; mv wasi-sdk-$(WasiSdkVersion).*/ wasi-sdk/"
           WorkingDirectory="$(_WasiLocalPath)"
           IgnoreStandardErrorWarningFormat="true" />
-
   </Target>
 </Project>
