@@ -71,7 +71,6 @@
 
   <!-- Wasi -->
   <ItemGroup Condition="'$(AddAllTargetOSToPackage)' == 'true' or '$(PackageRID)' == 'wasi-wasm'">
-    <File Include="$(RepoRoot)\artifacts\bin\icu-wasi-wasm\emscripten-version.txt" TargetPath="runtimes\wasi-wasm\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Include="$(RepoRoot)\artifacts\bin\icu-wasi-wasm\lib\libicui18n.a" TargetPath="runtimes\wasi-wasm\native\lib\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Include="$(RepoRoot)\artifacts\bin\icu-wasi-wasm\lib\libicuuc.a" TargetPath="runtimes\wasi-wasm\native\lib\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
     <File Include="$(RepoRoot)\artifacts\bin\icu-wasi-wasm\lib\libicudata.a" TargetPath="runtimes\wasi-wasm\native\lib\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
