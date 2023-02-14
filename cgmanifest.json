@@ -1,0 +1,15 @@
+{
+  "Registrations": [
+    {
+      "component": {
+        "type": "git",
+        "git": {
+          "repositoryUrl": "https://github.com/unicode-org/icu",
+          "commitHash": "84e1f26ea77152936e70d53178a816dbfbf69989"
+        }
+      }
+    }
+  ],
+  "Version": 1,
+  "$schema": "https://json.schemastore.org/component-detection-manifest.json"
+}
