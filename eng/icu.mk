@@ -50,7 +50,7 @@ $(HOST_OBJDIR)/.stamp-host: $(HOST_OBJDIR)/.stamp-configure-host
 	touch $@
 
 $(HOST_OBJDIR)/.stamp-configure-host: | $(HOST_OBJDIR)
-	cd $(HOST_OBJDIR) && $(TOP)/icu/icu4c/source/configure \
+	cd $(HOST_OBJDIR) && $(TOP)/icu4c/source/configure \
 	--disable-icu-config --disable-extras --disable-tests --disable-samples
 	touch $@
 
@@ -70,7 +70,7 @@ $(TARGET_OBJDIR)/$(1)/.stamp-configure: $(ICU_FILTER_PATH)/$(1).json $(HOST_OBJD
 	rm -rf $(TARGET_OBJDIR)/$(1)/data/out/tmp
 	$(ENV_INIT_SCRIPT) cd $(TARGET_OBJDIR)/$(1) && \
 	ICU_DATA_FILTER_FILE=$(ICU_FILTER_PATH)/$(1).json \
-	$(ENV_CONFIGURE_WRAPPER) $(TOP)/icu/icu4c/source/configure \
+	$(ENV_CONFIGURE_WRAPPER) $(TOP)/icu4c/source/configure \
 	--prefix=$(TARGET_OBJDIR)/$(1)/install \
 	$(CONFIGURE_ARGS) \
 	$(CONFIGURE_COMPILER_FLAGS)
