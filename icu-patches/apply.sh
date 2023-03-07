@@ -1,14 +1,12 @@
 #!/bin/bash
 set +x
-# Copyright 2016 and later: Unicode, Inc. and others.
-# License & terms of use: http://www.unicode.org/copyright.html
-
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # ----------------------------------------------------------------------
 #  This script is used to apply patches to ICU.
 # ----------------------------------------------------------------------
 
 # Look for files under the "patches" folder that end in ".patch".
-for i in patches/*.patch;
+for i in ${SCRIPT_DIR}/patches/*.patch;
   do patch_file_list="$patch_file_list $i"
 done
 
