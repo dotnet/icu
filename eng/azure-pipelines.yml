@@ -9,12 +9,14 @@ trigger:
     include:
     - dotnet/main
     - dotnet/release/*
+    - dotnet/test/*
 
 pr:
   branches:
     include:
     - dotnet/main
     - dotnet/release/*
+    - dotnet/test/*
 
 stages:
 - stage: build
