@@ -216,6 +216,7 @@
         },
         "misc": {
             "whitelist": [
+                "currencyNumericCodes",
                 "numberingSystems",
                 "icuver",
                 "likelySubtags",
