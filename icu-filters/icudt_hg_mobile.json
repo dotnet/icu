@@ -216,7 +216,6 @@
         },
         "misc": {
             "whitelist": [
-                "currencyNumericCodes",
                 "numberingSystems",
                 "icuver",
                 "likelySubtags",
@@ -248,6 +247,10 @@
                 "-/NumberElements/*/patternsLong",
                 "-/NumberElements/*/patternsShort",
                 "-/NumberElements/minimalPairs",
+                "-/NumberElements/*/symbols",
+                "-/calendar/Gregorian/AmPmMarkers",
+                "-/calendar/Gregorian/AmPmMarkersAbbr",
+                "-/calendar/Gregorian/AmPmMarkersNarrow",
                 "-/parse",
                 "-/AuxExemplarCharacters",
                 "-/ExemplarCharacters",
