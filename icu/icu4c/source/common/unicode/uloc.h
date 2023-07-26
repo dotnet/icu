@@ -524,17 +524,15 @@ uloc_canonicalize(const char*    localeID,
 U_CAPI const char* U_EXPORT2
 uloc_getISO3Language(const char* localeID);
 
-
 /**
  * Gets the 3 letter ISO language code for the specified 2 letter language code.
  *
  * @param langCode Iso639LanguageTwoLetterName
  * @return language the ISO language code for langCode
- * @stable ICU 2.0
+ * DOTNET CUSTOM API
  */
 U_CAPI const char* U_EXPORT2
 uloc_getISO3LanguageByLangCode(const char* langCode);
-
 
 /**
  * Gets the ISO country code for the specified locale.
@@ -551,7 +549,7 @@ uloc_getISO3Country(const char* localeID);
  *
  * @param countryCode Iso3166CountryName
  * @return country the ISO country code for countryCode
- * @stable ICU 2.0
+ * DOTNET CUSTOM API
  */
 U_CAPI const char* U_EXPORT2
 uloc_getISO3CountryByCountryCode(const char* countryCode);
