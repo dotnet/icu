@@ -216,10 +216,7 @@
         },
         "misc": {
             "whitelist": [
-                "currencyNumericCodes",
-                "numberingSystems",
                 "icuver",
-                "likelySubtags",
                 "supplementalData",
                 "keyTypeData"
             ]
@@ -246,10 +243,7 @@
                 "+/calendarPreferenceData",
                 "+/cldrVersion",
                 "+/measurementData",
-                "+/codeMappings",
-                "+/idValidity",
-                "+/timeData",
-                "+/weekData"
+                "+/codeMappings"
             ]
         }
     ]
