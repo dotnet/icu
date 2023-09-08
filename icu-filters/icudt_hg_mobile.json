@@ -221,13 +221,9 @@
                 "keyTypeData"
             ]
         },
-        "curr_tree": {
-            "whitelist": ["root"]
-        },
+        "curr_tree": "exclude",
         "brkitr_dictionaries": "exclude",
-        "brkitr_rules": {
-            "whitelist": ["char"]
-        },
+        "brkitr_rules": "exclude",
         "coll_tree": "exclude",
         "locales_tree": "exclude"
     },
