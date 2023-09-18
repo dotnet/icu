@@ -217,8 +217,7 @@
         "misc": {
             "whitelist": [
                 "icuver",
-                "supplementalData",
-                "keyTypeData"
+                "supplementalData"
             ]
         },
         "curr_tree": "exclude",
@@ -238,7 +237,6 @@
                 "+/calendarData",
                 "+/calendarPreferenceData",
                 "+/cldrVersion",
-                "+/measurementData",
                 "+/codeMappings"
             ]
         }
