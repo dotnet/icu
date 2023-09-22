@@ -234,8 +234,6 @@
             },
             "rules": [
                 "-/*",
-                "+/calendarData",
-                "+/calendarPreferenceData",
                 "+/cldrVersion",
                 "+/codeMappings"
             ]
