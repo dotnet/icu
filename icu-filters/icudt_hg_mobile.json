@@ -216,61 +216,17 @@
         },
         "misc": {
             "whitelist": [
-                "currencyNumericCodes",
-                "numberingSystems",
                 "icuver",
-                "likelySubtags",
-                "supplementalData",
-                "keyTypeData"
+                "supplementalData"
             ]
         },
-        "curr_tree": {
-            "whitelist": ["root"]
-        },
+        "curr_tree": "exclude",
         "brkitr_dictionaries": "exclude",
-        "brkitr_rules": {
-            "whitelist": ["char"]
-        }
+        "brkitr_rules": "exclude",
+        "coll_tree": "exclude",
+        "locales_tree": "exclude"
     },
     "resourceFilters": [
-        {
-            "categories": ["locales_tree"],
-            "rules": [
-                "-/characterLabel",
-                "-/measurementSystemNames",
-                "-/listPattern",
-                "-/fields",
-                "-/delimiters",
-                "-/Ellipsis",
-                "-/NumberElements/latn/miscPatterns",
-                "-/NumberElements/latn/patternsLong",
-                "-/NumberElements/latn/patternsShort",
-                "-/NumberElements/*/patternsLong",
-                "-/NumberElements/*/patternsShort",
-                "-/NumberElements/minimalPairs",
-                "-/NumberElements/*/symbols",
-                "-/calendar/Gregorian/AmPmMarkers",
-                "-/calendar/Gregorian/AmPmMarkersAbbr",
-                "-/calendar/Gregorian/AmPmMarkersNarrow",
-                "-/parse",
-                "-/AuxExemplarCharacters",
-                "-/ExemplarCharacters",
-                "-/ExemplarCharactersIndex",
-                "-/ExemplarCharactersNumbers",
-                "-/ExemplarCharactersPunctuation",
-                "-/MoreInformation"
-            ]
-        },
-        {
-            "categories": ["coll_tree"],
-            "rules": [
-                "-/*/*",
-                "+/collations/default",
-                "+/collations/standard",
-                "+/collations/private-kana",
-                "-/UCARules"
-            ]
-        },
         {
             "categories": ["misc"],
             "files": {
@@ -278,14 +234,8 @@
             },
             "rules": [
                 "-/*",
-                "+/calendarData",
-                "+/calendarPreferenceData",
                 "+/cldrVersion",
-                "+/measurementData",
-                "+/codeMappings",
-                "+/idValidity",
-                "+/timeData",
-                "+/weekData"
+                "+/codeMappings"
             ]
         }
     ]
