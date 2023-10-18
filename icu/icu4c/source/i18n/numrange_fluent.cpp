@@ -204,10 +204,10 @@ UnlocalizedNumberRangeFormatter::UnlocalizedNumberRangeFormatter(const NFS<UNF>&
 }
 
 // Make default copy constructor call the NumberRangeFormatterSettings copy constructor.
-UnlocalizedNumberRangeFormatter::UnlocalizedNumberRangeFormatter(UNF&& src) U_NOEXCEPT
+UnlocalizedNumberRangeFormatter::UnlocalizedNumberRangeFormatter(UNF&& src) noexcept
         : UNF(static_cast<NFS<UNF>&&>(src)) {}
 
-UnlocalizedNumberRangeFormatter::UnlocalizedNumberRangeFormatter(NFS<UNF>&& src) U_NOEXCEPT
+UnlocalizedNumberRangeFormatter::UnlocalizedNumberRangeFormatter(NFS<UNF>&& src) noexcept
         : NFS<UNF>(std::move(src)) {
     // No additional fields to assign
 }
@@ -218,7 +218,7 @@ UnlocalizedNumberRangeFormatter& UnlocalizedNumberRangeFormatter::operator=(cons
     return *this;
 }
 
-UnlocalizedNumberRangeFormatter& UnlocalizedNumberRangeFormatter::operator=(UNF&& src) U_NOEXCEPT {
+UnlocalizedNumberRangeFormatter& UnlocalizedNumberRangeFormatter::operator=(UNF&& src) noexcept {
     NFS<UNF>::operator=(static_cast<NFS<UNF>&&>(src));
     // No additional fields to assign
     return *this;
@@ -233,57 +233,36 @@ LocalizedNumberRangeFormatter::LocalizedNumberRangeFormatter(const NFS<LNF>& oth
     // No additional fields to assign
 }
 
-LocalizedNumberRangeFormatter::LocalizedNumberRangeFormatter(LocalizedNumberRangeFormatter&& src) U_NOEXCEPT
+LocalizedNumberRangeFormatter::LocalizedNumberRangeFormatter(LocalizedNumberRangeFormatter&& src) noexcept
         : LNF(static_cast<NFS<LNF>&&>(src)) {}
 
-LocalizedNumberRangeFormatter::LocalizedNumberRangeFormatter(NFS<LNF>&& src) U_NOEXCEPT
+LocalizedNumberRangeFormatter::LocalizedNumberRangeFormatter(NFS<LNF>&& src) noexcept
         : NFS<LNF>(std::move(src)) {
     // Steal the compiled formatter
     LNF&& _src = static_cast<LNF&&>(src);
-#ifndef __wasi__
     auto* stolen = _src.fAtomicFormatter.exchange(nullptr);
     delete fAtomicFormatter.exchange(stolen);
-#else
-    delete fAtomicFormatter;
-    fAtomicFormatter = _src.fAtomicFormatter;
-    _src.fAtomicFormatter = nullptr;
-#endif
 }
 
 LocalizedNumberRangeFormatter& LocalizedNumberRangeFormatter::operator=(const LNF& other) {
     if (this == &other) { return *this; }  // self-assignment: no-op
     NFS<LNF>::operator=(static_cast<const NFS<LNF>&>(other));
     // Do not steal; just clear
-#ifndef __wasi__
     delete fAtomicFormatter.exchange(nullptr);
-#else
-    delete fAtomicFormatter;
-#endif
     return *this;
 }
 
-LocalizedNumberRangeFormatter& LocalizedNumberRangeFormatter::operator=(LNF&& src) U_NOEXCEPT {
+LocalizedNumberRangeFormatter& LocalizedNumberRangeFormatter::operator=(LNF&& src) noexcept {
     NFS<LNF>::operator=(static_cast<NFS<LNF>&&>(src));
     // Steal the compiled formatter
-#ifndef __wasi__   
     auto* stolen = src.fAtomicFormatter.exchange(nullptr);
     delete fAtomicFormatter.exchange(stolen);
-#else
-    delete fAtomicFormatter;
-    fAtomicFormatter = src.fAtomicFormatter;
-    src.fAtomicFormatter = nullptr;
-#endif
-
     return *this;
 }
 
 
 LocalizedNumberRangeFormatter::~LocalizedNumberRangeFormatter() {
-#ifndef __wasi__
     delete fAtomicFormatter.exchange(nullptr);
-#else
-    delete fAtomicFormatter;
-#endif
 }
 
 LocalizedNumberRangeFormatter::LocalizedNumberRangeFormatter(const RangeMacroProps& macros, const Locale& locale) {
@@ -367,11 +346,7 @@ LocalizedNumberRangeFormatter::getFormatter(UErrorCode& status) const {
     }
 
     // First try to get the pre-computed formatter
-#ifndef __wasi__
     auto* ptr = fAtomicFormatter.load();
-#else
-    auto* ptr = fAtomicFormatter;
-#endif
     if (ptr != nullptr) {
         return ptr;
     }
@@ -391,7 +366,6 @@ LocalizedNumberRangeFormatter::getFormatter(UErrorCode& status) const {
     // it is set to what is actually stored in the atomic
     // if another thread beat us to computing the formatter object.
     auto* nonConstThis = const_cast<LocalizedNumberRangeFormatter*>(this);
-#ifndef __wasi__
     if (!nonConstThis->fAtomicFormatter.compare_exchange_strong(ptr, temp)) {
         // Another thread beat us to computing the formatter
         delete temp;
@@ -400,10 +374,6 @@ LocalizedNumberRangeFormatter::getFormatter(UErrorCode& status) const {
         // Our copy of the formatter got stored in the atomic
         return temp;
     }
-#else
-    nonConstThis->fAtomicFormatter = temp;
-    return temp;
-#endif
 
 }
 

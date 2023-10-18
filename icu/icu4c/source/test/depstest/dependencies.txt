@@ -22,7 +22,7 @@ system_symbols:
     exp_and_tanhf
     stdlib_qsort
     system_locale
-    stdio_input stdio_output file_io readlink_function dir_io mmap_functions dlfcn
+    stdio_input stdio_output file_io realpath_function dir_io mmap_functions dlfcn
     # C++
     cplusplus iostream
     std_mutex
@@ -110,8 +110,8 @@ group: file_io
     # Additional symbols in an optimized build.
     __xstat
 
-group: readlink_function
-    readlink  # putil.cpp uprv_tzname() calls this in a hack to get the time zone name
+group: realpath_function
+    realpath  # putil.cpp uprv_tzname() calls this in a hack to get the time zone name
 
 group: dir_io
     opendir closedir readdir  # for a hack to get the time zone name
@@ -214,7 +214,7 @@ group: breakiterator
     brkiter.o brkeng.o ubrk.o
     rbbi.o rbbinode.o rbbiscan.o rbbisetb.o rbbistbl.o rbbitblb.o
     rbbidata.o rbbirb.o rbbi_cache.o
-    dictionarydata.o dictbe.o lstmbe.o
+    dictionarydata.o dictbe.o lstmbe.o mlbe.o
     # BreakIterator::makeInstance() factory implementation makes for circular dependency
     # between BreakIterator base and FilteredBreakIteratorBuilder.
     filteredbrk.o
@@ -351,7 +351,7 @@ group: uniset_core
 group: icu_utility_with_props
     util_props.o
   deps
-    icu_utility uchar ucase
+    icu_utility uchar ucase uprops
 
 group: icu_utility
     util.o
@@ -869,7 +869,7 @@ group: platform
     PIC system_misc system_debug malloc_functions ubsan
     c_strings c_string_formatting
     floating_point system_locale
-    stdio_input readlink_function dir_io
+    stdio_input realpath_function dir_io
     dlfcn  # Move related code into icuplug.c?
     cplusplus
     std_mutex
@@ -1010,6 +1010,9 @@ group: numberformatter
     number_scientific.o
     currpinf.o
     numrange_fluent.o numrange_impl.o
+    # NOTE: This could go into its own dependency block, but it would require
+    # refactoring more of the dependencies (e.g. removing class methods).
+    number_simple.o
   deps
     decnumber double_conversion formattable units unitsformatter
     listformatter number_representation number_output
@@ -1081,7 +1084,7 @@ group: formatting
     measfmt.o quantityformatter.o
     # dateformat
     astro.o buddhcal.o calendar.o cecal.o chnsecal.o coptccal.o dangical.o ethpccal.o
-    gregocal.o gregoimp.o hebrwcal.o indiancal.o islamcal.o japancal.o persncal.o taiwncal.o
+    gregocal.o gregoimp.o hebrwcal.o indiancal.o islamcal.o iso8601cal.o japancal.o persncal.o taiwncal.o
     erarules.o  # mostly for Japanese eras
     ucal.o
     basictz.o olsontz.o rbtz.o simpletz.o timezone.o tzrule.o tztrans.o

@@ -479,13 +479,9 @@ DecimalFormat& DecimalFormat::operator=(const DecimalFormat& rhs) {
 
 DecimalFormat::~DecimalFormat() {
     if (fields == nullptr) { return; }
-#ifndef __wasi__
+
     delete fields->atomicParser.exchange(nullptr);
     delete fields->atomicCurrencyParser.exchange(nullptr);
-#else
-    delete fields->atomicParser;
-    delete fields->atomicCurrencyParser;
-#endif
     delete fields;
 }
 
@@ -794,7 +790,7 @@ CurrencyAmount* DecimalFormat::parseCurrency(const UnicodeString& text, ParsePos
     }
 }
 
-const DecimalFormatSymbols* DecimalFormat::getDecimalFormatSymbols(void) const {
+const DecimalFormatSymbols* DecimalFormat::getDecimalFormatSymbols() const {
     if (fields == nullptr) {
         return nullptr;
     }
@@ -807,7 +803,7 @@ const DecimalFormatSymbols* DecimalFormat::getDecimalFormatSymbols(void) const {
 
 void DecimalFormat::adoptDecimalFormatSymbols(DecimalFormatSymbols* symbolsToAdopt) {
     if (symbolsToAdopt == nullptr) {
-        return; // do not allow caller to set fields->symbols to NULL
+        return; // do not allow caller to set fields->symbols to nullptr
     }
     // we must take ownership of symbolsToAdopt, even in a failure case.
     LocalPointer<DecimalFormatSymbols> dfs(symbolsToAdopt);
@@ -835,7 +831,7 @@ void DecimalFormat::setDecimalFormatSymbols(const DecimalFormatSymbols& symbols)
     touchNoError();
 }
 
-const CurrencyPluralInfo* DecimalFormat::getCurrencyPluralInfo(void) const {
+const CurrencyPluralInfo* DecimalFormat::getCurrencyPluralInfo() const {
     if (fields == nullptr) {
         return nullptr;
     }
@@ -961,7 +957,7 @@ void DecimalFormat::setSignAlwaysShown(UBool value) {
     touchNoError();
 }
 
-int32_t DecimalFormat::getMultiplier(void) const {
+int32_t DecimalFormat::getMultiplier() const {
     const DecimalFormatProperties *dfp;
     // Not much we can do to report an error.
     if (fields == nullptr) {
@@ -1025,7 +1021,7 @@ void DecimalFormat::setMultiplierScale(int32_t newValue) {
     touchNoError();
 }
 
-double DecimalFormat::getRoundingIncrement(void) const {
+double DecimalFormat::getRoundingIncrement() const {
     // Not much we can do to report an error.
     if (fields == nullptr) {
         // Fallback to using the default instance of DecimalFormatProperties.
@@ -1041,7 +1037,7 @@ void DecimalFormat::setRoundingIncrement(double newValue) {
     touchNoError();
 }
 
-ERoundingMode DecimalFormat::getRoundingMode(void) const {
+ERoundingMode DecimalFormat::getRoundingMode() const {
     // Not much we can do to report an error.
     if (fields == nullptr) {
         // Fallback to using the default instance of DecimalFormatProperties.
@@ -1051,7 +1047,7 @@ ERoundingMode DecimalFormat::getRoundingMode(void) const {
     return static_cast<ERoundingMode>(fields->exportedProperties.roundingMode.getNoError());
 }
 
-void DecimalFormat::setRoundingMode(ERoundingMode roundingMode) {
+void DecimalFormat::setRoundingMode(ERoundingMode roundingMode) UPRV_NO_SANITIZE_UNDEFINED {
     if (fields == nullptr) { return; }
     auto uRoundingMode = static_cast<UNumberFormatRoundingMode>(roundingMode);
     if (!fields->properties.roundingMode.isNull() && uRoundingMode == fields->properties.roundingMode.getNoError()) {
@@ -1062,7 +1058,7 @@ void DecimalFormat::setRoundingMode(ERoundingMode roundingMode) {
     touchNoError();
 }
 
-int32_t DecimalFormat::getFormatWidth(void) const {
+int32_t DecimalFormat::getFormatWidth() const {
     // Not much we can do to report an error.
     if (fields == nullptr) {
         // Fallback to using the default instance of DecimalFormatProperties.
@@ -1098,7 +1094,7 @@ void DecimalFormat::setPadCharacter(const UnicodeString& padChar) {
     touchNoError();
 }
 
-EPadPosition DecimalFormat::getPadPosition(void) const {
+EPadPosition DecimalFormat::getPadPosition() const {
     if (fields == nullptr || fields->properties.padPosition.isNull()) {
         return EPadPosition::kPadBeforePrefix;
     } else {
@@ -1117,7 +1113,7 @@ void DecimalFormat::setPadPosition(EPadPosition padPos) {
     touchNoError();
 }
 
-UBool DecimalFormat::isScientificNotation(void) const {
+UBool DecimalFormat::isScientificNotation() const {
     // Not much we can do to report an error.
     if (fields == nullptr) {
         // Fallback to using the default instance of DecimalFormatProperties.
@@ -1138,7 +1134,7 @@ void DecimalFormat::setScientificNotation(UBool useScientific) {
     touchNoError();
 }
 
-int8_t DecimalFormat::getMinimumExponentDigits(void) const {
+int8_t DecimalFormat::getMinimumExponentDigits() const {
     // Not much we can do to report an error.
     if (fields == nullptr) {
         // Fallback to using the default instance of DecimalFormatProperties.
@@ -1154,7 +1150,7 @@ void DecimalFormat::setMinimumExponentDigits(int8_t minExpDig) {
     touchNoError();
 }
 
-UBool DecimalFormat::isExponentSignAlwaysShown(void) const {
+UBool DecimalFormat::isExponentSignAlwaysShown() const {
     // Not much we can do to report an error.
     if (fields == nullptr) {
         // Fallback to using the default instance of DecimalFormatProperties.
@@ -1170,7 +1166,7 @@ void DecimalFormat::setExponentSignAlwaysShown(UBool expSignAlways) {
     touchNoError();
 }
 
-int32_t DecimalFormat::getGroupingSize(void) const {
+int32_t DecimalFormat::getGroupingSize() const {
     int32_t groupingSize;
     // Not much we can do to report an error.
     if (fields == nullptr) {
@@ -1192,7 +1188,7 @@ void DecimalFormat::setGroupingSize(int32_t newValue) {
     touchNoError();
 }
 
-int32_t DecimalFormat::getSecondaryGroupingSize(void) const {
+int32_t DecimalFormat::getSecondaryGroupingSize() const {
     int32_t grouping2;
     // Not much we can do to report an error.
     if (fields == nullptr) {
@@ -1230,7 +1226,7 @@ void DecimalFormat::setMinimumGroupingDigits(int32_t newValue) {
     touchNoError();
 }
 
-UBool DecimalFormat::isDecimalSeparatorAlwaysShown(void) const {
+UBool DecimalFormat::isDecimalSeparatorAlwaysShown() const {
     // Not much we can do to report an error.
     if (fields == nullptr) {
         // Fallback to using the default instance of DecimalFormatProperties.
@@ -1246,7 +1242,7 @@ void DecimalFormat::setDecimalSeparatorAlwaysShown(UBool newValue) {
     touchNoError();
 }
 
-UBool DecimalFormat::isDecimalPatternMatchRequired(void) const {
+UBool DecimalFormat::isDecimalPatternMatchRequired() const {
     // Not much we can do to report an error.
     if (fields == nullptr) {
         // Fallback to using the default instance of DecimalFormatProperties.
@@ -1641,13 +1637,8 @@ void DecimalFormat::touch(UErrorCode& status) {
     setupFastFormat();
 
     // Delete the parsers if they were made previously
-#ifndef __wasi__   
     delete fields->atomicParser.exchange(nullptr);
     delete fields->atomicCurrencyParser.exchange(nullptr);
-#else
-    delete fields->atomicParser;
-    delete fields->atomicCurrencyParser;
-#endif
 
     // In order for the getters to work, we need to populate some fields in NumberFormat.
     NumberFormat::setCurrency(fields->exportedProperties.currency.get(status).getISOCurrency(), status);
@@ -1682,11 +1673,7 @@ const numparse::impl::NumberParserImpl* DecimalFormat::getParser(UErrorCode& sta
     }
 
     // First try to get the pre-computed parser
-#ifndef __wasi__   
     auto* ptr = fields->atomicParser.load();
-#else
-    auto* ptr = fields->atomicParser;
-#endif
     if (ptr != nullptr) {
         return ptr;
     }
@@ -1705,7 +1692,6 @@ const numparse::impl::NumberParserImpl* DecimalFormat::getParser(UErrorCode& sta
     // it is set to what is actually stored in the atomic
     // if another thread beat us to computing the parser object.
     auto* nonConstThis = const_cast<DecimalFormat*>(this);
-#ifndef __wasi__
     if (!nonConstThis->fields->atomicParser.compare_exchange_strong(ptr, temp)) {
         // Another thread beat us to computing the parser
         delete temp;
@@ -1714,21 +1700,13 @@ const numparse::impl::NumberParserImpl* DecimalFormat::getParser(UErrorCode& sta
         // Our copy of the parser got stored in the atomic
         return temp;
     }
-#else
-    nonConstThis->fields->atomicParser = temp;
-    return temp;
-#endif
 }
 
 const numparse::impl::NumberParserImpl* DecimalFormat::getCurrencyParser(UErrorCode& status) const {
     if (U_FAILURE(status)) { return nullptr; }
 
     // First try to get the pre-computed parser
-#ifndef __wasi__
     auto* ptr = fields->atomicCurrencyParser.load();
-#else
-    auto* ptr = fields->atomicCurrencyParser;
-#endif
     if (ptr != nullptr) {
         return ptr;
     }
@@ -1743,7 +1721,6 @@ const numparse::impl::NumberParserImpl* DecimalFormat::getCurrencyParser(UErrorC
     // Note: ptr starts as nullptr; during compare_exchange, it is set to what is actually stored in the
     // atomic if another thread beat us to computing the parser object.
     auto* nonConstThis = const_cast<DecimalFormat*>(this);
-#ifndef __wasi__
     if (!nonConstThis->fields->atomicCurrencyParser.compare_exchange_strong(ptr, temp)) {
         // Another thread beat us to computing the parser
         delete temp;
@@ -1752,10 +1729,6 @@ const numparse::impl::NumberParserImpl* DecimalFormat::getCurrencyParser(UErrorC
         // Our copy of the parser got stored in the atomic
         return temp;
     }
-#else
-    nonConstThis->fields->atomicCurrencyParser = temp;
-    return temp;
-#endif
 }
 
 void

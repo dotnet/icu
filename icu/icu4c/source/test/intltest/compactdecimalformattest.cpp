@@ -254,7 +254,7 @@ private:
     void CheckLocale(
         const Locale& locale, UNumberCompactStyle style,
         const ExpectedResult* expectedResults, int32_t expectedResultLength);
-    void CheckLocaleWithCurrency(const Locale& locale, UNumberCompactStyle style, const UChar* currency,
+    void CheckLocaleWithCurrency(const Locale& locale, UNumberCompactStyle style, const char16_t* currency,
                                  const ExpectedResult* expectedResults, int32_t expectedResultLength);
     void CheckExpectedResult(
         const CompactDecimalFormat* cdf, const ExpectedResult* expectedResult,
@@ -494,7 +494,7 @@ void CompactDecimalFormatTest::TestBug12975() {
     if (assertSuccess("", status, true, __FILE__, __LINE__)) {
         UnicodeString resultCdf;
         cdf->format(12000, resultCdf);
-        LocalPointer<DecimalFormat> df((DecimalFormat*) DecimalFormat::createInstance(locale, status));
+        LocalPointer<DecimalFormat> df(dynamic_cast<DecimalFormat*>(DecimalFormat::createInstance(locale, status)));
         UnicodeString resultDefault;
         df->format(12000, resultDefault);
         assertEquals("CompactDecimalFormat should use default pattern when compact pattern is unavailable",
@@ -520,7 +520,7 @@ void CompactDecimalFormatTest::CheckLocale(const Locale& locale, UNumberCompactS
 }
 
 void CompactDecimalFormatTest::CheckLocaleWithCurrency(const Locale& locale, UNumberCompactStyle style,
-                                                       const UChar* currency,
+                                                       const char16_t* currency,
                                                        const ExpectedResult* expectedResults,
                                                        int32_t expectedResultLength) {
     UErrorCode status = U_ZERO_ERROR;
@@ -555,7 +555,7 @@ CompactDecimalFormat*
 CompactDecimalFormatTest::createCDFInstance(const Locale& locale, UNumberCompactStyle style, UErrorCode& status) {
   CompactDecimalFormat* result = CompactDecimalFormat::createInstance(locale, style, status);
   if (U_FAILURE(status)) {
-    return NULL;
+    return nullptr;
   }
   // All tests are written for two significant digits, so we explicitly set here
   // in case default significant digits change.

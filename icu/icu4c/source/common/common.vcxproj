@@ -42,8 +42,7 @@
       <PrecompiledHeaderOutputFile>$(OutDir)/icuuc.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>$(OutDir)/</AssemblerListingLocation>
       <ObjectFileName>$(OutDir)/</ObjectFileName>
-      <!-- MSFT-Change: Include the ICU major version number in the PDB filename. -->
-      <ProgramDataBaseFileName>$(OutDir)/icuuc$(IcuMajorVersion).pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>$(OutDir)/icuuc.pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
       <!-- The icudt.lib is for U_ICUDATA_ENTRY_POINT -->
@@ -56,34 +55,24 @@
     <ClCompile>
       <PreprocessorDefinitions>RBBI_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
-      <!-- MSFT-Change: Static link the VCRUNTIME, VCSTARTUP and STL, but dynamic link to the UCRT. -->
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <OutputFile>..\..\$(IcuBinOutputDir)\icuuc$(IcuMajorVersion)d.dll</OutputFile>
-      <!-- MSFT-Change: Include the ICU major version number in the PDB filename. -->
-      <ProgramDatabaseFile>.\..\..\$(IcuLibOutputDir)\icuuc$(IcuMajorVersion)d.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\..\..\$(IcuLibOutputDir)\icuucd.pdb</ProgramDatabaseFile>
       <ImportLibrary>..\..\$(IcuLibOutputDir)\icuucd.lib</ImportLibrary>
-      <!-- MSFT-Change: This forces dynamic linking of the UCRT. -->
-      <IgnoreSpecificDefaultLibraries>libucrtd.lib;libucrt.lib</IgnoreSpecificDefaultLibraries>
-      <AdditionalOptions>/DEFAULTLIB:ucrtd.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <!-- Options that are common to all 'Release' project configurations -->
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
-      <!-- MSFT-Change: Static link the VCRUNTIME, VCSTARTUP and STL, but dynamic link to the UCRT. -->
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
     </ClCompile>
     <Link>
       <OutputFile>..\..\$(IcuBinOutputDir)\icuuc$(IcuMajorVersion).dll</OutputFile>
-      <!-- MSFT-Change: Include the ICU major version number in the PDB filename. -->
-      <ProgramDatabaseFile>.\..\..\$(IcuLibOutputDir)\icuuc$(IcuMajorVersion).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\..\..\$(IcuLibOutputDir)\icuuc.pdb</ProgramDatabaseFile>
       <ImportLibrary>..\..\$(IcuLibOutputDir)\icuuc.lib</ImportLibrary>
-      <!-- MSFT-Change: This forces dynamic linking of the UCRT. -->
-      <IgnoreSpecificDefaultLibraries>libucrtd.lib;libucrt.lib</IgnoreSpecificDefaultLibraries>
-      <AdditionalOptions>/DEFAULTLIB:ucrt.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -99,6 +88,7 @@
     <ClCompile Include="brkiter.cpp" />
     <ClCompile Include="dictbe.cpp" />
     <ClCompile Include="lstmbe.cpp" />
+    <ClCompile Include="mlbe.cpp" />
     <ClCompile Include="pluralmap.cpp" />
     <ClCompile Include="rbbi.cpp" />
     <ClCompile Include="rbbidata.cpp" />
@@ -293,6 +283,7 @@
     <ClInclude Include="brkeng.h" />
     <ClInclude Include="dictbe.h" />
     <ClInclude Include="lstmbe.h" />
+    <ClInclude Include="mlbe.h" />
     <ClInclude Include="rbbidata.h" />
     <ClInclude Include="rbbinode.h" />
     <ClInclude Include="rbbirb.h" />

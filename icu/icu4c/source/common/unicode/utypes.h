@@ -89,11 +89,6 @@
 
 /** @} */
 
-//IGNORE_WINDOWS_HEADERS_START
-// MSFT-Change: For the Windows OS version of ICU, it doesn't make sense to expose these
-// constants which are only for loading the main ICU data file. We also don't 
-// support using a data DLL either, so omit them from the Windows SDK header.
-
 /*===========================================================================*/
 /* ICUDATA naming scheme                                                     */
 /*===========================================================================*/
@@ -180,8 +175,6 @@
 #endif
 #endif
 #endif  /* U_HIDE_INTERNAL_API */
-
-//IGNORE_WINDOWS_HEADERS_END
 
 /**
  * \def NULL
