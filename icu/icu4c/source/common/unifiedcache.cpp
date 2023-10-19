@@ -171,7 +171,9 @@ int32_t UnifiedCache::keyCount() const {
 }
 
 void UnifiedCache::flush() const {
+#ifndef __wasi__
     std::lock_guard<std::mutex> lock(*gCacheMutex);
+#endif
 
     // Use a loop in case cache items that are flushed held hard references to
     // other cache items making those additional cache items eligible for
