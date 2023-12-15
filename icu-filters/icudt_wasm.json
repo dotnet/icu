@@ -220,7 +220,8 @@
                 "numberingSystems",
                 "icuver",
                 "supplementalData",
-                "keyTypeData"
+                "keyTypeData",
+                "timezoneTypes"
             ]
         },
         "curr_tree": {
