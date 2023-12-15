@@ -170,11 +170,13 @@ initFromResourceBundle(UErrorCode& sts) {
         // look up type map for the key, and walk through the mapping data
         LocalUResourceBundlePointer typeMapResByKey(ures_getByKey(typeMapRes.getAlias(), legacyKeyId, nullptr, &sts));
         if (U_FAILURE(sts)) {
-            // We fail here if typeMap does not have an entry corresponding to every entry in keyMap (should
-            // not happen for valid keyTypeData), or if ures_getByKeyfails fails for some other reason
-            // (e.g. data file cannot be loaded, using stubdata, over-aggressive data filtering has removed
-            // something like timezoneTypes.res, etc.). Error code is already set. See ICU-21669.
-            UPRV_UNREACHABLE_ASSERT;
+            // ICU-20506
+            // Note: The code used to call `U_ASSERT(FALSE)` here, but this was changed in ICU-20074
+            // to unconditionally call the macro `UPRV_UNREACHABLE` instead.
+            // However, it is possible to reach this code path if 'timezoneTypes.res' can't be found or loaded.
+            // In this case the code actually _can_ carry on (it shouldn't be a fatal error), but it means that
+            // we lose the ability to convert BCP47 timezone identifiers (which aren't commonly used). 
+            U_ASSERT(false);
         } else {
             LocalUResourceBundlePointer typeMapEntry;
 
