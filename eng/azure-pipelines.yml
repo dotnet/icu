@@ -93,7 +93,7 @@ stages:
             name: $(DncEngInternalBuildPool)
             demands: ImageOverride -equals build.ubuntu.2204.amd64
         container:
-          image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-20.04-webassembly-net8-20230327150037-4404b5c
+          image: mcr.microsoft.com/dotnet-buildtools/prereqs:cbl-mariner-2.0-webassembly
         steps:
         - bash: |
             ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Wasi /p:TargetArchitecture=wasm $(_InternalBuildArgs)
@@ -116,7 +116,7 @@ stages:
             name: $(DncEngInternalBuildPool)
             demands: ImageOverride -equals build.ubuntu.2204.amd64
         container:
-          image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-20.04-webassembly-net8-20230327150037-4404b5c
+          image: mcr.microsoft.com/dotnet-buildtools/prereqs:cbl-mariner-2.0-webassembly
         steps:
         - bash: |
             ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Wasi /p:TargetArchitecture=wasm /p:WasmEnableThreads=true $(_InternalBuildArgs)
