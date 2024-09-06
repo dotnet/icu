@@ -30,6 +30,11 @@ extends:
   template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
   parameters:
     sdl:
+      tsa:
+        enabled: true
+      policheck:
+        enabled: true
+        exclusionsFile: $(Build.SourcesDirectory)\.config\PoliCheckExclusions.xml
       binskim:
         scanOutputDirectoryOnly: true
     pool:
