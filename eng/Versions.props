@@ -7,9 +7,9 @@
     </PreReleaseVersionIteration>
   </PropertyGroup>
   <PropertyGroup>
-    <MicrosoftNETRuntimeEmscripten3156Nodelinuxx64Version>9.0.0-rtm.24502.4</MicrosoftNETRuntimeEmscripten3156Nodelinuxx64Version>
-    <MicrosoftNETRuntimeEmscripten3156Sdklinuxx64Version>9.0.0-rtm.24502.4</MicrosoftNETRuntimeEmscripten3156Sdklinuxx64Version>
-    <MicrosoftNETRuntimeEmscripten3156Cachelinuxx64Version>9.0.0-rtm.24502.4</MicrosoftNETRuntimeEmscripten3156Cachelinuxx64Version>
+    <MicrosoftNETRuntimeEmscripten3156Nodelinuxx64Version>9.0.0-rtm.24502.7</MicrosoftNETRuntimeEmscripten3156Nodelinuxx64Version>
+    <MicrosoftNETRuntimeEmscripten3156Sdklinuxx64Version>9.0.0-rtm.24502.7</MicrosoftNETRuntimeEmscripten3156Sdklinuxx64Version>
+    <MicrosoftNETRuntimeEmscripten3156Cachelinuxx64Version>9.0.0-rtm.24502.7</MicrosoftNETRuntimeEmscripten3156Cachelinuxx64Version>
     <MicrosoftDotNetBuildTasksPackagingVersion>9.0.0-beta.24408.2</MicrosoftDotNetBuildTasksPackagingVersion>
   </PropertyGroup>
   <PropertyGroup>
