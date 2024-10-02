@@ -3,13 +3,14 @@
   <PropertyGroup>
     <VersionPrefix>9.0.0</VersionPrefix>
     <PreReleaseVersionLabel>rtm</PreReleaseVersionLabel>
-    <PreReleaseVersionIteration></PreReleaseVersionIteration>
+    <PreReleaseVersionIteration>
+    </PreReleaseVersionIteration>
   </PropertyGroup>
   <PropertyGroup>
     <MicrosoftNETRuntimeEmscripten3156Nodelinuxx64Version>9.0.0-preview.7.24365.1</MicrosoftNETRuntimeEmscripten3156Nodelinuxx64Version>
     <MicrosoftNETRuntimeEmscripten3156Sdklinuxx64Version>9.0.0-preview.7.24365.1</MicrosoftNETRuntimeEmscripten3156Sdklinuxx64Version>
     <MicrosoftNETRuntimeEmscripten3156Cachelinuxx64Version>9.0.0-preview.7.24365.1</MicrosoftNETRuntimeEmscripten3156Cachelinuxx64Version>
-    <MicrosoftDotNetBuildTasksPackagingVersion>9.0.0-beta.24408.2</MicrosoftDotNetBuildTasksPackagingVersion>
+    <MicrosoftDotNetBuildTasksPackagingVersion>9.0.0-beta.24501.3</MicrosoftDotNetBuildTasksPackagingVersion>
   </PropertyGroup>
   <PropertyGroup>
     <WasiSdkVersion>16</WasiSdkVersion>
