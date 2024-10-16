@@ -7,7 +7,7 @@
     </PreReleaseVersionIteration>
   </PropertyGroup>
   <PropertyGroup>
-    <MicrosoftDotNetBuildTasksPackagingVersion>9.0.0-beta.24509.3</MicrosoftDotNetBuildTasksPackagingVersion>
+    <MicrosoftDotNetBuildTasksPackagingVersion>9.0.0-beta.24516.2</MicrosoftDotNetBuildTasksPackagingVersion>
     <!-- emsdk -->
     <MicrosoftNETRuntimeEmscripten3156Nodelinuxx64Version>9.0.0</MicrosoftNETRuntimeEmscripten3156Nodelinuxx64Version>
     <MicrosoftNETRuntimeEmscripten3156Sdklinuxx64Version>9.0.0</MicrosoftNETRuntimeEmscripten3156Sdklinuxx64Version>
