@@ -3,15 +3,16 @@
   <PropertyGroup>
     <VersionPrefix>10.0.0</VersionPrefix>
     <PreReleaseVersionLabel>rtm</PreReleaseVersionLabel>
-    <PreReleaseVersionIteration></PreReleaseVersionIteration>
+    <PreReleaseVersionIteration>
+    </PreReleaseVersionIteration>
   </PropertyGroup>
   <PropertyGroup>
     <!-- emsdk -->
-    <MicrosoftNETRuntimeEmscripten3156Nodelinuxx64Version>10.0.0-rc.2.25420.109</MicrosoftNETRuntimeEmscripten3156Nodelinuxx64Version>
-    <MicrosoftNETRuntimeEmscripten3156Sdklinuxx64Version>10.0.0-rc.2.25420.109</MicrosoftNETRuntimeEmscripten3156Sdklinuxx64Version>
-    <MicrosoftNETRuntimeEmscripten3156Cachelinuxx64Version>10.0.0-rc.2.25420.109</MicrosoftNETRuntimeEmscripten3156Cachelinuxx64Version>
+    <MicrosoftNETRuntimeEmscripten3156Nodelinuxx64Version>10.0.0</MicrosoftNETRuntimeEmscripten3156Nodelinuxx64Version>
+    <MicrosoftNETRuntimeEmscripten3156Sdklinuxx64Version>10.0.0</MicrosoftNETRuntimeEmscripten3156Sdklinuxx64Version>
+    <MicrosoftNETRuntimeEmscripten3156Cachelinuxx64Version>10.0.0</MicrosoftNETRuntimeEmscripten3156Cachelinuxx64Version>
     <!-- arcade -->
-    <MicrosoftDotNetBuildTasksPackagingVersion>10.0.0-beta.25420.109</MicrosoftDotNetBuildTasksPackagingVersion>
+    <MicrosoftDotNetBuildTasksPackagingVersion>10.0.0-beta.25521.107</MicrosoftDotNetBuildTasksPackagingVersion>
   </PropertyGroup>
   <PropertyGroup>
     <WasiSdkVersion>16</WasiSdkVersion>
