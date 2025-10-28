@@ -17,15 +17,15 @@
     </Dependency>
     <Dependency Name="Microsoft.NET.Runtime.Emscripten.3.1.56.Node.linux-x64" Version="9.0.11">
       <Uri>https://github.com/dotnet/emsdk</Uri>
-      <Sha>57f35538d9824f377af9c75692a6a8aef2ba5c8d</Sha>
+      <Sha>8da496061155b0106c68dd394a13afa9c843f2bf</Sha>
     </Dependency>
     <Dependency Name="Microsoft.NET.Runtime.Emscripten.3.1.56.Sdk.linux-x64" Version="9.0.11">
       <Uri>https://github.com/dotnet/emsdk</Uri>
-      <Sha>57f35538d9824f377af9c75692a6a8aef2ba5c8d</Sha>
+      <Sha>8da496061155b0106c68dd394a13afa9c843f2bf</Sha>
     </Dependency>
     <Dependency Name="Microsoft.NET.Runtime.Emscripten.3.1.56.Cache.linux-x64" Version="9.0.11">
       <Uri>https://github.com/dotnet/emsdk</Uri>
-      <Sha>57f35538d9824f377af9c75692a6a8aef2ba5c8d</Sha>
+      <Sha>8da496061155b0106c68dd394a13afa9c843f2bf</Sha>
     </Dependency>
   </ToolsetDependencies>
 </Dependencies>
