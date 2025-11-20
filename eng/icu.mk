@@ -37,6 +37,9 @@ CONFIGURE_ARGS = \
 ifeq ($(ICU_TRACING),true)
 	CONFIGURE_ARGS += --enable-tracing
 endif
+ifeq ($(POSITION_INDEPENDENT_CODE),true)
+	CONFIGURE_ARGS += --enable-fpic
+endif
 
 # include the OS specific configs
 include icu.$(TARGET_OS).mk

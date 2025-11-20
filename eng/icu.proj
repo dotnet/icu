@@ -23,6 +23,10 @@
       <_ExtraParams Condition="'$(WasmEnableThreads)' == 'true'">WASM_ENABLE_THREADS=true</_ExtraParams>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(PositionIndependentCode)' == 'true'">
+      <_ExtraParams>$(_ExtraParams) POSITION_INDEPENDENT_CODE=true</_ExtraParams>
+    </PropertyGroup>
+
     <PropertyGroup Condition="'$(TargetOS)' == 'Browser'">
       <_ExtraParams>$(_ExtraParams) DOTNET_EMSCRIPTEN_LLVM_ROOT=$(MonoEmsdkDir)/bin/</_ExtraParams>
       <_ExtraParams>$(_ExtraParams) DOTNET_EMSCRIPTEN_NODE_JS=$(MonoEmsdkDir)/bin/node</_ExtraParams>
