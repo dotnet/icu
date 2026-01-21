@@ -3,17 +3,17 @@
   <ProductDependencies>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="9.0.0-beta.25611.4">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="9.0.0-beta.26063.2">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>e9983e548f5b9638784f3b2696eb6cb3e7366548</Sha>
+      <Sha>c85f9aceddaf85296e3efbc463daaa34fef5a375</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Helix.Sdk" Version="9.0.0-beta.25611.4">
+    <Dependency Name="Microsoft.DotNet.Helix.Sdk" Version="9.0.0-beta.26063.2">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>e9983e548f5b9638784f3b2696eb6cb3e7366548</Sha>
+      <Sha>c85f9aceddaf85296e3efbc463daaa34fef5a375</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Build.Tasks.Packaging" Version="9.0.0-beta.25611.4">
+    <Dependency Name="Microsoft.DotNet.Build.Tasks.Packaging" Version="9.0.0-beta.26063.2">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>e9983e548f5b9638784f3b2696eb6cb3e7366548</Sha>
+      <Sha>c85f9aceddaf85296e3efbc463daaa34fef5a375</Sha>
     </Dependency>
     <Dependency Name="Microsoft.NET.Runtime.Emscripten.3.1.56.Node.linux-x64" Version="9.0.13">
       <Uri>https://github.com/dotnet/emsdk</Uri>
