@@ -2,7 +2,7 @@ variables:
   - template: /eng/common-variables.yml@self
   - template: /eng/common/templates-official/variables/pool-providers.yml@self
   - name: LinuxImage
-    value: 1es-ubuntu-2204
+    value: build.azurelinux.3.amd64
   - name: WindowsImage
     value: 1es-windows-2022
 
