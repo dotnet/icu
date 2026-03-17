@@ -4,7 +4,7 @@ variables:
   - name: Codeql.Enabled  # TODO: split codeql into separate pipeline
     value: true
   - name: LinuxImage
-    value: 1es-ubuntu-2204
+    value: build.azurelinux.3.amd64
   - name: WindowsImage
     value: 1es-windows-2022
 
