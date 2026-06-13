@@ -15,17 +15,17 @@
       <Uri>https://github.com/dotnet/arcade</Uri>
       <Sha>9cf79e2a2ecf95c9b2aa6a321baaea009753e356</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.NET.Runtime.Emscripten.3.1.56.Node.linux-x64" Version="9.0.17">
+    <Dependency Name="Microsoft.NET.Runtime.Emscripten.3.1.56.Node.linux-x64" Version="9.0.18">
       <Uri>https://github.com/dotnet/emsdk</Uri>
-      <Sha>70cef92f4b7f402304d039b9f14c5ee9ac8fa3bf</Sha>
+      <Sha>cbf9dd6af1d6b2a8408f68f85895e501208d51e4</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.NET.Runtime.Emscripten.3.1.56.Sdk.linux-x64" Version="9.0.17">
+    <Dependency Name="Microsoft.NET.Runtime.Emscripten.3.1.56.Sdk.linux-x64" Version="9.0.18">
       <Uri>https://github.com/dotnet/emsdk</Uri>
-      <Sha>70cef92f4b7f402304d039b9f14c5ee9ac8fa3bf</Sha>
+      <Sha>cbf9dd6af1d6b2a8408f68f85895e501208d51e4</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.NET.Runtime.Emscripten.3.1.56.Cache.linux-x64" Version="9.0.17">
+    <Dependency Name="Microsoft.NET.Runtime.Emscripten.3.1.56.Cache.linux-x64" Version="9.0.18">
       <Uri>https://github.com/dotnet/emsdk</Uri>
-      <Sha>70cef92f4b7f402304d039b9f14c5ee9ac8fa3bf</Sha>
+      <Sha>cbf9dd6af1d6b2a8408f68f85895e501208d51e4</Sha>
     </Dependency>
   </ToolsetDependencies>
 </Dependencies>
