@@ -40,8 +40,8 @@ extends:
       image: $(WindowsImage)
       os: windows
     containers:
-      mariner2crossamd64: 
-        image: mcr.microsoft.com/dotnet-buildtools/prereqs:cbl-mariner-2.0-cross-amd64
+      browserwasmamd64: 
+        image: mcr.microsoft.com/dotnet-buildtools/prereqs:azurelinux-3.0-net11.0-webassembly-amd64
       ubuntu2004wasi:
         image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-20.04-webassembly-net8-20230327150037-4404b5c
       ubuntu1804android:
@@ -65,7 +65,7 @@ extends:
               name: $(DncEngInternalBuildPool)
               image: $(LinuxImage)
               os: linux
-            container: mariner2crossamd64
+            container: browserwasmamd64
             steps:
             - bash: |
                 ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Browser /p:TargetArchitecture=wasm $(_InternalBuildArgs)
@@ -83,7 +83,7 @@ extends:
               name: $(DncEngInternalBuildPool)
               image: $(LinuxImage)
               os: linux
-            container: mariner2crossamd64
+            container: browserwasmamd64
             steps:
             - bash: |
                 ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Browser /p:TargetArchitecture=wasm /p:WasmEnableThreads=true $(_InternalBuildArgs)
