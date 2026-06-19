@@ -14,6 +14,6 @@
     <MicrosoftDotNetBuildTasksPackagingVersion>11.0.0-beta.26281.102</MicrosoftDotNetBuildTasksPackagingVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <WasiSdkVersion>16</WasiSdkVersion>
+    <WasiSdkVersion>33</WasiSdkVersion>
   </PropertyGroup>
 </Project>

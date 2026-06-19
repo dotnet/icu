@@ -64,8 +64,8 @@
   <Target Name="DownloadWasiSdk" Condition="'$(TargetOS)' == 'Wasi'  and '$(WASI_SDK_PATH)' == ''">
     <PropertyGroup>
       <_WasiLocalPath>$(RepoRoot)\artifacts</_WasiLocalPath>
-      <_WasiSdkUrl Condition="$([MSBuild]::IsOSPlatform('Linux'))">https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-linux.tar.gz</_WasiSdkUrl>
-      <_WasiSdkUrl Condition="$([MSBuild]::IsOSPlatform('OSX'))">https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-macos.tar.gz</_WasiSdkUrl>
+      <_WasiSdkUrl Condition="$([MSBuild]::IsOSPlatform('Linux'))">https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-x86_64-linux.tar.gz</_WasiSdkUrl>
+      <_WasiSdkUrl Condition="$([MSBuild]::IsOSPlatform('OSX'))">https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-x86_64-macos.tar.gz</_WasiSdkUrl>
     </PropertyGroup>
 
     <Error Condition="'$(_WasiSdkUrl)' == ''" Text="_WasiSdkUrl is not set!" />
