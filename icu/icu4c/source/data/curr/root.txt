@@ -1,206 +1,215 @@
-// © 2016 and later: Unicode, Inc. and others.
-// License & terms of use: http://www.unicode.org/copyright.html#License
+﻿// © 2016 and later: Unicode, Inc. and others.
+// License & terms of use: http://www.unicode.org/copyright.html
+// Generated using tools/cldr/cldr-to-icu/build-icu-data.xml
 root{
     Currencies{
-        ETB{
-            "ብር",
-            "ETB",
+        AUD{
+            "A$",
+            "AUD",
         }
-        SAR{
-            "ر.س.‏",
-            "SAR",
+        BRL{
+            "R$",
+            "BRL",
         }
-        BGN{
-            "лв.",
-            "BGN",
+        CAD{
+            "CA$",
+            "CAD",
         }
-        BDT{
-            "৳",
-            "BDT",
-        }
-        INR{
-            "₹",
-            "INR",
+        CNY{
+            "CN¥",
+            "CNY",
         }
         EUR{
             "€",
             "EUR",
         }
-        CZK{
-            "Kč",
-            "CZK",
-        }
-        DKK{
-            "kr.",
-            "DKK",
-        }
-        CHF{
-            "CHF",
-            "CHF",
-        }
-        CAD{
-            "$",
-            "CAD",
-        }
         GBP{
             "£",
             "GBP",
         }
-        USD{
-            "$",
-            "USD",
-        }
-        MXN{
-            "$",
-            "MXN",
-        }
-        AUD{
-            "$",
-            "AUD",
-        }
-        NZD{
-            "$",
-            "NZD",
-        }
-        IRR{
-            "ریال",
-            "IRR",
-        }
-        PHP{
-            "₱",
-            "PHP",
+        HKD{
+            "HK$",
+            "HKD",
         }
         ILS{
             "₪",
             "ILS",
         }
-        BAM{
-            "KM",
-            "BAM",
-        }
-        HRK{
-            "HRK",
-            "HRK",
-        }
-        HUF{
-            "Ft",
-            "HUF",
-        }
-        IDR{
-            "Rp",
-            "IDR",
+        INR{
+            "₹",
+            "INR",
         }
         JPY{
-            "￥",
+            "JP¥",
             "JPY",
         }
         KRW{
             "₩",
             "KRW",
         }
-        BND{
-            "$",
-            "BND",
+        MXN{
+            "MX$",
+            "MXN",
         }
-        MYR{
-            "RM",
-            "MYR",
+        NZD{
+            "NZ$",
+            "NZD",
         }
-        SGD{
-            "$",
-            "SGD",
+        PHP{
+            "₱",
+            "PHP",
         }
-        AWG{
-            "Afl.",
-            "AWG",
+        TWD{
+            "NT$",
+            "TWD",
         }
-        PLN{
-            "zł",
-            "PLN",
-        }
-        BRL{
-            "R$",
-            "BRL",
-        }
-        RON{
-            "RON",
-            "RON",
-        }
-        RUB{
-            "₽",
-            "RUB",
-        }
-        RSD{
-            "RSD",
-            "RSD",
-        }
-        SEK{
-            "kr",
-            "SEK",
-        }
-        CDF{
-            "FC",
-            "CDF",
-        }
-        KES{
-            "Ksh",
-            "KES",
-        }
-        TZS{
-            "TSh",
-            "TZS",
-        }
-        UGX{
-            "USh",
-            "UGX",
-        }
-        LKR{
-            "Rs.",
-            "LKR",
-        }
-        THB{
-            "฿",
-            "THB",
-        }
-        TRY{
-            "₺",
-            "TRY",
-        }
-        UAH{
-            "₴",
-            "UAH",
+        USD{
+            "US$",
+            "USD",
         }
         VND{
             "₫",
             "VND",
         }
-        CNY{
-            "¥",
-            "CNY",
+        XAF{
+            "FCFA",
+            "XAF",
         }
-        HKD{
-            "HK$",
-            "HKD",
+        XCD{
+            "EC$",
+            "XCD",
         }
-        TWD{
-            "$",
-            "TWD",
+        XOF{
+            "F CFA",
+            "XOF",
+        }
+        XPF{
+            "CFPF",
+            "XPF",
         }
         XXX{
             "¤",
             "XXX",
         }
     }
-    Version{"37"}
+    Currencies%narrow{
+        AFN{"؋"}
+        AMD{"֏"}
+        AOA{"Kz"}
+        ARS{"$"}
+        AUD{"$"}
+        AZN{"₼"}
+        BAM{"KM"}
+        BBD{"$"}
+        BDT{"৳"}
+        BMD{"$"}
+        BND{"$"}
+        BOB{"Bs"}
+        BRL{"R$"}
+        BSD{"$"}
+        BWP{"P"}
+        BZD{"$"}
+        CAD{"$"}
+        CLP{"$"}
+        CNY{"¥"}
+        COP{"$"}
+        CRC{"₡"}
+        CUC{"$"}
+        CUP{"$"}
+        CZK{"Kč"}
+        DKK{"kr"}
+        DOP{"$"}
+        EGP{"E£"}
+        ESP{"₧"}
+        EUR{"€"}
+        FJD{"$"}
+        FKP{"£"}
+        GBP{"£"}
+        GEL{"₾"}
+        GHS{"GH₵"}
+        GIP{"£"}
+        GNF{"FG"}
+        GTQ{"Q"}
+        GYD{"$"}
+        HKD{"$"}
+        HNL{"L"}
+        HRK{"kn"}
+        HUF{"Ft"}
+        IDR{"Rp"}
+        ILS{"₪"}
+        INR{"₹"}
+        ISK{"kr"}
+        JMD{"$"}
+        JPY{"¥"}
+        KHR{"៛"}
+        KMF{"CF"}
+        KPW{"₩"}
+        KRW{"₩"}
+        KYD{"$"}
+        KZT{"₸"}
+        LAK{"₭"}
+        LBP{"L£"}
+        LKR{"Rs"}
+        LRD{"$"}
+        LTL{"Lt"}
+        LVL{"Ls"}
+        MGA{"Ar"}
+        MMK{"K"}
+        MNT{"₮"}
+        MUR{"Rs"}
+        MXN{"$"}
+        MYR{"RM"}
+        NAD{"$"}
+        NGN{"₦"}
+        NIO{"C$"}
+        NOK{"kr"}
+        NPR{"Rs"}
+        NZD{"$"}
+        PHP{"₱"}
+        PKR{"Rs"}
+        PLN{"zł"}
+        PYG{"₲"}
+        RON{"lei"}
+        RUB{"₽"}
+        RWF{"RF"}
+        SBD{"$"}
+        SEK{"kr"}
+        SGD{"$"}
+        SHP{"£"}
+        SRD{"$"}
+        SSP{"£"}
+        STN{"Db"}
+        SYP{"£"}
+        THB{"฿"}
+        TOP{"T$"}
+        TRY{"₺"}
+        TTD{"$"}
+        TWD{"$"}
+        UAH{"₴"}
+        USD{"$"}
+        UYU{"$"}
+        VEF{"Bs"}
+        VND{"₫"}
+        XCD{"$"}
+        ZAR{"R"}
+        ZMW{"ZK"}
+    }
+    Currencies%variant{
+        TRY{"TL"}
+    }
+    CurrencyUnitPatterns{
+        other{"{0} {1}"}
+    }
+    Version{"42"}
     currencySpacing{
         afterCurrency{
-            currencyMatch{"[:^S:]"}
-            insertBetween{" "}
+            currencyMatch{"[[:^S:]&[:^Z:]]"}
+            insertBetween{" "}
             surroundingMatch{"[:digit:]"}
         }
         beforeCurrency{
-            currencyMatch{"[:^S:]"}
-            insertBetween{" "}
+            currencyMatch{"[[:^S:]&[:^Z:]]"}
+            insertBetween{" "}
             surroundingMatch{"[:digit:]"}
         }
     }
