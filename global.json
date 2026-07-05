@@ -14,7 +14,7 @@
   },
   "msbuild-sdks": {
     "Microsoft.Build.Traversal": "3.4.0",
-    "Microsoft.DotNet.Arcade.Sdk": "11.0.0-beta.26281.102",
-    "Microsoft.DotNet.Helix.Sdk": "11.0.0-beta.26281.102"
+    "Microsoft.DotNet.Arcade.Sdk": "11.0.0-beta.26330.112",
+    "Microsoft.DotNet.Helix.Sdk": "11.0.0-beta.26330.112"
   }
 }
