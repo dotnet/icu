@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.Build.Traversal">
   <ItemGroup Condition="'$(TargetOS)' == 'Browser'">
-    <PackageReference Include="Microsoft.NET.Runtime.Emscripten.3.1.56.Cache.linux-x64" Version="$(MicrosoftNETRuntimeEmscripten3156Cachelinuxx64Version)" />
-    <PackageReference Include="Microsoft.NET.Runtime.Emscripten.3.1.56.Node.linux-x64" Version="$(MicrosoftNETRuntimeEmscripten3156Nodelinuxx64Version)" />
-    <PackageReference Include="Microsoft.NET.Runtime.Emscripten.3.1.56.Sdk.linux-x64" Version="$(MicrosoftNETRuntimeEmscripten3156Sdklinuxx64Version)" />
+    <PackageReference Include="Microsoft.NET.Runtime.Emscripten.5.0.6.Cache.linux-x64" Version="$(MicrosoftNETRuntimeEmscripten506Cachelinuxx64Version)" />
+    <PackageReference Include="Microsoft.NET.Runtime.Emscripten.5.0.6.Node.linux-x64" Version="$(MicrosoftNETRuntimeEmscripten506Nodelinuxx64Version)" />
+    <PackageReference Include="Microsoft.NET.Runtime.Emscripten.5.0.6.Sdk.linux-x64" Version="$(MicrosoftNETRuntimeEmscripten506Sdklinuxx64Version)" />
   </ItemGroup>
 
   <Target Name="CopyEmsdkToTree" BeforeTargets="ReallyBuild" Condition="'$(TargetOS)' == 'Browser'">
@@ -12,10 +12,12 @@
     <Copy SourceFiles="@(EmsdkFiles)" DestinationFolder="$(MonoEmsdkDir)\%(RecursiveDir)">
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
     </Copy>
+    <Copy SourceFiles="$(MonoEmsdkDir)lib/libc++.so.1" DestinationFolder="$(MonoEmsdkDir)bin/" OverwriteReadOnlyFiles="true" />
+    <Copy SourceFiles="$(MonoEmsdkDir)lib/libc++abi.so.1" DestinationFolder="$(MonoEmsdkDir)bin/" OverwriteReadOnlyFiles="true" />
   </Target>
 
 
-  <Target Name="ReallyBuild" BeforeTargets="Build" Condition="'$(PackOnly)' != 'true'" DependsOnTargets="PatchEmscripten;CopyEmscriptenVersion;DownloadWasiSdk">
+  <Target Name="ReallyBuild" BeforeTargets="Build" Condition="'$(PackOnly)' != 'true'" DependsOnTargets="CopyEmscriptenVersion;DownloadWasiSdk">
     <Error Condition="'$(TargetOS)' == ''" Text="TargetOS needs to be specified!" />
     <Error Condition="'$(TargetArchitecture)' == ''" Text="TargetArchitecture needs to be specified!" />
 
@@ -46,14 +48,6 @@
     <MSBuild Projects="$(MSBuildThisFileDirectory)nuget\Microsoft.NETCore.Runtime.ICU.Transport.pkgproj" Targets="Build" />
   </Target>
 
-  <!-- 
-    The version of emscripten we are on, emcmake does not pass 'experimental-wasm-threads' to node. In order for the build to  
-    succeed, we need to provide a patched version of that file. Ideally, fixing upstream would be best, but until then, patch.
-  -->
-  <Target Name="PatchEmscripten" Condition="'$(TargetOS)' == 'Browser' and '$(WasmEnableThreads)' == 'true'">
-    <Copy SourceFiles="$(MSBuildThisFileDirectory)patches\emcc.py"
-          DestinationFolder="$(MonoEmsdkDir)\emscripten" />
-  </Target>
   <Target Name="CopyEmscriptenVersion" Condition="'$(TargetOS)' == 'Browser'">
     <ReadLinesFromFile File="$(MonoEmsdkDir)\emscripten\emscripten-version.txt" >
       <Output TaskParameter="Lines"
@@ -69,8 +63,8 @@
   <Target Name="DownloadWasiSdk" Condition="'$(TargetOS)' == 'Wasi'  and '$(WASI_SDK_PATH)' == ''">
     <PropertyGroup>
       <_WasiLocalPath>$(RepoRoot)\artifacts</_WasiLocalPath>
-      <_WasiSdkUrl Condition="$([MSBuild]::IsOSPlatform('Linux'))">https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-linux.tar.gz</_WasiSdkUrl>
-      <_WasiSdkUrl Condition="$([MSBuild]::IsOSPlatform('OSX'))">https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-macos.tar.gz</_WasiSdkUrl>
+      <_WasiSdkUrl Condition="$([MSBuild]::IsOSPlatform('Linux'))">https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-x86_64-linux.tar.gz</_WasiSdkUrl>
+      <_WasiSdkUrl Condition="$([MSBuild]::IsOSPlatform('OSX'))">https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$(WasiSdkVersion)/wasi-sdk-$(WasiSdkVersion).0-x86_64-macos.tar.gz</_WasiSdkUrl>
     </PropertyGroup>
 
     <Error Condition="'$(_WasiSdkUrl)' == ''" Text="_WasiSdkUrl is not set!" />
