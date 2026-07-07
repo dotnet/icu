@@ -42,8 +42,8 @@ extends:
     containers:
       webassembly:
         image: mcr.microsoft.com/dotnet-buildtools/prereqs:azurelinux-3.0-net11.0-cross-amd64
-      ubuntu1804android:
-        image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-android-20220131172314-3983b4e
+      android:
+        image: mcr.microsoft.com/dotnet-buildtools/prereqs:azurelinux-3.0-net11.0-cross-android-amd64
     stages:
     - stage: build
       displayName: Build
@@ -137,7 +137,7 @@ extends:
               name: $(DncEngInternalBuildPool)
               image: $(LinuxImage)
               os: linux
-            container: ubuntu1804android
+            container: android
             steps:
             - bash: |
                 echo 'public class helloworld { public static void main(String[] args) { System.out.println("Hello world"); } }' > helloworld.java
