@@ -44,13 +44,13 @@ include icu.$(TARGET_OS).mk
 UNAME_S := $(shell uname -s)
 LINKER_OVERRIDE = 
 ifeq ($(UNAME_S),Linux)
-ifeq ($(TARGET_OS),browser)
-	# Check if lld is available
+	# Use lld for the native host build when available. Some build images (e.g. the
+	# Azure Linux webassembly image) ship LLVM/lld but not GNU binutils, so the default
+	# linker would fail. This applies to all wasm target OSes (browser and wasi).
 	LLD_EXISTS := $(shell command -v lld 2> /dev/null)
 	ifneq ($(LLD_EXISTS),)
 		LINKER_OVERRIDE = LDFLAGS=-fuse-ld=lld
 	endif
-endif
 endif
 
 # Host build

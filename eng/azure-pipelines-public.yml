@@ -38,7 +38,7 @@ stages:
           name: $(DncEngPublicBuildPool)
           demands: ImageOverride -equals $(LinuxImage)
         container:
-          image: mcr.microsoft.com/dotnet-buildtools/prereqs:cbl-mariner-2.0-cross-amd64
+          image: mcr.microsoft.com/dotnet-buildtools/prereqs:azurelinux-3.0-net10.0-cross-amd64
         steps:
         - bash: |
             ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Browser /p:TargetArchitecture=wasm $(_InternalBuildArgs)
@@ -51,7 +51,7 @@ stages:
           name: $(DncEngPublicBuildPool)
           demands: ImageOverride -equals $(LinuxImage)
         container:
-          image: mcr.microsoft.com/dotnet-buildtools/prereqs:cbl-mariner-2.0-cross-amd64
+          image: mcr.microsoft.com/dotnet-buildtools/prereqs:azurelinux-3.0-net10.0-cross-amd64
         steps:
         - bash: |
             ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Browser /p:TargetArchitecture=wasm /p:WasmEnableThreads=true $(_InternalBuildArgs)
@@ -65,7 +65,7 @@ stages:
           name: $(DncEngPublicBuildPool)
           demands: ImageOverride -equals $(LinuxImage)
         container:
-          image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-20.04-webassembly-net8-20230327150037-4404b5c
+          image: mcr.microsoft.com/dotnet-buildtools/prereqs:azurelinux-3.0-net10.0-cross-amd64
         steps:
         - bash: |
             ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Wasi /p:TargetArchitecture=wasm $(_InternalBuildArgs)
@@ -78,7 +78,7 @@ stages:
           name: $(DncEngPublicBuildPool)
           demands: ImageOverride -equals $(LinuxImage)
         container:
-          image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-20.04-webassembly-net8-20230327150037-4404b5c
+          image: mcr.microsoft.com/dotnet-buildtools/prereqs:azurelinux-3.0-net10.0-cross-amd64
         steps:
         - bash: |
             ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Wasi /p:TargetArchitecture=wasm /p:WasmEnableThreads=true $(_InternalBuildArgs)
@@ -92,7 +92,7 @@ stages:
           name: $(DncEngPublicBuildPool)
           demands: ImageOverride -equals $(LinuxImage)
         container:
-          image: mcr.microsoft.com/dotnet-buildtools/prereqs:ubuntu-18.04-android-20220131172314-3983b4e
+          image: mcr.microsoft.com/dotnet-buildtools/prereqs:azurelinux-3.0-net10.0-cross-android-amd64
         steps:
         - bash: |
             ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Android /p:TargetArchitecture=x64 $(_InternalBuildArgs)
