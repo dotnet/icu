@@ -12,8 +12,6 @@
     <Copy SourceFiles="@(EmsdkFiles)" DestinationFolder="$(MonoEmsdkDir)\%(RecursiveDir)">
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
     </Copy>
-    <Copy SourceFiles="$(MonoEmsdkDir)lib/libc++.so.1" DestinationFolder="$(MonoEmsdkDir)bin/" OverwriteReadOnlyFiles="true" />
-    <Copy SourceFiles="$(MonoEmsdkDir)lib/libc++abi.so.1" DestinationFolder="$(MonoEmsdkDir)bin/" OverwriteReadOnlyFiles="true" />
   </Target>
 
 
