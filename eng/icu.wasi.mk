@@ -15,15 +15,20 @@ ifeq ($(UNAME_S),Darwin)
 	endif
 endif
 ifeq ($(WASM_ENABLE_THREADS),true)
-	THREADS_FLAG="-pthread"
+	# wasi-sdk requires the wasm32-wasi-threads target triple for threaded builds,
+	# plus imported/exported memory at link time (see wasi-sdk-pthread.cmake).
+	THREADS_FLAG = -pthread --target=wasm32-wasi-threads
+	THREADS_LDFLAGS = -Wl,--import-memory -Wl,--export-memory
 endif
 
 CONFIGURE_COMPILER_FLAGS += \
 	CFLAGS="-Oz -fno-exceptions -Wno-sign-compare $(THREADS_FLAG) $(ICU_DEFINES)" \
 	CXXFLAGS="-Oz -fno-exceptions -Wno-sign-compare $(THREADS_FLAG) $(ICU_DEFINES)" \
+	LDFLAGS="$(THREADS_LDFLAGS)" \
 	CC="$(WASI_SDK_PATH)/bin/clang --sysroot=$(WASI_SDK_PATH)/share/wasi-sysroot" \
 	CXX="$(WASI_SDK_PATH)/bin/clang++ --sysroot=$(WASI_SDK_PATH)/share/wasi-sysroot" \
 	--host=$(HOST_PLATFORM) --build=wasm32 \
+	AR="$(WASI_SDK_PATH)/bin/llvm-ar" \
 	RANLIB="$(WASI_SDK_PATH)/bin/llvm-ranlib" 
 
 check-env:
