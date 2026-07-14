@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.Build.Traversal">
   <ItemGroup Condition="'$(TargetOS)' == 'Browser'">
-    <PackageReference Include="Microsoft.NET.Runtime.Emscripten.5.0.6.Cache.linux-x64" Version="$(MicrosoftNETRuntimeEmscripten506Cachelinuxx64Version)" />
-    <PackageReference Include="Microsoft.NET.Runtime.Emscripten.5.0.6.Node.linux-x64" Version="$(MicrosoftNETRuntimeEmscripten506Nodelinuxx64Version)" />
-    <PackageReference Include="Microsoft.NET.Runtime.Emscripten.5.0.6.Sdk.linux-x64" Version="$(MicrosoftNETRuntimeEmscripten506Sdklinuxx64Version)" />
+    <PackageReference Include="Microsoft.NET.Runtime.Emscripten.6.0.2.Cache.linux-x64" Version="$(MicrosoftNETRuntimeEmscripten602Cachelinuxx64Version)" />
+    <PackageReference Include="Microsoft.NET.Runtime.Emscripten.6.0.2.Node.linux-x64" Version="$(MicrosoftNETRuntimeEmscripten602Nodelinuxx64Version)" />
+    <PackageReference Include="Microsoft.NET.Runtime.Emscripten.6.0.2.Sdk.linux-x64" Version="$(MicrosoftNETRuntimeEmscripten602Sdklinuxx64Version)" />
   </ItemGroup>
 
   <Target Name="CopyEmsdkToTree" BeforeTargets="ReallyBuild" Condition="'$(TargetOS)' == 'Browser'">
