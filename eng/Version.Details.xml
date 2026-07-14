@@ -3,29 +3,29 @@
   <ProductDependencies>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.26330.110">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.26361.102">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>e8551b43d851fdfa6fdcfe3fc10aa315148f623b</Sha>
+      <Sha>b63fd14d0c0dc26a52814d3f8debb67ba806f1f0</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Helix.Sdk" Version="10.0.0-beta.26330.110">
+    <Dependency Name="Microsoft.DotNet.Helix.Sdk" Version="10.0.0-beta.26361.102">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>e8551b43d851fdfa6fdcfe3fc10aa315148f623b</Sha>
+      <Sha>b63fd14d0c0dc26a52814d3f8debb67ba806f1f0</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Build.Tasks.Packaging" Version="10.0.0-beta.26330.110">
+    <Dependency Name="Microsoft.DotNet.Build.Tasks.Packaging" Version="10.0.0-beta.26361.102">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>e8551b43d851fdfa6fdcfe3fc10aa315148f623b</Sha>
+      <Sha>b63fd14d0c0dc26a52814d3f8debb67ba806f1f0</Sha>
     </Dependency>
     <Dependency Name="Microsoft.NET.Runtime.Emscripten.3.1.56.Node.linux-x64" Version="10.0.10">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>e8551b43d851fdfa6fdcfe3fc10aa315148f623b</Sha>
+      <Sha>b63fd14d0c0dc26a52814d3f8debb67ba806f1f0</Sha>
     </Dependency>
     <Dependency Name="Microsoft.NET.Runtime.Emscripten.3.1.56.Sdk.linux-x64" Version="10.0.10">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>e8551b43d851fdfa6fdcfe3fc10aa315148f623b</Sha>
+      <Sha>b63fd14d0c0dc26a52814d3f8debb67ba806f1f0</Sha>
     </Dependency>
     <Dependency Name="Microsoft.NET.Runtime.Emscripten.3.1.56.Cache.linux-x64" Version="10.0.10">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>e8551b43d851fdfa6fdcfe3fc10aa315148f623b</Sha>
+      <Sha>b63fd14d0c0dc26a52814d3f8debb67ba806f1f0</Sha>
     </Dependency>
   </ToolsetDependencies>
 </Dependencies>
