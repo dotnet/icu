@@ -27,7 +27,7 @@ extends:
   parameters:
     sdl:
       codeql:
-        language: cpp,java
+        language: cpp,java,python
       tsa:
         enabled: true
       policheck:
