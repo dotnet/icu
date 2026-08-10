@@ -26,8 +26,6 @@ extends:
   template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
   parameters:
     sdl:
-      codeql:
-        language: cpp,java
       tsa:
         enabled: true
       policheck:
@@ -138,7 +136,32 @@ extends:
               image: $(LinuxImage)
               os: linux
             container: android
+            variables:
+            - name: Codeql.BuildIdentifier
+              value: ado_android
+            - name: Codeql.Cadence
+              value: 0
+            - name: Codeql.Enabled
+              value: true
+            - name: Codeql.Language
+              value: cpp,java,python
+            - name: Codeql.TSAEnabled
+              value: true
             steps:
+            - bash: |
+                mkdir which-shim
+                echo '#!/bin/sh' > which-shim/which
+                echo 'command -v "$@"' >> which-shim/which
+                chmod +x which-shim/which
+                echo "##vso[task.prependpath]$PWD/which-shim"
+              displayName: Add a which shim for CodeQL
+              condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dotnet/main'))
+            - task: CodeQL3000Init@0
+              displayName: Initialize ADO CodeQL
+              condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dotnet/main'))
+            - bash: python3 -m compileall -q eng/common/cross/install-debs.py
+              displayName: Compile Python sources
+              condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dotnet/main'))
             - bash: |
                 echo 'public class helloworld { public static void main(String[] args) { System.out.println("Hello world"); } }' > helloworld.java
                 javac helloworld.java
@@ -150,11 +173,65 @@ extends:
                 ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Android /p:TargetArchitecture=arm64 $(_InternalBuildArgs)
                 ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Android /p:TargetArchitecture=arm $(_InternalBuildArgs)
               displayName: Build
+            - task: CodeQL3000Finalize@0
+              displayName: Finalize ADO CodeQL
+              condition: and(succeededOrFailed(), eq(variables['Build.SourceBranch'], 'refs/heads/dotnet/main'))
             templateContext:
               outputs:
               - output: pipelineArtifact
                 targetPath: $(System.DefaultWorkingDirectory)/artifacts/bin
                 artifactName: Artifacts_Android
+
+          - job: CodeQL_GitHub
+            displayName: CodeQL GitHub
+            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dotnet/main'))
+            timeoutInMinutes: 360
+            pool:
+              name: $(DncEngInternalBuildPool)
+              image: $(LinuxImage)
+              os: linux
+            container: android
+            variables:
+            - name: Codeql.BuildIdentifier
+              value: github_android
+            - name: Codeql.Cadence
+              value: 0
+            - name: Codeql.Enabled
+              value: true
+            - name: Codeql.Language
+              value: cpp,java,python
+            - name: Codeql.ADO.Build.Repository.Provider
+              value: override
+            - name: Codeql.ADO.Build.Repository.Uri
+              value: https://github.com/dotnet/icu
+            - name: skipComponentGovernanceDetection
+              value: true
+            steps:
+            - bash: |
+                mkdir which-shim
+                echo '#!/bin/sh' > which-shim/which
+                echo 'command -v "$@"' >> which-shim/which
+                chmod +x which-shim/which
+                echo "##vso[task.prependpath]$PWD/which-shim"
+              displayName: Add a which shim for CodeQL
+            - task: CodeQL3000Init@0
+              displayName: Initialize GitHub CodeQL
+            - bash: python3 -m compileall -q eng/common/cross/install-debs.py
+              displayName: Compile Python sources
+            - bash: |
+                echo 'public class helloworld { public static void main(String[] args) { System.out.println("Hello world"); } }' > helloworld.java
+                javac helloworld.java
+                java helloworld
+              displayName: Run java helloworld
+            - bash: |
+                ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Android /p:TargetArchitecture=x64 $(_InternalBuildArgs)
+                ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Android /p:TargetArchitecture=x86 $(_InternalBuildArgs)
+                ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Android /p:TargetArchitecture=arm64 $(_InternalBuildArgs)
+                ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Android /p:TargetArchitecture=arm $(_InternalBuildArgs)
+              displayName: Build
+            - task: CodeQL3000Finalize@0
+              displayName: Finalize GitHub CodeQL
+              condition: succeededOrFailed()
 
           ############ PACK AND PUBLISH ############
           - job: Publish_Packages
