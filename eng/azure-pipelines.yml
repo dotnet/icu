@@ -140,7 +140,7 @@ extends:
             - name: Codeql.BuildIdentifier
               value: ado_android
             - name: Codeql.Cadence
-              value: 0
+              value: 72
             - name: Codeql.Enabled
               value: true
             - name: Codeql.Language
@@ -195,7 +195,7 @@ extends:
             - name: Codeql.BuildIdentifier
               value: github_android
             - name: Codeql.Cadence
-              value: 0
+              value: 72
             - name: Codeql.Enabled
               value: true
             - name: Codeql.Language
