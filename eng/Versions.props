@@ -7,11 +7,11 @@
   </PropertyGroup>
   <PropertyGroup>
     <!-- emsdk -->
-    <MicrosoftNETRuntimeEmscripten602Nodelinuxx64Version>11.0.0-rc.1.26411.119</MicrosoftNETRuntimeEmscripten602Nodelinuxx64Version>
-    <MicrosoftNETRuntimeEmscripten602Sdklinuxx64Version>11.0.0-rc.1.26411.119</MicrosoftNETRuntimeEmscripten602Sdklinuxx64Version>
-    <MicrosoftNETRuntimeEmscripten602Cachelinuxx64Version>11.0.0-rc.1.26411.119</MicrosoftNETRuntimeEmscripten602Cachelinuxx64Version>
+    <MicrosoftNETRuntimeEmscripten602Nodelinuxx64Version>11.0.0-rc.2.26431.116</MicrosoftNETRuntimeEmscripten602Nodelinuxx64Version>
+    <MicrosoftNETRuntimeEmscripten602Sdklinuxx64Version>11.0.0-rc.2.26431.116</MicrosoftNETRuntimeEmscripten602Sdklinuxx64Version>
+    <MicrosoftNETRuntimeEmscripten602Cachelinuxx64Version>11.0.0-rc.2.26431.116</MicrosoftNETRuntimeEmscripten602Cachelinuxx64Version>
     <!-- arcade -->
-    <MicrosoftDotNetBuildTasksPackagingVersion>11.0.0-beta.26411.119</MicrosoftDotNetBuildTasksPackagingVersion>
+    <MicrosoftDotNetBuildTasksPackagingVersion>11.0.0-beta.26431.116</MicrosoftDotNetBuildTasksPackagingVersion>
   </PropertyGroup>
   <PropertyGroup>
     <WasiSdkVersion>33</WasiSdkVersion>
