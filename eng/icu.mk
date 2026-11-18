@@ -8,6 +8,15 @@ HOST_OBJDIR = $(TOP)/artifacts/obj/icu-host
 TARGET_BINDIR = $(TOP)/artifacts/bin/icu-$(TARGET_OS)-$(TARGET_ARCHITECTURE)
 TARGET_OBJDIR = $(TOP)/artifacts/obj/icu-$(TARGET_OS)-$(TARGET_ARCHITECTURE)
 
+ifeq ($(TARGET_ARCHITECTURE),wasm64)
+ifneq ($(TARGET_OS),browser)
+$(error wasm64 is only supported for TARGET_OS=browser)
+endif
+ifeq ($(WASM_ENABLE_THREADS),true)
+$(error Threads are not supported for browser-wasm64)
+endif
+endif
+
 # Disable some features we don't need, see icu/icu4c/source/common/unicode/uconfig.h
 # TODO: try adding -DUCONFIG_NO_LEGACY_CONVERSION=1
 ICU_DEFINES = \
@@ -104,7 +113,7 @@ data-$(2): $(TARGET_OBJDIR)/$(1)/.stamp-configure | $(TARGET_OBJDIR)/$(1) $(TARG
 
 endef
 
-ifeq ($(TARGET_ARCHITECTURE),wasm)
+ifneq ($(filter wasm wasm64,$(TARGET_ARCHITECTURE)),)
 $(eval $(call TargetBuildTemplate,icudt_wasm,icudt))
 else
 $(eval $(call TargetBuildTemplate,icudt_mobile,icudt))
@@ -117,3 +126,14 @@ $(eval $(call TargetBuildTemplate,icudt_EFIGS,icudt_EFIGS))
 
 # build source+data for the main "icudt" filter and only data for the other filters
 all: lib-icudt data-icudt data-icudt_no_CJK data-icudt_EFIGS data-icudt_CJK $(ADDITIONAL_TARGETS)
+
+ifeq ($(TARGET_ARCHITECTURE),wasm64)
+.PHONY: check-wasm64-archives
+all: check-wasm64-archives
+
+# Force the linker to check every archive member, including unreferenced objects.
+check-wasm64-archives: lib-icudt
+	"$(EMSDK_PATH)/bin/wasm-ld" -mwasm64 -r --whole-archive \
+		$(addprefix $(TARGET_BINDIR)/lib/,libicui18n.a libicuuc.a libicudata.a) \
+		-o $(TARGET_OBJDIR)/icu-abi-check.o
+endif

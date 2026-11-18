@@ -5,7 +5,7 @@
     <PackageReference Include="Microsoft.NET.Runtime.Emscripten.6.0.2.Sdk.linux-x64" Version="$(MicrosoftNETRuntimeEmscripten602Sdklinuxx64Version)" />
   </ItemGroup>
 
-  <Target Name="CopyEmsdkToTree" BeforeTargets="ReallyBuild" Condition="'$(TargetOS)' == 'Browser'">
+  <Target Name="CopyEmsdkToTree" Condition="'$(TargetOS)' == 'Browser'">
     <ItemGroup>
       <EmsdkFiles Include="$(NuGetPackageRoot)\$([System.String]::Copy(%(PackageReference.Identity)).ToLowerInvariant())\%(PackageReference.Version)\tools\**" />
     </ItemGroup>
@@ -46,13 +46,13 @@
     <MSBuild Projects="$(MSBuildThisFileDirectory)nuget\Microsoft.NETCore.Runtime.ICU.Transport.pkgproj" Targets="Build" />
   </Target>
 
-  <Target Name="CopyEmscriptenVersion" Condition="'$(TargetOS)' == 'Browser'">
+  <Target Name="CopyEmscriptenVersion" DependsOnTargets="CopyEmsdkToTree" Condition="'$(TargetOS)' == 'Browser'">
     <ReadLinesFromFile File="$(MonoEmsdkDir)\emscripten\emscripten-version.txt" >
       <Output TaskParameter="Lines"
               ItemName="_ItemsFromEmscriptenVersionFile"/>
     </ReadLinesFromFile>
     <WriteLinesToFile
-            File="$(RepoRoot)\artifacts\bin\icu-browser-wasm\emscripten-version.txt"
+            File="$(RepoRoot)\artifacts\bin\icu-$(PackageRID)\emscripten-version.txt"
             Lines="@(_ItemsFromEmscriptenVersionFile->Replace('&quot;', ''))"
             Overwrite="true" />
   </Target>
