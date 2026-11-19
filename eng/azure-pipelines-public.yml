@@ -44,6 +44,19 @@ stages:
             ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Browser /p:TargetArchitecture=wasm $(_InternalBuildArgs)
           displayName: Build
 
+      - job: Build_Browser_Wasm64
+        displayName: Browser Wasm64
+        timeoutInMinutes: 360
+        pool:
+          name: $(DncEngPublicBuildPool)
+          demands: ImageOverride -equals $(LinuxImage)
+        container:
+          image: mcr.microsoft.com/dotnet-buildtools/prereqs:azurelinux-3.0-net11.0-cross-amd64
+        steps:
+        - bash: |
+            ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Browser /p:TargetArchitecture=wasm64 $(_InternalBuildArgs)
+          displayName: Build
+
       - job: Build_Browser_Threading
         displayName: Browser_Threading
         timeoutInMinutes: 360

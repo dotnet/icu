@@ -74,6 +74,24 @@ extends:
                 targetPath: $(System.DefaultWorkingDirectory)/artifacts/bin
                 artifactName: Artifacts_Browser
 
+          - job: Build_Browser_Wasm64
+            displayName: Browser Wasm64
+            timeoutInMinutes: 360
+            pool:
+              name: $(DncEngInternalBuildPool)
+              image: $(LinuxImage)
+              os: linux
+            container: webassembly
+            steps:
+            - bash: |
+                ./build.sh --ci --restore --build --configuration $(_BuildConfig) /p:TargetOS=Browser /p:TargetArchitecture=wasm64 $(_InternalBuildArgs)
+              displayName: Build
+            templateContext:
+              outputs:
+              - output: pipelineArtifact
+                targetPath: $(System.DefaultWorkingDirectory)/artifacts/bin
+                artifactName: Artifacts_Browser_Wasm64
+
           - job: Build_Browser_Threading
             displayName: Browser_Threading
             timeoutInMinutes: 360
@@ -161,6 +179,7 @@ extends:
             displayName: Publish packages
             dependsOn:
             - Build_Browser
+            - Build_Browser_Wasm64
             - Build_Browser_Threading
             - Build_Wasi
             - Build_Wasi_Threading
@@ -174,6 +193,10 @@ extends:
             - task: DownloadPipelineArtifact@2
               inputs:
                 artifact: Artifacts_Browser
+                path: 'artifacts/bin'
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                artifact: Artifacts_Browser_Wasm64
                 path: 'artifacts/bin'
             - task: DownloadPipelineArtifact@2
               inputs:

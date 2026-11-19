@@ -69,6 +69,17 @@
     <File Condition="'$(OverrideBundledDatFiles)' == 'true'" Include="$(RepoRoot)\artifacts\bin\icu-browser-wasm\*.dat" TargetPath="runtimes\browser-wasm$(ExtraPackageName)\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
   </ItemGroup>
 
+  <!-- Browser memory64 -->
+  <ItemGroup Condition="'$(AddAllTargetOSToPackage)' == 'true' or '$(PackageRID)' == 'browser-wasm64'">
+    <File Include="$(RepoRoot)\artifacts\bin\icu-browser-wasm64\emscripten-version.txt" TargetPath="runtimes\browser-wasm64\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
+    <File Include="$(RepoRoot)\artifacts\bin\icu-browser-wasm64\lib\libicui18n.a" TargetPath="runtimes\browser-wasm64\native\lib\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
+    <File Include="$(RepoRoot)\artifacts\bin\icu-browser-wasm64\lib\libicuuc.a" TargetPath="runtimes\browser-wasm64\native\lib\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
+    <File Include="$(RepoRoot)\artifacts\bin\icu-browser-wasm64\lib\libicudata.a" TargetPath="runtimes\browser-wasm64\native\lib\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
+    <File Include="$(RepoRoot)\artifacts\bin\icu-browser-wasm64\include\**" TargetPath="runtimes\browser-wasm64\native\include\%(RecursiveDir)%(Filename)%(Extension)" SkipPackageFileCheck="true" />
+    <File Condition="'$(OverrideBundledDatFiles)' != 'true'" Include="$(RepoRoot)\eng\prebuilts\wasm\*.dat" TargetPath="runtimes\browser-wasm64\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
+    <File Condition="'$(OverrideBundledDatFiles)' == 'true'" Include="$(RepoRoot)\artifacts\bin\icu-browser-wasm64\*.dat" TargetPath="runtimes\browser-wasm64\native\lib\%(Filename).dat" SkipPackageFileCheck="true" />
+  </ItemGroup>
+
   <!-- Wasi -->
   <ItemGroup Condition="'$(AddAllTargetOSToPackage)' == 'true' or '$(PackageRID)' == 'wasi-wasm'">
     <File Include="$(RepoRoot)\artifacts\bin\icu-wasi-wasm\lib\libicui18n.a" TargetPath="runtimes\wasi-wasm\native\lib\%(Filename)%(Extension)" SkipPackageFileCheck="true" />
